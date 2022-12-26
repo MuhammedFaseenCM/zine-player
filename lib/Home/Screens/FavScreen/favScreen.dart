@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
@@ -16,6 +17,9 @@ class FavouriteScreen extends StatelessWidget {
               final listdata = favList[index];
               return Card(
                 child: ListTile(
+                  onTap: () {
+                    addToRecentList(title: demoList[index], context: context);
+                  },
                   leading: thumbnail(),
                   title: Text(listdata.title),
                   trailing: popupMenu(index),

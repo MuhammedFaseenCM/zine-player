@@ -92,11 +92,12 @@ Future<void> getPlayListitems() async {
   playlistitemsNotifier.notifyListeners();
 }
 
-Future<void> deleteListItem(int index) async {
+Future<void> deleteListItem({required int index, required context}) async {
   final listitemshive = await Hive.openBox<PlayListItems>('listitemsBox');
   await listitemshive.deleteAt(index);
   print("deleted $index from playlist");
-  getPlayListitems();
+  Navigator.of(context).pop();
+  await getPlayListitems();
 }
 
 Future<void> getAllFunctions() async {

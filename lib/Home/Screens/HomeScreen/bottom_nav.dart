@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/mainScreen.dart';
 
@@ -9,21 +10,23 @@ class BottomNavBar extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: MainScreen.selectedNotifier,
       builder: (BuildContext context, int updatedIndex, _) {
-        return BottomNavigationBar(
-            selectedItemColor: Colors.purple,
-            unselectedItemColor: Colors.grey[700],
-            currentIndex: updatedIndex,
+        return CurvedNavigationBar(
+            backgroundColor: Colors.purple,
             onTap: (newIndex) {
               MainScreen.selectedNotifier.value = newIndex;
             },
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.timer), label: 'Recent list'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite), label: 'Favourites'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.playlist_play), label: 'Playlist'),
+              Icon(Icons.home),
+              Icon(Icons.timer),
+              Icon(Icons.favorite),
+              Icon(Icons.playlist_play)
+              // BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Icons.timer), label: 'Recent list'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Icons.favorite), label: 'Favourites'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Icons.playlist_play), label: 'Playlist'),
             ]);
       },
     );

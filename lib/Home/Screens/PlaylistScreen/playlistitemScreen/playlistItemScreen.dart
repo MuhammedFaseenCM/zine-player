@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/PlaylistFunctions.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -29,14 +30,20 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
           return ListView.separated(
               itemBuilder: (context, index) {
                 final listdata = playListitem[index];
+                // if (widget.index == listdata.index) {
                 return Card(
                   child: ListTile(
+                    onTap: () {
+                      addToRecentList(title: listdata.title, context: context);
+                    },
                     leading: thumbnail(),
                     title: Text(listdata.title),
                     trailing: popupMenu(index: index),
                   ),
                 );
               },
+              //     return SizedBox();
+              // },
               separatorBuilder: (context, index) {
                 return const Divider();
               },
@@ -53,9 +60,12 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            deleteFunction(index, context, deleteListItem(index));
+            deleteListItem(index: index, context: context);
             print("Playlist items : $index");
-            //  Navigator.of(context).pop();
+            snackBar(
+                context: context,
+                content: "Successfully deleted",
+                bgcolor: Colors.green);
           },
           icon: const Icon(
             Icons.delete,

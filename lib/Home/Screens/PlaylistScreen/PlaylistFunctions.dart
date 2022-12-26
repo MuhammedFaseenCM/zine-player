@@ -27,7 +27,7 @@ updatePlaylist(index, context, _newPlayListController) async {
   Navigator.of(context).pop();
 }
 
-Future<void> deleteFunction(int index, context, delefunction) async {
+Future<void> deleteFunction(int index, context) async {
   showDialog(
       context: context,
       builder: (context) {
@@ -36,7 +36,7 @@ Future<void> deleteFunction(int index, context, delefunction) async {
           actions: [
             TextButton(
                 onPressed: () {
-                  delefunction;
+                  deletePlayList(index);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   snackBar(

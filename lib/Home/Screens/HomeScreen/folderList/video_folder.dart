@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/listitemFunctions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
+import 'package:zineplayer/Home/mainScreen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -46,73 +49,44 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.folderName),
-        actions: [
-          IconButton(
-              onPressed: () {
-                showSearch(context: context, delegate: Search());
-              },
-              icon: const Icon(Icons.search))
-        ],
-      ),
-
-      body: ListView.separated(
-          itemBuilder: (context, index) {
-            return ListTile(
-              onTap: () {
-                addToRecentList(title: demoList[index], context: context);
-                //  addToPlayList(context: context, listIndex: index);
-              },
-              title: Text(demoList[index]),
-              leading: thumbnail(),
-              trailing: popupMenu(index: index, title: demoList[index]),
-            );
-          },
-          separatorBuilder: (context, index) => const Divider(),
-          itemCount: demoList.length),
-      // Use a FutureBuilder to display a loading spinner while waiting for the
-      // VideoPlayerController to finish initializing.
-      // body: FutureBuilder(
-      //   future: _initializeVideoPlayerFuture,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.done) {
-      //       // If the VideoPlayerController has finished initialization, use
-      //       // the data it provides to limit the aspect ratio of the video.
-      //       return AspectRatio(
-      //         aspectRatio: _controller.value.aspectRatio,
-      //         // Use the VideoPlayer widget to display the video.
-      //         child: VideoPlayer(_controller),
-      //       );
-      //     } else {
-      //       // If the VideoPlayerController is still initializing, show a
-      //       // loading spinner.
-      //       return const Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //   },
-      // ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.play_arrow),
-        onPressed: () {
-          // Wrap the play or pause in a call to `setState`. This ensures the
-          // correct icon is shown.
-          setState(() {
-            // If the video is playing, pause it.
-            // if (_controller.value.isPlaying) {
-            //   _controller.pause();
-            // } else {
-            //   // If the video is paused, play it.
-            //   _controller.play();
-            // }
-          });
-        },
-        // Display the correct icon depending on the state of the player.
-        // child: Icon(
-        //   _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        // ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(widget.folderName),
+          flexibleSpace: appbarcontainer(),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showSearch(context: context, delegate: Search());
+                },
+                icon: const Icon(Icons.search))
+          ],
+        ),
+        body: ListView.separated(
+            itemBuilder: (context, index) {
+              String videopaths = videopath[index];
+              List<String> pathparts = videopaths.split(Platform.pathSeparator);
+              String videotitle = pathparts.last;
+              //  File videoFile = File(videopaths);
+              //    String videoSize = videoFile.lengthSync().toString();
+              return ListTile(
+                onTap: () {
+                  addToRecentList(title: videotitle, context: context);
+                  //  addToPlayList(context: context, listIndex: index);
+                },
+                title: Text(videotitle),
+                subtitle: Text("path : " + videopath[index]),
+                leading: thumbnail(),
+                trailing: popupMenu(index: index, title: videotitle),
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
+            itemCount: videopath.length),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.play_arrow),
+          onPressed: () {},
+        ),
       ),
     );
   }
@@ -136,7 +110,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            addToPlayList(context: context, listIndex: index);
+            addToPlayList(
+                context: context, listIndex: index, videotitle: title);
             print(index);
             //Navigator.of(context).pop();
           },
@@ -150,26 +125,20 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     );
   }
 
-  var demoList = [
-    'India',
-    'Australia',
-    'England',
-    'New zealand',
-    'Bangladesh',
-    'Pakistan',
-    'West indies'
-  ];
-
-  void addToPlayList({required BuildContext context, required listIndex}) {
+  void addToPlayList(
+      {required BuildContext context,
+      required listIndex,
+      required videotitle}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
           title: const Text("Select playlist"),
-          content: playlistDailog(listIndex: listIndex)),
+          content:
+              playlistDailog(listIndex: listIndex, videotitle: videotitle)),
     );
   }
 
-  Widget playlistDailog({required listIndex}) {
+  Widget playlistDailog({required listIndex, required videotitle}) {
     return Container(
       height: 150.0,
       width: 200.0,
@@ -185,8 +154,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      addItemToPlayList(
-                          title: demoList[listIndex], context: context);
+                      addItemToPlayList(title: videotitle, context: context);
                       snackBar(
                           context: context,
                           content: 'Successfully added',
@@ -214,3 +182,20 @@ Widget thumbnail() {
     ),
   );
 }
+
+var demoList = [
+  'India',
+  'Australia',
+  'England',
+  'New zealand',
+  'Bangladesh',
+  'Pakistan',
+  'West indies'
+];
+
+List<String> videopath = [
+  'assets/messi video.mp4',
+  'assets/videos/kakkakuyil.mp4',
+  'assets/videos/mohanlal lucifer.mp4',
+  'assets/videos/singam.mp4'
+];

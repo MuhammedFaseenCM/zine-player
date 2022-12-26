@@ -53,10 +53,7 @@ class FavouriteAdapter extends TypeAdapter<Favourite> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Favourite(
-      title: fields[1] as String,
-      index: fields[0] as int?,
-    );
+    return Favourite(title: fields[1] as String, index: fields[0] as int?);
   }
 
   @override

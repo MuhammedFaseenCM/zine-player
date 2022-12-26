@@ -5,7 +5,8 @@ import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class PlayScreen extends StatefulWidget {
-  const PlayScreen({super.key});
+  final int? index;
+  PlayScreen({super.key, this.index});
 
   @override
   State<PlayScreen> createState() => _PlayScreenState();
@@ -36,8 +37,8 @@ class _PlayScreenState extends State<PlayScreen> {
                   child: ListTile(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PlayListItemScreen(
-                            items: listdata, index: listdata.index),
+                        builder: (context) =>
+                            PlayListItemScreen(items: listdata, index: index),
                       ));
                     },
                     leading: const Icon(
@@ -117,9 +118,9 @@ class _PlayScreenState extends State<PlayScreen> {
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            deletePlayList(index);
+            deleteFunction(index, context);
             print(index);
-            Navigator.of(context).pop();
+            //Navigator.of(context).pop();
           },
           icon: const Icon(Icons.delete, color: Colors.red),
           label: const Text(

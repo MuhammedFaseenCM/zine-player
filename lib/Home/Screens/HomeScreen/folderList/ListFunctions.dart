@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
-addToFavourite({required title, required context}) async {
+addToFavourite({required title, required context, index}) async {
   final name = title;
   final favList = Favourite(title: name);
   if (name == null) {
