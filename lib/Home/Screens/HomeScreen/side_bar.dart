@@ -9,7 +9,7 @@ class NavDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Colors.purple,
+              gradient: LinearGradient(colors: [Colors.blue, Colors.purple]),
               //image: DecorationImage(
               //   fit: BoxFit.fill,
               //  image: AssetImage('assets/images/cover.jpg')
@@ -57,7 +57,10 @@ class NavDrawer extends StatelessWidget {
               Column(
                 children: const [
                   ListTile(
-                    leading: Icon(Icons.android),
+                    leading: Icon(
+                      Icons.android,
+                      color: Colors.green,
+                    ),
                     title: Text("Version 1.0.0"),
                   )
                 ],

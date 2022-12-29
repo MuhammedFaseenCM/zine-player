@@ -20,6 +20,7 @@ playlistdb(PlayList value) async {
 
 Future<void> getPlayList() async {
   final playlisthive = await Hive.openBox<PlayList>('playlistBox');
+
   playListNotifier.value.clear();
   playListNotifier.value.addAll(playlisthive.values);
   print('Number of playlist \t');

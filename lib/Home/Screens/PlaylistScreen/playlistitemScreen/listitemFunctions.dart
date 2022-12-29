@@ -9,6 +9,7 @@ addItemToPlayList({required title, required context}) {
   }
   print("$title added to playlist");
   playlistitemDB(list);
+
   Navigator.of(context).pop();
   Navigator.of(context).pop();
 }

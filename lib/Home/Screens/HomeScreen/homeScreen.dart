@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
+import 'package:zineplayer/functions/videodirslist.dart';
 
 class Home_screen extends StatelessWidget {
   Home_screen({super.key});
@@ -9,11 +10,15 @@ class Home_screen extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) {
         return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
           child: ListTile(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => VideoPlayerScreen(
                         folderName: foldername[index],
+                        videolist: filelist[index],
                       )));
             },
             leading: const Icon(
@@ -29,9 +34,9 @@ class Home_screen extends StatelessWidget {
   }
 
   final foldername = [
-    'Download',
-    'Movies',
-    'Videos',
-    'Whatsapp video',
+    'Folder 1',
+    'Folder 2',
+    'Folder 3',
+    'Folder 4',
   ];
 }

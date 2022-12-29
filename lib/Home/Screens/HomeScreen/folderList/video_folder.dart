@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
@@ -8,10 +9,13 @@ import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
 import 'package:zineplayer/Home/mainScreen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
+import 'package:zineplayer/functions/videodirslist.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String folderName;
-  const VideoPlayerScreen({super.key, required this.folderName});
+  final List videolist;
+  const VideoPlayerScreen(
+      {super.key, required this.folderName, required this.videolist});
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
@@ -53,6 +57,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          centerTitle: true,
           title: Text(widget.folderName),
           flexibleSpace: appbarcontainer(),
           actions: [
@@ -65,7 +70,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         ),
         body: ListView.separated(
             itemBuilder: (context, index) {
-              String videopaths = videopath[index];
+              var videos = widget.videolist;
+              String videopaths = videos[index];
               List<String> pathparts = videopaths.split(Platform.pathSeparator);
               String videotitle = pathparts.last;
               //  File videoFile = File(videopaths);
@@ -73,16 +79,21 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               return ListTile(
                 onTap: () {
                   addToRecentList(title: videotitle, context: context);
-                  //  addToPlayList(context: context, listIndex: index);
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   builder: (context) {
+                  //     return App();
+                  //   },
+                  // ));
                 },
                 title: Text(videotitle),
-                subtitle: Text("path : " + videopath[index]),
+                subtitle: Text(
+                    "path :  ${videos[index]}\nSize:  ${Random().nextInt(10) + 1}mb"),
                 leading: thumbnail(),
                 trailing: popupMenu(index: index, title: videotitle),
               );
             },
             separatorBuilder: (context, index) => const Divider(),
-            itemCount: videopath.length),
+            itemCount: widget.videolist.length),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.play_arrow),
           onPressed: () {},
@@ -184,13 +195,13 @@ Widget thumbnail() {
 }
 
 var demoList = [
-  'India',
-  'Australia',
-  'England',
-  'New zealand',
-  'Bangladesh',
-  'Pakistan',
-  'West indies'
+  'asset/folder1/video1',
+  'asset/folder1/video2',
+  'asset/folder1/video3',
+  'asset/folder1/New video',
+  'asset/folder1/vid2413812',
+  'asset/folder1/vid293213',
+  'asset/folder1/video indies'
 ];
 
 List<String> videopath = [
@@ -199,3 +210,21 @@ List<String> videopath = [
   'assets/videos/mohanlal lucifer.mp4',
   'assets/videos/singam.mp4'
 ];
+
+var demolist2 = [
+  'asset/folder2/qwerty',
+  'asset/folder2/asdf',
+  'asset/folder2/zxcv',
+  'asset/folder2/New video',
+  'asset/folder2/vid2413812',
+  'asset/folder2/vid293213',
+  'asset/folder2/video indies'
+];
+List<String> videopath2 = [
+  'assets/ronaldo video.mp4',
+  'assets/videos/vikram.mp4',
+  'assets/videos/mammootty npnm.mp4',
+  'assets/videos/avengers.mp4'
+];
+
+List<List<String>> filelist = [demoList, videopath, demolist2, videopath2];
