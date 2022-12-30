@@ -9,7 +9,7 @@ import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
 import 'package:zineplayer/Home/mainScreen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
-import 'package:zineplayer/functions/videodirslist.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoScreen.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String folderName;

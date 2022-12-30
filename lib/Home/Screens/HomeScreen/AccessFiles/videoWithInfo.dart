@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/AccessFiles/accessVideoData.dart';
 
 // final videoInfo = FlutterVideoInfo(); //creating object of infoclass
 // ValueNotifier<List<VideoData>> fetchedVideosWithInfo =

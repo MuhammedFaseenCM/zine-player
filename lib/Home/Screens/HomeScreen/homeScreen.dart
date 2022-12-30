@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
-import 'package:zineplayer/functions/videodirslist.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoScreen.dart';
 
 class Home_screen extends StatelessWidget {
   Home_screen({super.key});

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:zineplayer/AccessFolders/MethodChannelfn.dart';
 import 'package:zineplayer/AccessFolders/loadFolders.dart';
+import 'package:zineplayer/AccessFolders/loadVideos.dart';
 
 List<String> AccessVideosPath = [];
 
@@ -31,8 +32,8 @@ Future splashFetch() async {
   log("object");
   if (await _requestPermission(Permission.storage)) {
     AccessFilesFromStorage.accessFromStorage([
-      '.mp4',
       '.mkv',
+      '.mp4',
     ], onSuccess, (p0) {});
   } else {
     splashFetch();

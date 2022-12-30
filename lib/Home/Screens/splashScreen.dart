@@ -23,38 +23,58 @@ class _Splash_screenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [Colors.blue, Colors.purple])),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.play_circle,
-                size: 50.0,
-                color: Colors.white,
+        body: Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(colors: [Colors.blue, Colors.purple])),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.play_circle,
+                      size: 80.0,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      'Zine player',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
-              Text(
-                'Zine player',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+              child: Column(
+            children: const [
+              SizedBox(
+                width: 200.0,
+                child: LinearProgressIndicator(
+                  color: Colors.white,
+                  // value: .1,
+                  semanticsValue: "Loading",
+                  semanticsLabel: "Loading",
+                  backgroundColor: Colors.blue,
+                  minHeight: 5.0,
+                ),
               )
             ],
-          ),
-        ),
+          ))
+        ],
       ),
     ));
   }
 
   Future<void> gotoMainScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 7));
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (ctx) => MainScreen()));
   }
