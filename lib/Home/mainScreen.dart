@@ -10,6 +10,7 @@ import 'package:zineplayer/Home/Screens/PlaylistScreen/PlaylistScreen.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/homeScreen.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
 import 'package:zineplayer/Home/Screens/RecentlyScreen/RecentlyScreen.dart';
+import 'package:zineplayer/Home/Screens/VideoScreen/VideoHome.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class MainScreen extends StatefulWidget {
@@ -22,7 +23,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final _pages = [
-    FolderHome(),
+    const VideoHome(),
+    const FolderHome(),
     const RecentScreen(),
     const FavouriteScreen(),
     PlayScreen()
@@ -38,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
         drawer: NavDrawer(),
         appBar: AppBar(
@@ -59,20 +62,25 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         bottomNavigationBar: const BottomNavBar(),
-        body: SafeArea(
-            child: ValueListenableBuilder(
+        body: ValueListenableBuilder(
           valueListenable: MainScreen.selectedNotifier,
           builder: (BuildContext ctx, int updatedIndex, _) {
             return _pages[updatedIndex];
 
             //_pages[updatedIndex];
           },
-        )),
+        ),
       ),
     );
   }
 
-  final _appbar = ['Home', 'Recentlist', 'Favourites', 'Playlist'];
+  final _appbar = [
+    'Home',
+    'Folder list',
+    'Recentlist',
+    'Favourites',
+    'Playlist'
+  ];
 }
 
 Widget appbarcontainer() {

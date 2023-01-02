@@ -1,46 +1,25 @@
 import 'dart:io';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoScreen extends StatefulWidget {
-  var videoFile;
+  String videoFile;
   String videotitle;
-  VideoScreen({super.key, required this.videoFile, required this.videotitle});
-
+  VideoScreen({required this.videoFile, required this.videotitle});
   @override
-  State<VideoScreen> createState() => _VideoScreenState();
+  VideoScreenState createState() => VideoScreenState();
 }
 
-class _VideoScreenState extends State<VideoScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: _ButterFlyAssetVideo(
-          videoFile: widget.videoFile, videotitle: widget.videotitle),
-    );
-  }
-}
-
-class _ButterFlyAssetVideo extends StatefulWidget {
-  var videoFile;
-  String videotitle;
-  _ButterFlyAssetVideo({required this.videoFile, required this.videotitle});
-  @override
-  _ButterFlyAssetVideoState createState() => _ButterFlyAssetVideoState();
-}
-
-class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
+class VideoScreenState extends State<VideoScreen> {
   late VideoPlayerController _controller;
   String currentDuration = '0';
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(widget.videoFile);
+    _controller = VideoPlayerController.file(File(widget.videoFile));
 
     _controller.addListener(() {
       setState(() {
@@ -52,6 +31,8 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
     _controller.play();
 
     setLandscape();
+    // invisibilityTime();
+    screenVisibility();
   }
 
   @override
@@ -65,27 +46,35 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
 
   bool isShow = true;
   bool isLocked = false;
-  bool isLockButton = false;
-
+  bool isLockButton = true;
+  List<BoxFit> Fit = [
+    BoxFit.cover,
+    BoxFit.fitWidth,
+    BoxFit.fitHeight,
+  ];
+  int _index = 0;
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        final isPortrait = orientation == Orientation.portrait;
-        return InkWell(
-          onTap: () => screenVisibility(),
-          onDoubleTap: () {
-            playFunction();
-          },
-          child: Stack(children: <Widget>[
-            VideoContent(),
-            topBar(isPortrait, 0.0),
-            BottomBar(350.0),
-            indicatorNduration(),
-            lockButton()
-          ]),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          final isPortrait = orientation == Orientation.portrait;
+          return InkWell(
+            onTap: () => screenVisibility(),
+            onDoubleTap: () {
+              playFunction();
+            },
+            child: Stack(children: <Widget>[
+              VideoContent(),
+              topBar(isPortrait, 0.0),
+              BottomBar(330.0),
+              indicatorNduration(),
+              lockButton()
+            ]),
+          );
+        },
+      ),
     );
   }
 
@@ -114,7 +103,7 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
   Widget VideoContent() {
     return SizedBox.expand(
         child: FittedBox(
-            fit: BoxFit.cover,
+            fit: Fit[_index],
             child: SizedBox(
               width: _controller.value.size.width,
               height: _controller.value.size.height,
@@ -164,41 +153,58 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
       child: Container(
         margin: EdgeInsets.only(top: top, bottom: 0.0),
         width: double.infinity,
-        height: 60,
+        height: 100,
         color: Color.fromARGB(113, 158, 158, 158),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            SizedBox(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      _controller.seekTo(_controller.value.position -
+                          const Duration(seconds: 10));
+                    },
+                    icon: const Icon(
+                      Icons.fast_rewind,
+                      color: Colors.white,
+                      size: 40.0,
+                    )),
+                IconButton(
+                    onPressed: () {
+                      playFunction();
+                    },
+                    icon: Icon(
+                      _controller.value.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow,
+                      color: Colors.white,
+                      size: 40.0,
+                    )),
+                IconButton(
+                  icon: const Icon(
+                    Icons.fast_forward,
+                    size: 40.0,
+                  ),
+                  onPressed: () {
+                    _controller.seekTo(
+                        _controller.value.position + Duration(seconds: 10));
+                  },
+                  color: Colors.white,
+                )
+              ],
+            ),
             IconButton(
                 onPressed: () {
-                  _controller.seekTo(
-                      _controller.value.position - const Duration(seconds: 10));
+                  setState(() {
+                    _index = (_index + 1) % Fit.length;
+                  });
+                  print(Fit[_index]);
                 },
-                icon: const Icon(
-                  Icons.fast_rewind,
-                  color: Colors.white,
-                  size: 40.0,
-                )),
-            IconButton(
-                onPressed: () {
-                  playFunction();
-                },
-                icon: Icon(
-                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                  color: Colors.white,
-                  size: 40.0,
-                )),
-            IconButton(
-              icon: const Icon(
-                Icons.fast_forward,
-                size: 40.0,
-              ),
-              onPressed: () {
-                _controller
-                    .seekTo(_controller.value.position + Duration(seconds: 10));
-              },
-              color: Colors.white,
-            )
+                color: Colors.white,
+                icon: Icon(Icons.tv))
           ],
         ),
       ),
@@ -209,18 +215,25 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        currentDurationFunction(),
+        duration(currentDuration.split('.').first),
+        const SizedBox(
+          width: 10.0,
+        ),
         Container(
             width: 750.0,
-            margin: EdgeInsets.only(top: 350.0),
+            margin: const EdgeInsets.only(top: 340.0),
             child: Indicator()),
-        duration()
+        const SizedBox(
+          width: 10.0,
+        ),
+        duration(_controller.value.duration.toString().split('.').first)
       ],
     );
   }
 
   Widget lockButton() {
     return Container(
+      color: isLocked ? Color.fromARGB(113, 158, 158, 158) : Colors.transparent,
       margin: EdgeInsets.only(top: 350.0),
       child: Visibility(
         visible: isLockButton,
@@ -254,7 +267,7 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
     }
   }
 
-  screenVisibility() {
+  screenVisibility() async {
     setState(() {
       if (isLocked == true) {
         isShow = false;
@@ -267,6 +280,11 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
         isLockButton = !isLockButton;
       }
     });
+    if (isShow == true) {
+      await Future.delayed(const Duration(seconds: 5));
+      isShow = false;
+      isLockButton = false;
+    }
   }
 
   Widget Indicator() => Visibility(
@@ -277,19 +295,26 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
         colors: const VideoProgressColors(playedColor: Colors.purple),
       ));
 
-  Widget duration() => Visibility(
+  Widget duration(text) => Visibility(
       visible: isShow,
-      child: Text(
-        _controller.value.duration.toString().split('.').first,
-        style: TextStyle(color: Colors.white),
-      ));
-
-  Widget currentDurationFunction() => Visibility(
-        visible: isShow,
+      child: Container(
+        margin: EdgeInsets.only(top: 335.0),
         child: Text(
-          // _controller.value.duration.toString().split('.').first,
-          currentDuration.split('.').first,
+          text,
           style: TextStyle(color: Colors.white),
         ),
-      );
+      ));
+
+  Future<void> invisibilityTime() async {
+    await Future.delayed(const Duration(seconds: 5));
+    isShow = false;
+    isLockButton = false;
+  }
+
+  Future<void> visibilityTime() async {
+    isShow = true;
+    isLockButton = true;
+    await Future.delayed(const Duration(seconds: 5));
+    await invisibilityTime();
+  }
 }

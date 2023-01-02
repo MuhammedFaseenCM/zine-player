@@ -1,17 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zineplayer/AccessFolders/loadVideos.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/listitemFunctions.dart';
+import 'package:zineplayer/Home/mainScreen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoScreen.dart';
 
 class VideoList extends StatefulWidget {
   String folderPath;
+  static late int length;
   VideoList({super.key, required this.folderPath});
 
   @override
@@ -30,11 +30,20 @@ class _VideoListState extends State<VideoList> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.folderPath.split('/').last),
+        flexibleSpace: appbarcontainer(),
+        backgroundColor: Colors.transparent,
       ),
       body: ValueListenableBuilder(
         valueListenable: folderVideos,
@@ -45,43 +54,37 @@ class _VideoListState extends State<VideoList> {
               String videotitle = videos[index].toString().split("/").last;
               video = File(videos[index].toString());
               String splittedvideotitle = videotitle;
-              if (splittedvideotitle.length > 20) {
+              if (splittedvideotitle.length > 25) {
                 splittedvideotitle =
-                    "${splittedvideotitle.substring(0, 20)}...";
+                    "${splittedvideotitle.substring(0, 25)}...";
               }
               _controller = VideoPlayerController.file(video);
-
+              _controller.initialize();
+              VideoList.length = videos.length;
               return Container(
                 height: 100.0,
                 child: Card(
                   child: ListTile(
                     onTap: () {
-                      addToRecentList(title: videotitle, context: context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) {
-                          return VideoScreen(
-                            videoFile: video,
-                            videotitle: splittedvideotitle,
-                          );
-                        },
-                      ));
-                      SystemChrome.setEnabledSystemUIMode(
-                          SystemUiMode.immersive);
+                      playVideo(
+                          videotitle: videotitle,
+                          context: context,
+                          videoPath: videos[index],
+                          splittedvideotitle: splittedvideotitle);
+                      print("videos[index] : " + videos[index]);
                     },
                     isThreeLine: true,
-                    leading: Column(
-                      children: [
-                        Icon(
-                          Icons.movie_filter,
-                          size: 30.0,
-                        ),
-                        Text("$videoDuration")
-                      ],
+                    leading: const Icon(
+                      Icons.movie_filter,
+                      size: 50.0,
                     ),
                     title: Text(splittedvideotitle),
                     subtitle: Text(
-                        "Duration : ${_controller.value.duration.toString().split('.').first}"),
-                    trailing: popupMenu(index: index, title: videotitle),
+                        _controller.value.duration.toString().split('.').first),
+                    trailing: popupMenu(
+                        index: index,
+                        title: videotitle,
+                        videoPath: videos[index]),
                   ),
                 ),
               );
@@ -116,15 +119,17 @@ class _VideoListState extends State<VideoList> {
     return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
   }
 
-  Widget popupMenu({required index, required title}) {
+  Widget popupMenu({required index, required title, required videoPath}) {
     //  playScreen playscreen = playScreen();
     return PopupMenuButton(
       itemBuilder: (context) => [
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            addToFavourite(title: title, context: context);
+            addToFavourite(
+                title: title, context: context, videoPath: videoPath);
             print(index);
+            print(videoPath);
           },
           icon: const Icon(Icons.favorite),
           label: const Text(

@@ -53,17 +53,23 @@ class FavouriteAdapter extends TypeAdapter<Favourite> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Favourite(title: fields[1] as String, index: fields[0] as int?);
+    return Favourite(
+      title: fields[1] as String,
+      index: fields[0] as int?,
+      videoPath: fields[2] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, Favourite obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.index)
       ..writeByte(1)
-      ..write(obj.title);
+      ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.videoPath);
   }
 
   @override
@@ -124,16 +130,19 @@ class RecentListAdapter extends TypeAdapter<RecentList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecentList(
-      title: fields[0] as String,
+      index: fields[0] as int?,
+      videoPath: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecentList obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.title);
+      ..write(obj.index)
+      ..writeByte(1)
+      ..write(obj.videoPath);
   }
 
   @override

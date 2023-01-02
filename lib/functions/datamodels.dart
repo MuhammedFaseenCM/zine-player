@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hive_flutter/hive_flutter.dart';
 part 'datamodels.g.dart';
 
@@ -16,7 +18,11 @@ class Favourite {
   int? index;
   @HiveField(1)
   final String title;
-  Favourite({required this.title, this.index});
+
+  @HiveField(2)
+  final String videoPath;
+
+  Favourite({required this.title, this.index, required this.videoPath});
 }
 
 @HiveType(typeId: 3)
@@ -31,7 +37,10 @@ class PlayListItems {
 @HiveType(typeId: 4)
 class RecentList {
   @HiveField(0)
-  final String title;
+  int? index;
 
-  RecentList({required this.title});
+  @HiveField(1)
+  final String videoPath;
+
+  RecentList({this.index, required this.videoPath});
 }

@@ -20,6 +20,7 @@ class BottomNavBar extends StatelessWidget {
               Icon(
                 Icons.home,
               ),
+              Icon(Icons.folder),
               Icon(Icons.restore),
               Icon(Icons.favorite),
               Icon(Icons.playlist_play)

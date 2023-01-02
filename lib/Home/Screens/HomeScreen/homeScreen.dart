@@ -15,11 +15,11 @@ class Home_screen extends StatelessWidget {
           ),
           child: ListTile(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VideoPlayerScreen(
-                        folderName: foldername[index],
-                        videolist: filelist[index],
-                      )));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => VideoPlayerScreen(
+              //           folderName: foldername[index],
+              //          videolist: filelist[index],
+              //         )));
             },
             leading: const Icon(
               Icons.folder,

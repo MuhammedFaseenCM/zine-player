@@ -16,10 +16,24 @@ class RecentScreen extends StatelessWidget {
           return ListView.separated(
               itemBuilder: (context, index) {
                 final listdata = recList[index];
+
+                String title = listdata.videoPath.split("/").last;
+
+                String splittitle = title;
+                if (splittitle.length > 25) {
+                  splittitle = "${splittitle.substring(0, 25)}...";
+                }
                 return Card(
                   child: ListTile(
+                    onTap: () {
+                      playVideo(
+                          videotitle: title,
+                          context: context,
+                          videoPath: listdata.videoPath,
+                          splittedvideotitle: splittitle);
+                    },
                     leading: thumbnail(),
-                    title: Text(listdata.title),
+                    title: Text(splittitle),
                   ),
                 );
               },

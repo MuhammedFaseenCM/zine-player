@@ -37,8 +37,8 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
                   return Card(
                     child: ListTile(
                       onTap: () {
-                        addToRecentList(
-                            title: listdata.title, context: context);
+                        // addToRecentList(
+                        //     title: listdata.title, context: context, videoPath: null);
                       },
                       leading: thumbnail(),
                       title: Text(listdata.title),

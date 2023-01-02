@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zineplayer/AccessFolders/loadAllVideos.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/playlistItemScreen.dart';
 import 'package:zineplayer/functions/functions.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -28,11 +29,11 @@ class Search extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: playListNotifier,
-      builder: (BuildContext ctx, List<PlayList> studentList, Widget? child) {
+      valueListenable: allVideos,
+      builder: (BuildContext ctx, dynamic allvideos, Widget? child) {
         return ListView.builder(
           itemBuilder: (ctx, index) {
-            final data = studentList[index];
+            final data = allvideos[index];
             if (data.name.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
@@ -52,7 +53,7 @@ class Search extends SearchDelegate {
               return Container();
             }
           },
-          itemCount: studentList.length,
+          itemCount: allvideos.length,
         );
       },
     );
@@ -61,17 +62,17 @@ class Search extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: playListNotifier,
-      builder: (BuildContext ctx, List<PlayList> studentList, Widget? child) {
+      valueListenable: allVideos,
+      builder: (BuildContext ctx, dynamic studentList, Widget? child) {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = studentList[index];
-            if (data.name.toLowerCase().contains(query.toLowerCase())) {
+            if (data.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(
                       onTap: () {},
-                      title: Text(data.name),
+                      title: Text(data.toString().split("/").last),
                       leading: const Icon(Icons.folder)),
                   const Divider(),
                 ],

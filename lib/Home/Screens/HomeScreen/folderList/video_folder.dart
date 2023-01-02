@@ -78,7 +78,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               //    String videoSize = videoFile.lengthSync().toString();
               return ListTile(
                 onTap: () {
-                  addToRecentList(title: videotitle, context: context);
+//addToRecentList(title: videotitle, context: context);
                   // Navigator.of(context).push(MaterialPageRoute(
                   //   builder: (context) {
                   //     return App();
@@ -109,7 +109,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            addToFavourite(title: title, context: context);
+            //  addToFavourite(title: title, context: context);
             print(index);
           },
           icon: const Icon(Icons.favorite),
@@ -193,38 +193,3 @@ Widget thumbnail() {
     ),
   );
 }
-
-var demoList = [
-  'asset/folder1/video1',
-  'asset/folder1/video2',
-  'asset/folder1/video3',
-  'asset/folder1/New video',
-  'asset/folder1/vid2413812',
-  'asset/folder1/vid293213',
-  'asset/folder1/video indies'
-];
-
-List<String> videopath = [
-  'assets/messi video.mp4',
-  'assets/videos/kakkakuyil.mp4',
-  'assets/videos/mohanlal lucifer.mp4',
-  'assets/videos/singam.mp4'
-];
-
-var demolist2 = [
-  'asset/folder2/qwerty',
-  'asset/folder2/asdf',
-  'asset/folder2/zxcv',
-  'asset/folder2/New video',
-  'asset/folder2/vid2413812',
-  'asset/folder2/vid293213',
-  'asset/folder2/video indies'
-];
-List<String> videopath2 = [
-  'assets/ronaldo video.mp4',
-  'assets/videos/vikram.mp4',
-  'assets/videos/mammootty npnm.mp4',
-  'assets/videos/avengers.mp4'
-];
-
-List<List<String>> filelist = [demoList, videopath, demolist2, videopath2];

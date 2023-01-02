@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:zineplayer/AccessFolders/MethodChannelfn.dart';
+import 'package:zineplayer/AccessFolders/loadAllVideos.dart';
 import 'package:zineplayer/AccessFolders/loadFolders.dart';
 import 'package:zineplayer/AccessFolders/loadVideos.dart';
 
@@ -49,6 +50,7 @@ onSuccess(List<String> path) {
     }
   }
   loadFolderList();
+  loadVideoList();
 
   print(AccessVideosPath.length);
 }

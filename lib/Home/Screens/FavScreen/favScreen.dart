@@ -15,10 +15,18 @@ class FavouriteScreen extends StatelessWidget {
         return ListView.separated(
             itemBuilder: (context, index) {
               final listdata = favList[index];
+              String splittedtitle = listdata.title;
+              if (splittedtitle.length > 20) {
+                splittedtitle = "${splittedtitle.substring(0, 20)}...";
+              }
               return Card(
                 child: ListTile(
                   onTap: () {
-                    addToRecentList(title: demoList[index], context: context);
+                    playVideo(
+                        videotitle: listdata.title,
+                        context: context,
+                        videoPath: listdata.videoPath,
+                        splittedvideotitle: splittedtitle);
                   },
                   leading: thumbnail(),
                   title: Text(listdata.title),
@@ -43,15 +51,13 @@ class FavouriteScreen extends StatelessWidget {
           onPressed: () {
             deleteFav(index);
             snackBar(
-                context: context,
-                content: "Successfully deleted",
-                bgcolor: Colors.green);
+                context: context, content: "Unliked", bgcolor: Colors.green);
             print("deleted $index from favouritelist");
             Navigator.of(context).pop();
           },
           icon: const Icon(Icons.delete, color: Colors.red),
           label: const Text(
-            "Delete from favourites",
+            "Unlike",
             style: TextStyle(color: Colors.black, fontSize: 15.0),
           ),
         ))

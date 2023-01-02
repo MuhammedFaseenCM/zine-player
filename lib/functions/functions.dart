@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoScreen.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
 ValueNotifier<List<PlayList>> playListNotifier = ValueNotifier([]);
@@ -40,9 +44,8 @@ Future<void> updatePlayList(PlayList value, int index) async {
   getPlayList();
 }
 
-favouriteDB(Favourite value, context, title) async {
+favouriteDB(Favourite value, context) async {
   final favouritehive = await Hive.openBox<Favourite>('favouriteBox');
-  if (!favouritehive.containsKey(title)) {
     final id = await favouritehive.add(value);
     value.index = id;
     favouriteNotifier.value.add(value);
@@ -50,13 +53,7 @@ favouriteDB(Favourite value, context, title) async {
     snackBar(
         context: context, content: "Successfully added", bgcolor: Colors.green);
     Navigator.of(context).pop();
-  } else {
-    snackBar(
-        context: context,
-        content: "Already added to favourite list",
-        bgcolor: Colors.grey[800]);
-    Navigator.of(context).pop();
-  }
+
 }
 
 Future<void> getFavList() async {
@@ -110,7 +107,8 @@ Future<void> getAllFunctions() async {
 
 recentListDB(RecentList value) async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
-  await recentlisthive.add(value);
+  final id = await recentlisthive.add(value);
+  value.index = id;
   recentListNotifier.value.add(value);
   recentListNotifier.notifyListeners();
 }
@@ -142,4 +140,29 @@ Future<void> deleteRecentList(context) async {
   }
 
   getRecentList();
+}
+
+playVideo(
+    {required videotitle,
+    required context,
+    required videoPath,
+    required splittedvideotitle}) {
+  addToRecentList(title: videotitle, context: context, videoPath: videoPath);
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) {
+      return VideoScreen(
+        videoFile: videoPath,
+        videotitle: splittedvideotitle,
+      );
+    },
+  ));
+  print(videoPath);
+  print(videotitle);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+}
+
+splittedvideofunction(splittedvideotitle) {
+  if (splittedvideotitle.length > 20) {
+    splittedvideotitle = "${splittedvideotitle.substring(0, 20)}...";
+  }
 }
