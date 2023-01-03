@@ -46,14 +46,13 @@ Future<void> updatePlayList(PlayList value, int index) async {
 
 favouriteDB(Favourite value, context) async {
   final favouritehive = await Hive.openBox<Favourite>('favouriteBox');
-    final id = await favouritehive.add(value);
-    value.index = id;
-    favouriteNotifier.value.add(value);
-    favouriteNotifier.notifyListeners();
-    snackBar(
-        context: context, content: "Successfully added", bgcolor: Colors.green);
-    Navigator.of(context).pop();
-
+  final id = await favouritehive.add(value);
+  value.index = id;
+  favouriteNotifier.value.add(value);
+  favouriteNotifier.notifyListeners();
+  snackBar(
+      context: context, content: "Successfully added", bgcolor: Colors.green);
+  Navigator.of(context).pop();
 }
 
 Future<void> getFavList() async {
@@ -113,6 +112,13 @@ recentListDB(RecentList value) async {
   recentListNotifier.notifyListeners();
 }
 
+updaterecentDB(RecentList value,int index) async {
+  final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
+  await recentlisthive.putAt(index, value);
+  await 
+  getRecentList();
+}
+
 Future<void> getRecentList() async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   recentListNotifier.value.clear();
@@ -146,8 +152,8 @@ playVideo(
     {required videotitle,
     required context,
     required videoPath,
-    required splittedvideotitle}) {
-  addToRecentList(title: videotitle, context: context, videoPath: videoPath);
+    required splittedvideotitle,
+    required recentduration}) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) {
       return VideoScreen(

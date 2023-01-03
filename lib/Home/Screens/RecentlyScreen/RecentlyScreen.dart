@@ -30,10 +30,13 @@ class RecentScreen extends StatelessWidget {
                           videotitle: title,
                           context: context,
                           videoPath: listdata.videoPath,
-                          splittedvideotitle: splittitle);
+                          splittedvideotitle: splittitle,
+                          recentduration: null);
                     },
                     leading: thumbnail(),
                     title: Text(splittitle),
+                    subtitle: Text(
+                        "Last played : ${listdata.duration.toString().split(".").first}"),
                   ),
                 );
               },

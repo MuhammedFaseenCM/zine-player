@@ -12,18 +12,20 @@ class BottomNavBar extends StatelessWidget {
       builder: (BuildContext context, int updatedIndex, _) {
         return CurvedNavigationBar(
             backgroundColor: Colors.white,
-            color: Colors.white,
+            color: Colors.blue,
             onTap: (newIndex) {
               MainScreen.selectedNotifier.value = newIndex;
             },
-            items: const [
-              Icon(
-                Icons.home,
-              ),
-              Icon(Icons.folder),
-              Icon(Icons.restore),
-              Icon(Icons.favorite),
-              Icon(Icons.playlist_play)
+            items: [
+              bottomNavIcon(Icons.home),
+              bottomNavIcon(Icons.folder),
+              bottomNavIcon(Icons.restore),
+              bottomNavIcon(Icons.favorite),
+              bottomNavIcon(Icons.playlist_play)
+              // Icon(Icons.folder),
+              // Icon(Icons.restore),
+              // Icon(Icons.favorite),
+              // Icon(Icons.playlist_play)
               // BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               // BottomNavigationBarItem(
               //     icon: Icon(Icons.timer), label: 'Recent list'),
@@ -33,6 +35,13 @@ class BottomNavBar extends StatelessWidget {
               //     icon: Icon(Icons.playlist_play), label: 'Playlist'),
             ]);
       },
+    );
+  }
+
+  Widget bottomNavIcon(icon) {
+    return Icon(
+      icon,
+      color: Colors.white,
     );
   }
 }

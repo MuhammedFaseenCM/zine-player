@@ -3,11 +3,13 @@ import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
 
 class VideoScreen extends StatefulWidget {
   String videoFile;
   String videotitle;
-  VideoScreen({required this.videoFile, required this.videotitle});
+
+  VideoScreen({super.key, required this.videoFile, required this.videotitle});
   @override
   VideoScreenState createState() => VideoScreenState();
 }
@@ -42,11 +44,20 @@ class VideoScreenState extends State<VideoScreen> {
     super.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     DeviceOrientation.landscapeLeft;
+    currentDuration = _controller.value.position.toString();
+    addToRecentList(
+        title: widget.videotitle,
+        context: context,
+        videoPath: widget.videoFile,
+        recentduration: currentDuration);
   }
 
   bool isShow = true;
   bool isLocked = false;
   bool isLockButton = true;
+  String leftText = '';
+  String rightText = '';
+  String playPauseText = '';
   List<BoxFit> Fit = [
     BoxFit.cover,
     BoxFit.fitWidth,
@@ -66,11 +77,17 @@ class VideoScreenState extends State<VideoScreen> {
               playFunction();
             },
             child: Stack(children: <Widget>[
-              VideoContent(),
+              videoContent(),
               topBar(isPortrait, 0.0),
-              BottomBar(330.0),
-              indicatorNduration(),
-              lockButton()
+              bottomBar(330.0, orientation),
+              indicatorNduration(orientation),
+              lockButton(orientation),
+              leftseekContainer(left: 0.0, seconds: -10, text: "-10 seconds"),
+              rightseekContainer(
+                left: 550.0,
+                seconds: 10,
+                text: "+10 seconds",
+              )
             ]),
           );
         },
@@ -78,7 +95,6 @@ class VideoScreenState extends State<VideoScreen> {
     );
   }
 
-  // DeviceOrientation isPortrait = DeviceOrientation.portraitDown;
   rotate(isportrait) async {
     if (isportrait) {
       AutoOrientation.landscapeRightMode();
@@ -86,6 +102,72 @@ class VideoScreenState extends State<VideoScreen> {
       AutoOrientation.portraitUpMode();
     }
   }
+
+  Widget rightseekContainer(
+      {required double left, required seconds, required text}) {
+    return Container(
+      margin: EdgeInsets.only(top: 60.0, left: left),
+      width: 320.0,
+      height: 270.0,
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => screenVisibility(),
+        onDoubleTap: () {
+          _controller
+              .seekTo(_controller.value.position + Duration(seconds: seconds));
+          setState(() {
+            leftText = text;
+          });
+          Future.delayed(
+            const Duration(milliseconds: 500),
+            () => setState(() {
+              leftText = '';
+            }),
+          );
+        },
+        child: Center(
+          child: Text(
+            leftText,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget leftseekContainer(
+      {required double left, required seconds, required text}) {
+    return Container(
+      margin: EdgeInsets.only(top: 60.0, left: left),
+      width: 320.0,
+      height: 270.0,
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => screenVisibility(),
+        onDoubleTap: () {
+          _controller
+              .seekTo(_controller.value.position + Duration(seconds: seconds));
+          setState(() {
+            rightText = text;
+          });
+          Future.delayed(
+            const Duration(milliseconds: 500),
+            () => setState(() {
+              rightText = '';
+            }),
+          );
+        },
+        child: Center(
+          child: Text(
+            rightText,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  seekFunction({required text, required seconds}) {}
 
   void setLandscape() async {
     await SystemChrome.setPreferredOrientations(
@@ -100,7 +182,7 @@ class VideoScreenState extends State<VideoScreen> {
     // await Wakelock.disable();
   }
 
-  Widget VideoContent() {
+  Widget videoContent() {
     return SizedBox.expand(
         child: FittedBox(
             fit: Fit[_index],
@@ -118,7 +200,7 @@ class VideoScreenState extends State<VideoScreen> {
         margin: EdgeInsets.only(top: top),
         width: double.infinity,
         height: 60,
-        color: Color.fromARGB(113, 158, 158, 158),
+        color: const Color.fromARGB(113, 158, 158, 158),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -132,7 +214,7 @@ class VideoScreenState extends State<VideoScreen> {
                 )),
             Text(
               widget.videotitle,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             IconButton(
               icon: const Icon(Icons.rotate_left_sharp),
@@ -147,18 +229,20 @@ class VideoScreenState extends State<VideoScreen> {
     );
   }
 
-  Widget BottomBar(top) {
+  Widget bottomBar(top, orientation) {
     return Visibility(
       visible: isShow,
       child: Container(
-        margin: EdgeInsets.only(top: top, bottom: 0.0),
+        margin: orientation == Orientation.landscape
+            ? EdgeInsets.only(top: top, bottom: 0.0)
+            : const EdgeInsets.only(top: 800.0, bottom: 0.0),
         width: double.infinity,
         height: 100,
-        color: Color.fromARGB(113, 158, 158, 158),
+        color: const Color.fromARGB(113, 158, 158, 158),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(),
+            const SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -189,8 +273,8 @@ class VideoScreenState extends State<VideoScreen> {
                     size: 40.0,
                   ),
                   onPressed: () {
-                    _controller.seekTo(
-                        _controller.value.position + Duration(seconds: 10));
+                    _controller.seekTo(_controller.value.position +
+                        const Duration(seconds: 10));
                   },
                   color: Colors.white,
                 )
@@ -201,40 +285,48 @@ class VideoScreenState extends State<VideoScreen> {
                   setState(() {
                     _index = (_index + 1) % Fit.length;
                   });
-                  print(Fit[_index]);
                 },
                 color: Colors.white,
-                icon: Icon(Icons.tv))
+                icon: const Icon(Icons.tv))
           ],
         ),
       ),
     );
   }
 
-  Widget indicatorNduration() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        duration(currentDuration.split('.').first),
-        const SizedBox(
-          width: 10.0,
-        ),
-        Container(
-            width: 750.0,
-            margin: const EdgeInsets.only(top: 340.0),
-            child: Indicator()),
-        const SizedBox(
-          width: 10.0,
-        ),
-        duration(_controller.value.duration.toString().split('.').first)
-      ],
+  Widget indicatorNduration(orientation) {
+    return Container(
+      margin: orientation == Orientation.landscape
+          ? const EdgeInsets.only(top: 0.0)
+          : const EdgeInsets.only(top: 470.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          duration(currentDuration.split('.').first),
+          SizedBox(
+            width: orientation == Orientation.landscape ? 10.0 : 30.0,
+          ),
+          Container(
+              width: orientation == Orientation.landscape ? 750.0 : 200.0,
+              margin: const EdgeInsets.only(top: 330.0),
+              child: indicator()),
+          SizedBox(
+            width: orientation == Orientation.landscape ? 10.0 : 30.0,
+          ),
+          duration(_controller.value.duration.toString().split('.').first)
+        ],
+      ),
     );
   }
 
-  Widget lockButton() {
+  Widget lockButton(orientation) {
     return Container(
-      color: isLocked ? Color.fromARGB(113, 158, 158, 158) : Colors.transparent,
-      margin: EdgeInsets.only(top: 350.0),
+      color: isLocked
+          ? const Color.fromARGB(113, 158, 158, 158)
+          : Colors.transparent,
+      margin: orientation == Orientation.landscape
+          ? const EdgeInsets.only(top: 350.0)
+          : const EdgeInsets.only(top: 820.0),
       child: Visibility(
         visible: isLockButton,
         child: IconButton(
@@ -248,7 +340,7 @@ class VideoScreenState extends State<VideoScreen> {
               }
             });
           },
-          icon: Icon(Icons.lock),
+          icon: const Icon(Icons.lock),
           color: Colors.white,
         ),
       ),
@@ -287,7 +379,7 @@ class VideoScreenState extends State<VideoScreen> {
     }
   }
 
-  Widget Indicator() => Visibility(
+  Widget indicator() => Visibility(
       visible: isShow,
       child: VideoProgressIndicator(
         _controller,
@@ -298,10 +390,10 @@ class VideoScreenState extends State<VideoScreen> {
   Widget duration(text) => Visibility(
       visible: isShow,
       child: Container(
-        margin: EdgeInsets.only(top: 335.0),
+        margin: const EdgeInsets.only(top: 335.0),
         child: Text(
           text,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ));
 

@@ -78,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
     'Home',
     'Folder list',
     'Recentlist',
-    'Favourites',
+    'Liked videos',
     'Playlist'
   ];
 }

@@ -132,17 +132,20 @@ class RecentListAdapter extends TypeAdapter<RecentList> {
     return RecentList(
       index: fields[0] as int?,
       videoPath: fields[1] as String,
+      duration: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecentList obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.index)
       ..writeByte(1)
-      ..write(obj.videoPath);
+      ..write(obj.videoPath)
+      ..writeByte(2)
+      ..write(obj.duration);
   }
 
   @override

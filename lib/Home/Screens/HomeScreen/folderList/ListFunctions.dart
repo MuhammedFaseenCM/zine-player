@@ -33,7 +33,11 @@ addToFavourite(
   }
 }
 
-addToRecentList({required title, required context, required videoPath}) async {
+addToRecentList(
+    {required title,
+    required context,
+    required videoPath,
+    required recentduration}) async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   List<RecentList> recListing = recentlisthive.values.toList();
   List<RecentList> result =
@@ -41,12 +45,11 @@ addToRecentList({required title, required context, required videoPath}) async {
   log(result.toString());
   log(recListing.toString());
   if (result.isEmpty) {
-    final name = title;
-    final resList = RecentList(videoPath: videoPath);
-    if (name == null) {
+    final resList = RecentList(videoPath: videoPath, duration: recentduration);
+    if (videoPath == null) {
       return;
     }
-    print(name);
+
     recentListDB(resList);
     getRecentList();
   } else {

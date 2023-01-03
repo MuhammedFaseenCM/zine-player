@@ -42,5 +42,8 @@ class RecentList {
   @HiveField(1)
   final String videoPath;
 
-  RecentList({this.index, required this.videoPath});
+  @HiveField(2)
+  final String duration;
+
+  RecentList({this.index, required this.videoPath, required this.duration});
 }

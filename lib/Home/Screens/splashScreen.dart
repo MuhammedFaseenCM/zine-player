@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:zineplayer/AccessFolders/AccessVideos.dart';
 import 'package:zineplayer/Home/mainScreen.dart';
 
@@ -12,12 +13,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _Splash_screenState extends State<SplashScreen> {
+  double percent = 0.1;
   @override
   void initState() {
     // TODO: implement initState
     splashFetch();
+
+    indicator();
     gotoMainScreen();
     super.initState();
+  }
+
+  Future<void> indicator() async {
+    for (int i = 1; i < 8; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      setState(() {
+        percent = percent;
+      });
+      percent = percent + 0.12;
+    }
   }
 
   @override
@@ -33,7 +47,7 @@ class _Splash_screenState extends State<SplashScreen> {
             child: Container(
               child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: const [
                     Icon(
                       Icons.play_circle,
@@ -54,17 +68,31 @@ class _Splash_screenState extends State<SplashScreen> {
           ),
           Expanded(
               child: Column(
-            children: const [
-              SizedBox(
+            children: [
+              Container(
                 width: 200.0,
-                child: LinearProgressIndicator(
-                  color: Colors.white,
-                  // value: .1,
-                  semanticsValue: "Loading",
-                  semanticsLabel: "Loading",
-                  backgroundColor: Colors.blue,
-                  minHeight: 5.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100.0),
                 ),
+                child: LinearPercentIndicator(
+                  width: 200.0,
+                  backgroundColor: Colors.blue,
+                  // linearGradientBackgroundColor: const LinearGradient(
+                  //   colors: [Colors.blue, Colors.purple],
+                  // ),
+                  lineHeight: 10.0,
+                  percent: percent,
+                  progressColor: Colors.white,
+                ),
+
+                //  LinearProgressIndicator(
+                //   color: Colors.white,
+                //   // value: .1,
+                //   semanticsValue: "Loading",
+                //   semanticsLabel: "Loading",
+                //   backgroundColor: Colors.blue,
+                //   minHeight: 5.0,
+                // ),
               )
             ],
           ))

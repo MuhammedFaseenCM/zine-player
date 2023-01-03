@@ -26,7 +26,7 @@ class FavouriteScreen extends StatelessWidget {
                         videotitle: listdata.title,
                         context: context,
                         videoPath: listdata.videoPath,
-                        splittedvideotitle: splittedtitle);
+                        splittedvideotitle: splittedtitle, recentduration: null);
                   },
                   leading: thumbnail(),
                   title: Text(listdata.title),
