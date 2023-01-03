@@ -82,12 +82,16 @@ class VideoScreenState extends State<VideoScreen> {
               bottomBar(330.0, orientation),
               indicatorNduration(orientation),
               lockButton(orientation),
-              leftseekContainer(left: 0.0, seconds: -10, text: "-10 seconds"),
+              leftseekContainer(
+                  left: 0.0,
+                  seconds: -10,
+                  text: "-10 seconds",
+                  orientation: orientation),
               rightseekContainer(
-                left: 550.0,
-                seconds: 10,
-                text: "+10 seconds",
-              )
+                  left: 550.0,
+                  seconds: 10,
+                  text: "+10 seconds",
+                  orientation: orientation)
             ]),
           );
         },
@@ -104,11 +108,16 @@ class VideoScreenState extends State<VideoScreen> {
   }
 
   Widget rightseekContainer(
-      {required double left, required seconds, required text}) {
+      {required double left,
+      required seconds,
+      required text,
+      required orientation}) {
     return Container(
-      margin: EdgeInsets.only(top: 60.0, left: left),
-      width: 320.0,
-      height: 270.0,
+      margin: orientation == Orientation.landscape
+          ? EdgeInsets.only(top: 60.0, left: left)
+          : EdgeInsets.only(top: 100.0, left: 260.0),
+      width: orientation == Orientation.landscape ? 320.0 : 150.0,
+      height: orientation == Orientation.landscape ? 270.0 : 650.0,
       color: Colors.transparent,
       child: InkWell(
         onTap: () => screenVisibility(),
@@ -136,11 +145,16 @@ class VideoScreenState extends State<VideoScreen> {
   }
 
   Widget leftseekContainer(
-      {required double left, required seconds, required text}) {
+      {required double left,
+      required seconds,
+      required text,
+      required orientation}) {
     return Container(
-      margin: EdgeInsets.only(top: 60.0, left: left),
-      width: 320.0,
-      height: 270.0,
+      margin: orientation == Orientation.landscape
+          ? EdgeInsets.only(top: 60.0, left: left)
+          : EdgeInsets.only(top: 100.0),
+      width: orientation == Orientation.landscape ? 320.0 : 150.0,
+      height: orientation == Orientation.landscape ? 270.0 : 650.0,
       color: Colors.transparent,
       child: InkWell(
         onTap: () => screenVisibility(),
@@ -166,8 +180,6 @@ class VideoScreenState extends State<VideoScreen> {
       ),
     );
   }
-
-  seekFunction({required text, required seconds}) {}
 
   void setLandscape() async {
     await SystemChrome.setPreferredOrientations(
