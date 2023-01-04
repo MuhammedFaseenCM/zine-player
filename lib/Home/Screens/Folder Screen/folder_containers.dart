@@ -1,17 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:zineplayer/AccessFolders/AccessVideos.dart';
 import 'package:zineplayer/AccessFolders/loadFolders.dart';
-import 'package:zineplayer/AccessFolders/loadVideos.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/accessVideoData.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/access_video_data.dart';
 
 class FolderContainer extends StatelessWidget {
-  int index;
+  final int index;
 
-  FolderContainer({super.key, required this.index});
+  const FolderContainer({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +16,7 @@ class FolderContainer extends StatelessWidget {
     //(a, b) => a.length.compareTo(b.length));
 
     //log(loadFolders.value[index].split("/").last);
-    return Container(
+    return SizedBox(
       height: 80,
       child: Card(
         child: ListTile(

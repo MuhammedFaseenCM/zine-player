@@ -6,9 +6,8 @@ List<String> temp = [];
 List<String> foldertitle = [];
 
 Future loadFolderList() async {
-  print("Loading folder list");
   loadFolders.value.clear();
-  for (String path in AccessVideosPath) {
+  for (String path in accessVideosPath) {
     temp.add(path.substring(0, path.lastIndexOf('/')));
   }
   loadFolders.value = temp.toSet().toList();

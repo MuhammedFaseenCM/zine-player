@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NavDrawer extends StatelessWidget {
+  const NavDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -10,10 +12,6 @@ class NavDrawer extends StatelessWidget {
           DrawerHeader(
             decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [Colors.blue, Colors.purple]),
-              //image: DecorationImage(
-              //   fit: BoxFit.fill,
-              //  image: AssetImage('assets/images/cover.jpg')
-              // )
             ),
             child: Center(
               child: Row(
@@ -38,18 +36,18 @@ class NavDrawer extends StatelessWidget {
               Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Settings'),
                     onTap: () => {Navigator.of(context).pop()},
                   ),
                   ListTile(
-                    leading: Icon(Icons.border_color),
-                    title: Text('Feedback'),
+                    leading: const Icon(Icons.border_color),
+                    title: const Text('Feedback'),
                     onTap: () => {Navigator.of(context).pop()},
                   ),
                   ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('about'),
+                    leading: const Icon(Icons.person),
+                    title: const Text('about'),
                     onTap: () => {Navigator.of(context).pop()},
                   ),
                 ],

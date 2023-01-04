@@ -1,15 +1,11 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/listitemFunctions.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
-import 'package:zineplayer/Home/mainScreen.dart';
+import 'package:zineplayer/Home/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoScreen.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String folderName;
@@ -110,7 +106,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             child: TextButton.icon(
           onPressed: () {
             //  addToFavourite(title: title, context: context);
-            print(index);
           },
           icon: const Icon(Icons.favorite),
           label: const Text(
@@ -123,7 +118,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           onPressed: () {
             addToPlayList(
                 context: context, listIndex: index, videotitle: title);
-            print(index);
+
             //Navigator.of(context).pop();
           },
           icon: const Icon(Icons.playlist_add),

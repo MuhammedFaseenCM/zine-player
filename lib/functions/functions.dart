@@ -1,12 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoScreen.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
+import 'package:zineplayer/Home/Screens/PlayScreen/play_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
 ValueNotifier<List<PlayList>> playListNotifier = ValueNotifier([]);
@@ -27,8 +22,6 @@ Future<void> getPlayList() async {
 
   playListNotifier.value.clear();
   playListNotifier.value.addAll(playlisthive.values);
-  print('Number of playlist \t');
-  print(playlisthive.values.length);
   playListNotifier.notifyListeners();
 }
 
@@ -59,16 +52,12 @@ Future<void> getFavList() async {
   final favlisthive = await Hive.openBox<Favourite>('favouriteBox');
   favouriteNotifier.value.clear();
   favouriteNotifier.value.addAll(favlisthive.values);
-  print("Number of items in favourite list");
-
-  print(favlisthive.values.length);
   favouriteNotifier.notifyListeners();
 }
 
 Future<void> deleteFav(int index) async {
   final favlisthive = await Hive.openBox<Favourite>('favouriteBox');
   await favlisthive.deleteAt(index);
-  print("deleted $index from favouritelist");
   getFavList();
 }
 
@@ -84,15 +73,12 @@ Future<void> getPlayListitems() async {
   final listitemshive = await Hive.openBox<PlayListItems>('listitemsBox');
   playlistitemsNotifier.value.clear();
   playlistitemsNotifier.value.addAll(listitemshive.values);
-  print("Number of items in playlist \t");
-  print(listitemshive.values.length);
   playlistitemsNotifier.notifyListeners();
 }
 
 Future<void> deleteListItem({required int index, required context}) async {
   final listitemshive = await Hive.openBox<PlayListItems>('listitemsBox');
   await listitemshive.deleteAt(index);
-  print("deleted $index from playlist");
   Navigator.of(context).pop();
   await getPlayListitems();
 }
@@ -112,19 +98,16 @@ recentListDB(RecentList value) async {
   recentListNotifier.notifyListeners();
 }
 
-updaterecentDB(RecentList value,int index) async {
+updaterecentDB(RecentList value, int index) async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   await recentlisthive.putAt(index, value);
-  await 
-  getRecentList();
+  await getRecentList();
 }
 
 Future<void> getRecentList() async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   recentListNotifier.value.clear();
   recentListNotifier.value.addAll(recentlisthive.values);
-  print("Number of items in recent list \t");
-  print(recentlisthive.values.length);
   recentListNotifier.notifyListeners();
 }
 
@@ -132,13 +115,12 @@ Future<void> deleteRecentList(context) async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   if (recentlisthive.isNotEmpty) {
     await recentlisthive.deleteAll(recentlisthive.keys);
-    print("Recent list cleared");
+
     snackBar(
         context: context,
         content: "Successfully cleared",
         bgcolor: Colors.green);
   } else {
-    print("recentlist is empty");
     snackBar(
         context: context,
         content: "Recent list is empty",
@@ -156,14 +138,12 @@ playVideo(
     required recentduration}) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) {
-      return VideoScreen(
+      return PlayScreen(
         videoFile: videoPath,
         videotitle: splittedvideotitle,
       );
     },
   ));
-  print(videoPath);
-  print(videotitle);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 }
 
@@ -171,4 +151,14 @@ splittedvideofunction(splittedvideotitle) {
   if (splittedvideotitle.length > 20) {
     splittedvideotitle = "${splittedvideotitle.substring(0, 20)}...";
   }
+}
+
+Future<void> snackBar(
+    {required BuildContext context, required content, required bgcolor}) async {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(content),
+    backgroundColor: bgcolor,
+    behavior: SnackBarBehavior.floating,
+    margin: const EdgeInsets.all(10),
+  ));
 }

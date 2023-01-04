@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
-createplaylistfn(context, _newPlayListController) {
-  final name = _newPlayListController.text.trim();
+createplaylistfn(context, newPlayListController) {
+  final name = newPlayListController.text.trim();
   final list = PlayList(name: name);
   if (name.isEmpty) {
     return;
   }
-  print("Created playlist name $name");
   playlistdb(list);
-  _newPlayListController.clear();
+  newPlayListController.clear();
   Navigator.of(context).pop();
 }
 
-updatePlaylist(index, context, _newPlayListController) async {
-  final name = _newPlayListController.text.trim();
+updatePlaylist(index, context, newPlayListController) async {
+  final name = newPlayListController.text.trim();
   final updatedlist = PlayList(name: name);
   if (name.isEmpty) {
     return;
   }
-  print("Updated playlist name:  $name ");
   await updatePlayList(updatedlist, index);
   Navigator.of(context).pop();
   Navigator.of(context).pop();

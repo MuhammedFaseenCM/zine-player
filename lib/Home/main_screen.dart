@@ -1,20 +1,16 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favScreen.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/FolderHome.dart';
+import 'package:zineplayer/Home/Screens/FavScreen/fav_screen.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/folder_home.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/bottom_nav.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/side_bar.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/PlaylistScreen.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/homeScreen.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/play_list_screen.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
-import 'package:zineplayer/Home/Screens/RecentlyScreen/RecentlyScreen.dart';
-import 'package:zineplayer/Home/Screens/VideoScreen/VideoHome.dart';
+import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
+import 'package:zineplayer/Home/Screens/videoscreen/video_home.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({super.key});
+  const MainScreen({super.key});
   static ValueNotifier<int> selectedNotifier = ValueNotifier(0);
 
   @override

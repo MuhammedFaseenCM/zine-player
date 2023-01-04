@@ -11,7 +11,7 @@ loadVideos(String path) {
 
   var splitted = path.split('/');
 
-  for (var singlePath in AccessVideosPath) {
+  for (var singlePath in accessVideosPath) {
     if (singlePath.startsWith(path)) {
       videoPath.add(singlePath);
     }

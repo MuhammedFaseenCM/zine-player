@@ -1,24 +1,20 @@
 import 'dart:developer';
-
 import 'package:permission_handler/permission_handler.dart';
 import 'package:zineplayer/AccessFolders/MethodChannelfn.dart';
 import 'package:zineplayer/AccessFolders/loadAllVideos.dart';
 import 'package:zineplayer/AccessFolders/loadFolders.dart';
-import 'package:zineplayer/AccessFolders/loadVideos.dart';
 
-List<String> AccessVideosPath = [];
+List<String> accessVideosPath = [];
 
 Future<bool> _requestPermission(Permission permission) async {
   const storage = Permission.storage;
   const mediaAccess = Permission.accessMediaLocation;
   if (await permission.isGranted) {
     await mediaAccess.isGranted && await storage.isGranted;
-    print("Permission granted");
     return true;
   } else {
     var result = await storage.request();
     var mediaresult = await mediaAccess.request();
-    print("Permission request");
 
     if (result == PermissionStatus.granted &&
         mediaresult == PermissionStatus.granted) {
@@ -42,15 +38,13 @@ Future splashFetch() async {
 }
 
 onSuccess(List<String> path) {
-  AccessVideosPath = path;
-  for (var i = 0; i < AccessVideosPath.length; i++) {
-    if (AccessVideosPath[i].startsWith('/storage/emulated/0/Android/data')) {
-      AccessVideosPath.remove(AccessVideosPath[i]);
+  accessVideosPath = path;
+  for (var i = 0; i < accessVideosPath.length; i++) {
+    if (accessVideosPath[i].startsWith('/storage/emulated/0/Android/data')) {
+      accessVideosPath.remove(accessVideosPath[i]);
       i--;
     }
   }
   loadFolderList();
   loadVideoList();
-
-  print(AccessVideosPath.length);
 }

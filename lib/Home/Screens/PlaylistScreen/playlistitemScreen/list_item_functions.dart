@@ -7,7 +7,6 @@ addItemToPlayList({required title, required context}) {
   if (title.isEmpty) {
     return;
   }
-  print("$title added to playlist");
   playlistitemDB(list);
 
   Navigator.of(context).pop();

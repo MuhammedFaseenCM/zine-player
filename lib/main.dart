@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:zineplayer/AccessFolders/AccessVideos.dart';
-import 'package:zineplayer/Home/Screens/splashScreen.dart';
+import 'package:zineplayer/Home/Screens/splash_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
 void main() async {
   await Hive.initFlutter();
   adapterRegisterFunction();
-  runApp(const zinePlayer());
+  runApp(const Zineplayer());
 }
 
-class zinePlayer extends StatelessWidget {
-  const zinePlayer({super.key});
+class Zineplayer extends StatelessWidget {
+  const Zineplayer({super.key});
 
   @override
   Widget build(BuildContext context) {

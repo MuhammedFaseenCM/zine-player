@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -20,7 +19,6 @@ addToFavourite(
     if (name == null) {
       return;
     }
-    print(name);
     favouriteDB(favList, context);
     getFavList();
   } else {

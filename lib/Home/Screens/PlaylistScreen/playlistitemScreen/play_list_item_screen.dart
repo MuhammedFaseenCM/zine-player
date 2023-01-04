@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
-import 'package:zineplayer/Home/mainScreen.dart';
+import 'package:zineplayer/Home/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -66,7 +64,6 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
             child: TextButton.icon(
           onPressed: () {
             deleteListItem(index: index, context: context);
-            print("Playlist items : $index");
             snackBar(
                 context: context,
                 content: "Successfully deleted",

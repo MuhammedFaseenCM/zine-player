@@ -1,18 +1,16 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:zineplayer/AccessFolders/AccessVideos.dart';
-import 'package:zineplayer/Home/mainScreen.dart';
+import 'package:zineplayer/Home/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _Splash_screenState();
+  State<SplashScreen> createState() => SplashscreenState();
 }
 
-class _Splash_screenState extends State<SplashScreen> {
+class SplashscreenState extends State<SplashScreen> {
   double percent = 0.1;
   @override
   void initState() {
@@ -44,25 +42,23 @@ class _Splash_screenState extends State<SplashScreen> {
         children: [
           Expanded(
             flex: 2,
-            child: Container(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    Icon(
-                      Icons.play_circle,
-                      size: 80.0,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'Zine player',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [
+                  Icon(
+                    Icons.play_circle,
+                    size: 80.0,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    'Zine player',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
             ),
           ),
@@ -84,15 +80,6 @@ class _Splash_screenState extends State<SplashScreen> {
                   percent: percent,
                   progressColor: Colors.white,
                 ),
-
-                //  LinearProgressIndicator(
-                //   color: Colors.white,
-                //   // value: .1,
-                //   semanticsValue: "Loading",
-                //   semanticsLabel: "Loading",
-                //   backgroundColor: Colors.blue,
-                //   minHeight: 5.0,
-                // ),
               )
             ],
           ))
@@ -103,7 +90,7 @@ class _Splash_screenState extends State<SplashScreen> {
 
   Future<void> gotoMainScreen() async {
     await Future.delayed(const Duration(seconds: 7));
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (ctx) => MainScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (ctx) => const MainScreen()));
   }
 }

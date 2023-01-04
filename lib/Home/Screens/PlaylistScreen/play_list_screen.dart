@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/PlaylistFunctions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/playlistItemScreen.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/play_list_functions.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class PlayScreen extends StatefulWidget {
   final int? index;
-  PlayScreen({super.key, this.index});
+  const PlayScreen({super.key, this.index});
 
   @override
   State<PlayScreen> createState() => _PlayScreenState();
@@ -22,9 +22,7 @@ class _PlayScreenState extends State<PlayScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("Ready to create playlist");
           newPlayListDialog(context);
-          // Perform the action
         },
         child: const Icon(Icons.add),
       ),
@@ -84,7 +82,6 @@ class _PlayScreenState extends State<PlayScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                print("Cancelled");
                 Navigator.of(context).pop();
               },
               child: const Text("Cancel")),
@@ -107,7 +104,6 @@ class _PlayScreenState extends State<PlayScreen> {
             child: TextButton.icon(
           onPressed: () {
             updatePlayListDialog(index);
-            print(index);
           },
           icon: const Icon(Icons.edit),
           label: const Text(
@@ -119,8 +115,6 @@ class _PlayScreenState extends State<PlayScreen> {
             child: TextButton.icon(
           onPressed: () {
             deleteFunction(index, context);
-            print(index);
-            //Navigator.of(context).pop();
           },
           icon: const Icon(Icons.delete, color: Colors.red),
           label: const Text(
@@ -159,7 +153,6 @@ class _PlayScreenState extends State<PlayScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                print("Cancelled");
                 Navigator.of(context).pop();
               },
               child: const Text("Cancel")),

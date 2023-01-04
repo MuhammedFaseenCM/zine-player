@@ -1,19 +1,12 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:zineplayer/AccessFolders/loadVideos.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/VideoContainer.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/listitemFunctions.dart';
-import 'package:zineplayer/Home/mainScreen.dart';
-import 'package:zineplayer/functions/datamodels.dart';
-import 'package:zineplayer/functions/functions.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
+import 'package:zineplayer/Home/main_screen.dart';
 
 class VideoList extends StatefulWidget {
-  String folderPath;
+  final String folderPath;
   static late int length;
-  VideoList({super.key, required this.folderPath});
+  const VideoList({super.key, required this.folderPath});
 
   @override
   State<VideoList> createState() => _VideoListState();

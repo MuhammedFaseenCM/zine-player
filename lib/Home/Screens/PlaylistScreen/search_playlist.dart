@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/loadAllVideos.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/playlistItemScreen.dart';
-import 'package:zineplayer/functions/functions.dart';
-import 'package:zineplayer/functions/datamodels.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
 
 class Search extends SearchDelegate {
   @override

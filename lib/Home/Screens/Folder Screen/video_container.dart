@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/favFunction.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/ListFunctions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/listitemFunctions.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -26,7 +24,7 @@ class FolderVideoContainer extends StatefulWidget {
 
 class _FolderVideoContainerState extends State<FolderVideoContainer> {
   late VideoPlayerController _controller;
-  Duration _duration = Duration();
+  Duration _duration = const Duration();
 
   @override
   void initState() {
@@ -49,7 +47,7 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 100.0,
       child: Card(
         child: ListTile(
@@ -58,7 +56,8 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
                 videotitle: widget.videotitle,
                 context: context,
                 videoPath: widget.videoPath,
-                splittedvideotitle: widget.splittitle, recentduration: null);
+                splittedvideotitle: widget.splittitle,
+                recentduration: null);
             //  print("videos[index] : " + videos[index]);
           },
           isThreeLine: true,
@@ -90,7 +89,7 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
   String get fileSize {
     final fileSizeInBytes = File(widget.videoPath).lengthSync();
     if (fileSizeInBytes < 1024) {
-      return '${fileSizeInBytes} bytes';
+      return '$fileSizeInBytes bytes';
     }
     if (fileSizeInBytes < 1048576) {
       return '${(fileSizeInBytes / 1024).toStringAsFixed(1)} KB';
@@ -110,8 +109,6 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
           onPressed: () {
             addToFavourite(
                 title: title, context: context, videoPath: videoPath);
-            print(index);
-            print(videoPath);
           },
           icon: const Icon(Icons.favorite),
           label: const Text(
@@ -124,8 +121,6 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
           onPressed: () {
             addToPlayList(
                 context: context, listIndex: index, videotitle: title);
-            print(index);
-            //Navigator.of(context).pop();
           },
           icon: const Icon(Icons.playlist_add),
           label: const Text(
