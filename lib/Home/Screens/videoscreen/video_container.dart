@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:zineplayer/AccessFolders/loadAllVideos.dart';
+import 'package:zineplayer/AccessFolders/load_all_videos.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
@@ -30,7 +30,6 @@ class _VideoContainerState extends State<VideoContainer> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = VideoPlayerController.file(File(widget.path));
     _controller.initialize().then((_) {
@@ -42,7 +41,6 @@ class _VideoContainerState extends State<VideoContainer> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }

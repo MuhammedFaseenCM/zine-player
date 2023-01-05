@@ -5,7 +5,7 @@ import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_functions.dart';
-import 'package:zineplayer/Home/Screens/PlayScreen/PlayScreenWidget.dart';
+import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_widget.dart';
 
 class PlayScreen extends StatefulWidget {
   final String videoFile;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/AccessFolders/loadFolders.dart';
+import 'package:zineplayer/AccessFolders/load_folders.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/access_video_data.dart';
 
 class FolderContainer extends StatelessWidget {
@@ -9,13 +9,9 @@ class FolderContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    loadFolders.value.sort((a, b) {
-      //sorting in ascending order
-      return a.toLowerCase().compareTo(b.toLowerCase());
-    });
-    //(a, b) => a.length.compareTo(b.length));
-
-    //log(loadFolders.value[index].split("/").last);
+    // loadFolders.value.sort((a, b) {
+    //   return a.toLowerCase().compareTo(b.toLowerCase());
+    // });
     return SizedBox(
       height: 80,
       child: Card(

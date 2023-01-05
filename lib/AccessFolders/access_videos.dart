@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:zineplayer/AccessFolders/MethodChannelfn.dart';
-import 'package:zineplayer/AccessFolders/loadAllVideos.dart';
-import 'package:zineplayer/AccessFolders/loadFolders.dart';
+import 'package:zineplayer/AccessFolders/method_channel_fn.dart';
+import 'package:zineplayer/AccessFolders/load_all_videos.dart';
+import 'package:zineplayer/AccessFolders/load_folders.dart';
 
 List<String> accessVideosPath = [];
 

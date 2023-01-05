@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/AccessFolders/AccessVideos.dart';
+import 'package:zineplayer/AccessFolders/access_videos.dart';
 
 ValueNotifier<List<String>> loadFolders = ValueNotifier([]);
 List<String> temp = [];

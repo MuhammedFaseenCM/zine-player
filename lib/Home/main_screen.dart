@@ -23,12 +23,11 @@ class _MainScreenState extends State<MainScreen> {
     const FolderHome(),
     const RecentScreen(),
     const FavouriteScreen(),
-    PlayScreen()
+    const PlayScreen()
   ];
 
   @override
   void initState() {
-    // TODO: implement initState
     getAllFunctions();
     super.initState();
   }
@@ -38,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
     return SafeArea(
       top: false,
       child: Scaffold(
-        drawer: NavDrawer(),
+        drawer: const NavDrawer(),
         appBar: AppBar(
           title: ValueListenableBuilder(
             valueListenable: MainScreen.selectedNotifier,

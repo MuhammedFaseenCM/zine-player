@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/AccessFolders/loadVideos.dart';
+import 'package:zineplayer/AccessFolders/load_videos.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
 import 'package:zineplayer/Home/main_screen.dart';
 
@@ -13,18 +13,16 @@ class VideoList extends StatefulWidget {
 }
 
 class _VideoListState extends State<VideoList> {
-//  late File video;
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     loadVideos(widget.folderPath);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -50,9 +48,6 @@ class _VideoListState extends State<VideoList> {
                 splittedvideotitle =
                     "${splittedvideotitle.substring(0, 25)}...";
               }
-
-              // Duration _duration = _controller.value.duration;
-
               return FolderVideoContainer(
                   index: index,
                   videoPath: videos[index],

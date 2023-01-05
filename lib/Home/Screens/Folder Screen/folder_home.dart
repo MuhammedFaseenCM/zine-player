@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/AccessFolders/loadFolders.dart';
+import 'package:zineplayer/AccessFolders/load_folders.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/folder_containers.dart';
 
 class FolderHome extends StatelessWidget {

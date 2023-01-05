@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:zineplayer/AccessFolders/AccessVideos.dart';
+import 'package:zineplayer/AccessFolders/access_videos.dart';
 import 'package:zineplayer/Home/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class SplashscreenState extends State<SplashScreen> {
   double percent = 0.1;
   @override
   void initState() {
-    // TODO: implement initState
+    
     splashFetch();
 
     indicator();
@@ -90,6 +90,7 @@ class SplashscreenState extends State<SplashScreen> {
 
   Future<void> gotoMainScreen() async {
     await Future.delayed(const Duration(seconds: 7));
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx) => const MainScreen()));
   }
