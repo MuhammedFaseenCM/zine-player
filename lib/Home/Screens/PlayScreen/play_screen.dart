@@ -73,10 +73,11 @@ class PlayScreenState extends State<PlayScreen> {
   bool isLockButton = true;
   bool isLeftIconVisible = false;
   bool isrRightIconVisible = false;
+  String textDur = '';
   String leftText = '';
   String rightText = '';
   String playPauseText = '';
-  List<BoxFit> Fit = [
+  List<BoxFit> fit = [
     BoxFit.cover,
     BoxFit.fitWidth,
     BoxFit.fitHeight,
@@ -98,54 +99,17 @@ class PlayScreenState extends State<PlayScreen> {
                   : null;
             },
             onPanUpdate: (details) {
-              if (details.delta.dy < 0) {
-                setState(() {
-                  _controller.setVolume(vol);
-                });
-              } else if (details.delta.dx > 0) {
-                isLocked == false
-                    ? _controller.seekTo(
-                        _controller.value.position + const Duration(seconds: 5))
-                    : null;
-              } else if (details.delta.dx < 0) {
-                isLocked == false
-                    ? _controller.seekTo(
-                        _controller.value.position - const Duration(seconds: 5))
-                    : null;
-              }
+              swipeFunction(details);
             },
             child: Stack(children: <Widget>[
-              videoContent(fit: Fit, controller: _controller, index: _index),
-              topBar(
-                  isPortrait: isPortrait,
-                  top: 0.0,
-                  context: context,
-                  isShow: isShow,
-                  widget: widget,
-                  controller: _controller,
-                  setState: setState),
-              bottomBar(350.0, orientation),
-              indicatorNduration(
-                  orientation: orientation,
-                  controller: _controller,
-                  isShow: isShow,
-                  lefttext: currentDuration.toString().split('.').first,
-                  righttext:
-                      _controller.value.duration.toString().split('.').first,
-                  currentDuration: currentDuration),
-              lockButton(
-                orientation,
-              ),
-              leftseekContainer(
-                  left: 0.0,
-                  seconds: -10,
-                  text: "-10s",
-                  orientation: orientation),
-              rightseekContainer(
-                  left: 550.0,
-                  seconds: 10,
-                  text: "+10s",
-                  orientation: orientation),
+              videoContent(fit: fit, controller: _controller, index: _index),
+              durationSwipe(),
+              topBar(isPortrait: isPortrait),
+              bottomBar(orientation),
+              indicatorNduration(orientation: orientation),
+              lockButton(orientation),
+              leftseekContainer(orientation: orientation),
+              rightseekContainer(orientation: orientation),
             ]),
           );
         },
@@ -153,16 +117,11 @@ class PlayScreenState extends State<PlayScreen> {
     );
   }
 
-  Widget rightseekContainer(
-          {required double left,
-          required seconds,
-          required text,
-          required orientation}) =>
-      GestureDetector(
+  Widget rightseekContainer({required orientation}) => GestureDetector(
         onLongPressMoveUpdate: (details) {},
         child: Container(
           margin: orientation == Orientation.landscape
-              ? EdgeInsets.only(top: 60.0, left: left)
+              ? const EdgeInsets.only(top: 60.0, left: 550.0)
               : const EdgeInsets.only(top: 100.0, left: 260.0),
           width: orientation == Orientation.landscape ? 320.0 : 150.0,
           height: orientation == Orientation.landscape ? 270.0 : 650.0,
@@ -172,10 +131,10 @@ class PlayScreenState extends State<PlayScreen> {
             onDoubleTap: () {
               isLocked == false
                   ? _controller.seekTo(
-                      _controller.value.position + Duration(seconds: seconds))
+                      _controller.value.position + const Duration(seconds: 10))
                   : null;
               setState(() {
-                isLocked == false ? leftText = text : null;
+                isLocked == false ? leftText = "+10s" : null;
                 isLocked == false ? isrRightIconVisible = true : null;
               });
               Future.delayed(
@@ -188,6 +147,7 @@ class PlayScreenState extends State<PlayScreen> {
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -200,46 +160,45 @@ class PlayScreenState extends State<PlayScreen> {
                                 color: Colors.white,
                               )
                             : null),
-                    Center(
-                      child: Text(
-                        leftText,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30.0),
-                      ),
+                    Text(
+                      leftText,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0),
                     ),
                   ],
                 ),
-                Center(child: brightnessSlider()),
+                brightnessSlider(),
               ],
             ),
           ),
         ),
       );
-
-  Widget leftseekContainer(
-          {required double left,
-          required seconds,
-          required text,
-          required orientation}) =>
-      GestureDetector(
+  Widget durationSwipe() => Center(
+          child: Text(
+        textDur,
+        style: const TextStyle(fontSize: 30.0, color: Colors.white),
+      ));
+  Widget leftseekContainer({required orientation}) => GestureDetector(
         child: Container(
           margin: orientation == Orientation.landscape
-              ? EdgeInsets.only(top: 60.0, left: left)
+              ? const EdgeInsets.only(
+                  top: 60.0,
+                )
               : const EdgeInsets.only(top: 100.0),
-          width: orientation == Orientation.landscape ? 320.0 : 200.0,
+          width: orientation == Orientation.landscape ? 320.0 : 150.0,
           height: orientation == Orientation.landscape ? 270.0 : 650.0,
-          color: const Color.fromARGB(0, 200, 230, 201),
+          color: Colors.transparent,
           child: InkWell(
             onTap: () => screenVisibility(),
             onDoubleTap: () {
               isLocked == false
                   ? _controller.seekTo(
-                      _controller.value.position + Duration(seconds: seconds))
+                      _controller.value.position - const Duration(seconds: 10))
                   : null;
               setState(() {
-                isLocked == false ? rightText = text : null;
+                isLocked == false ? rightText = "-10s" : null;
                 isLocked == false ? isLeftIconVisible = true : null;
               });
 
@@ -253,6 +212,7 @@ class PlayScreenState extends State<PlayScreen> {
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Center(child: volumeSlider()),
                 Column(
@@ -266,14 +226,12 @@ class PlayScreenState extends State<PlayScreen> {
                                 color: Colors.white,
                               )
                             : null),
-                    Center(
-                      child: Text(
-                        rightText,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30.0),
-                      ),
+                    Text(
+                      rightText,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0),
                     ),
                   ],
                 ),
@@ -283,11 +241,11 @@ class PlayScreenState extends State<PlayScreen> {
         ),
       );
 
-  Widget bottomBar(top, orientation) => Visibility(
+  Widget bottomBar(orientation) => Visibility(
         visible: isShow,
         child: Container(
           margin: orientation == Orientation.landscape
-              ? EdgeInsets.only(top: top, bottom: 0.0)
+              ? const EdgeInsets.only(top: 350.0, bottom: 0.0)
               : const EdgeInsets.only(top: 800.0, bottom: 0.0),
           width: double.infinity,
           height: 100,
@@ -337,7 +295,7 @@ class PlayScreenState extends State<PlayScreen> {
               IconButton(
                   onPressed: () {
                     setState(() {
-                      _index = (_index + 1) % Fit.length;
+                      _index = (_index + 1) % fit.length;
                     });
                   },
                   color: Colors.white,
@@ -469,5 +427,110 @@ class PlayScreenState extends State<PlayScreen> {
                     : const Icon(Icons.volume_off, color: Colors.white)
               ],
             )),
+      );
+
+  swipeFunction(details) {
+    if (details.delta.dy < 0) {
+      setState(() {
+        _controller.setVolume(vol);
+      });
+    } else if (details.delta.dy > 0) {
+      return;
+    } else if (details.delta.dx > 0) {
+      isLocked == false
+          ? _controller
+              .seekTo(_controller.value.position + const Duration(seconds: 5))
+          : null;
+      setState(() {
+        isLocked == false
+            ? textDur = "[${currentDuration.split(".").first}]"
+            : null;
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => setState(() {
+            textDur = '';
+          }),
+        );
+      });
+    } else if (details.delta.dx < 0) {
+      isLocked == false
+          ? _controller
+              .seekTo(_controller.value.position - const Duration(seconds: 5))
+          : null;
+      setState(() {
+        isLocked == false
+            ? textDur = "[${currentDuration.split(".").first}]"
+            : null;
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => setState(() {
+            textDur = '';
+          }),
+        );
+      });
+    }
+  }
+
+  Widget topBar({
+    required isPortrait,
+  }) =>
+      Visibility(
+        visible: isShow,
+        child: Container(
+          margin: const EdgeInsets.only(top: 0.0),
+          width: double.infinity,
+          height: 60,
+          color: const Color.fromARGB(132, 158, 158, 158),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Wakelock.disable();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  )),
+              Text(
+                widget.videotitle,
+                style: const TextStyle(color: Colors.white),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.screen_rotation),
+                    onPressed: () {
+                      rotate(isPortrait);
+                    },
+                    color: Colors.white,
+                  ),
+                  playSpeed(controller: _controller, setState: setState),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+  Widget indicatorNduration({required orientation}) => Container(
+        margin: orientation == Orientation.landscape
+            ? const EdgeInsets.only(top: 0.0)
+            : const EdgeInsets.only(top: 450.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            duration(currentDuration.split('.').first,
+                isShow: isShow,
+                text: currentDuration.toString().split('.').first),
+            Container(
+                width: orientation == Orientation.landscape ? 750.0 : 270.0,
+                margin: const EdgeInsets.only(top: 350.0),
+                child: indicator(controller: _controller, isShow: isShow)),
+            duration(_controller.value.duration.toString().split('.').first,
+                isShow: isShow,
+                text: _controller.value.duration.toString().split('.').first)
+          ],
+        ),
       );
 }
