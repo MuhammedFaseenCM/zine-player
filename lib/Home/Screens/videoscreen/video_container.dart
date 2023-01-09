@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:zineplayer/AccessFolders/load_all_videos.dart';
+import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlist_widget.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
@@ -51,15 +51,15 @@ class _VideoContainerState extends State<VideoContainer> {
       child: ListTile(
           onTap: () {
             playVideo(
-                videotitle: widget.title,
-                context: context,
-                videoPath: widget.path,
-                splittedvideotitle: widget.splittitle,
-                recentduration: null);
+              videotitle: widget.title,
+              context: context,
+              videoPath: widget.path,
+              splittedvideotitle: widget.splittitle,
+              //  durationinSec: widget.durationinSec
+            );
           },
-          leading: thumbnail(),
-          title: Text(allVideos.value[widget.index].toString().split("/").last),
-          subtitle: Text("${_duration.toString().split(".").first}\n$fileSize"),
+          leading: thumbnail(duration: _duration.toString().split(".").first),
+          title: Text(widget.splittitle),
           trailing: popupMenu(
               index: widget.index,
               title: widget.title,
@@ -79,82 +79,5 @@ class _VideoContainerState extends State<VideoContainer> {
       return '${(fileSizeInBytes / 1048576).toStringAsFixed(1)} MB';
     }
     return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
-  }
-
-  Widget popupMenu({required index, required title, required videoPath}) {
-    //  playScreen playscreen = playScreen();
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            addToFavourite(
-                title: title, context: context, videoPath: videoPath);
-          },
-          icon: const Icon(Icons.favorite),
-          label: const Text(
-            "Like",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        )),
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            addToPlayList(
-                context: context, listIndex: index, videotitle: title);
-          },
-          icon: const Icon(Icons.playlist_add),
-          label: const Text(
-            "Add to playlist",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        ))
-      ],
-    );
-  }
-
-  void addToPlayList(
-      {required BuildContext context,
-      required listIndex,
-      required videotitle}) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-          title: const Text("Select playlist"),
-          content:
-              playlistDailog(listIndex: listIndex, videotitle: videotitle)),
-    );
-  }
-
-  Widget playlistDailog({required listIndex, required videotitle}) {
-    return Container(
-      height: 150.0,
-      width: 200.0,
-      color: Colors.purple,
-      child: ValueListenableBuilder(
-        valueListenable: playListNotifier,
-        builder:
-            (BuildContext context, List<PlayList> playlist, Widget? child) {
-          return ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final listdata = playlist[index];
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      addItemToPlayList(title: videotitle, context: context);
-                      snackBar(
-                          context: context,
-                          content: 'Successfully added',
-                          bgcolor: Colors.green);
-                    },
-                    title: Text(listdata.name),
-                  ),
-                );
-              },
-              itemCount: playlist.length);
-        },
-      ),
-    );
   }
 }

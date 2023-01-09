@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -21,15 +20,16 @@ class FavouriteScreen extends StatelessWidget {
                 child: ListTile(
                   onTap: () {
                     playVideo(
-                        videotitle: listdata.title,
-                        context: context,
-                        videoPath: listdata.videoPath,
-                        splittedvideotitle: splittedtitle,
-                        recentduration: null);
+                      videotitle: listdata.title,
+                      context: context,
+                      videoPath: listdata.videoPath,
+                      splittedvideotitle: splittedtitle,
+                    );
                   },
-                  leading: thumbnail(),
-                  title: Text(listdata.title),
+                  // leading: thumbnail(listdata),
+                  title: Text(splittedtitle),
                   trailing: popupMenu(index),
+                  leading: thumbnail(),
                 ),
               );
             },
@@ -53,7 +53,7 @@ class FavouriteScreen extends StatelessWidget {
                 context: context, content: "Unliked", bgcolor: Colors.green);
             Navigator.of(context).pop();
           },
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.remove, color: Colors.red),
           label: const Text(
             "Unlike",
             style: TextStyle(color: Colors.black, fontSize: 15.0),

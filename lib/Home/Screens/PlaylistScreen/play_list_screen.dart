@@ -5,8 +5,9 @@ import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class PlayScreen extends StatefulWidget {
-  final int? index;
-  const PlayScreen({super.key, this.index});
+  const PlayScreen({
+    super.key,
+  });
 
   @override
   State<PlayScreen> createState() => _PlayScreenState();
@@ -34,14 +35,13 @@ class _PlayScreenState extends State<PlayScreen> {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            PlayListItemScreen(items: listdata, index: index),
-                      ));
+                      Navigator.of(context).push(createRoute(PlayListItemScreen(
+                          items: listdata, videoPath: listdata.name)));
                     },
                     leading: const Icon(
                       Icons.folder,
                       size: 50.0,
+                      color: Colors.blue,
                     ),
                     title: Text(listdata.name),
                     trailing: popupMenu(index),

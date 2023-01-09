@@ -20,7 +20,6 @@ addToFavourite(
       return;
     }
     favouriteDB(favList, context);
-    getFavList();
   } else {
     snackBar(
         context: context,
@@ -35,21 +34,28 @@ addToRecentList(
     {required title,
     required context,
     required videoPath,
-    required recentduration}) async {
+    required recentduration,
+    required durationinSec}) async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   List<RecentList> recListing = recentlisthive.values.toList();
   List<RecentList> result =
       recListing.where((contains) => contains.videoPath == videoPath).toList();
-  log(result.toString());
-  log(recListing.toString());
-  if (result.isEmpty) {
-    final resList = RecentList(videoPath: videoPath, duration: recentduration);
-    if (videoPath == null) {
-      return;
-    }
-
-    recentListDB(resList);
+  final resList = RecentList(
+      videoPath: videoPath,
+      duration: recentduration,
+      durationinSec: durationinSec);
+  if (videoPath == null) {
+    return;
+  }
+  if (result.isNotEmpty) {
+    int index =
+        recListing.indexWhere((element) => element.videoPath == videoPath);
+    recentlisthive.putAt(index, resList);
     getRecentList();
+    recentListNotifier.notifyListeners();
+  }
+  if (result.isEmpty) {
+    recentListDB(resList);
   } else {
     return;
   }

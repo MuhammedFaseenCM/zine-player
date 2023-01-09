@@ -30,16 +30,21 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   auto_orientation: ^2.2.1
+  color_picker_field: ^1.1.2
   cupertino_icons: ^1.0.2
   curved_navigation_bar: ^1.0.3
   flutter:
     sdk: flutter
+  flutter_screen_wake: ^1.0.2
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.0
   path_provider: ^2.0.11
   percent_indicator: ^4.2.2
   permission_handler: ^10.2.0
+  screen: ^0.0.5
+  screen_brightness: ^0.2.2
+  syncfusion_flutter_sliders: ^20.4.42
   video_player: ^2.4.10
   wakelock: ^0.6.2
 

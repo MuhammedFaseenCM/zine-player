@@ -14,7 +14,6 @@ class SplashscreenState extends State<SplashScreen> {
   double percent = 0.1;
   @override
   void initState() {
-    
     splashFetch();
 
     indicator();
@@ -79,6 +78,7 @@ class SplashscreenState extends State<SplashScreen> {
                   lineHeight: 10.0,
                   percent: percent,
                   progressColor: Colors.white,
+                  barRadius: const Radius.circular(16),
                 ),
               )
             ],

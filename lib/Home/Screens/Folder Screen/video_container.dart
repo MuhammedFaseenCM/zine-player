@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
-import 'package:zineplayer/functions/datamodels.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlist_widget.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class FolderVideoContainer extends StatefulWidget {
@@ -47,31 +46,25 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100.0,
-      child: Card(
-        child: ListTile(
-          onTap: () {
-            playVideo(
-                videotitle: widget.videotitle,
-                context: context,
-                videoPath: widget.videoPath,
-                splittedvideotitle: widget.splittitle,
-                recentduration: null);
-            //  print("videos[index] : " + videos[index]);
-          },
-          isThreeLine: true,
-          leading: const Icon(
-            Icons.movie_filter,
-            size: 50.0,
-          ),
-          title: Text(widget.splittitle),
-          subtitle: Text("${_duration.toString().split(".").first}\n$fileSize"),
-          trailing: popupMenu(
-              index: widget.index,
-              title: widget.videotitle,
-              videoPath: widget.videoPath),
-        ),
+    return Card(
+      child: ListTile(
+        onTap: () {
+          playVideo(
+              videotitle: widget.videotitle,
+              context: context,
+              videoPath: widget.videoPath,
+              splittedvideotitle: widget.splittitle,
+              durationinSec: 0);
+          //  print("videos[index] : " + videos[index]);
+        },
+        //  isThreeLine: true,
+        leading: thumbnail(duration: _duration.toString().split(".").first),
+        title: Text(widget.splittitle),
+        // subtitle: Text("${_duration.toString().split(".").first}\n$fileSize"),
+        trailing: popupMenu(
+            index: widget.index,
+            title: widget.videotitle,
+            videoPath: widget.videoPath),
       ),
     );
   }
@@ -99,81 +92,33 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
     }
     return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
   }
+}
 
-  Widget popupMenu({required index, required title, required videoPath}) {
-    //  playScreen playscreen = playScreen();
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            addToFavourite(
-                title: title, context: context, videoPath: videoPath);
-          },
-          icon: const Icon(Icons.favorite),
-          label: const Text(
-            "Like",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        )),
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            addToPlayList(
-                context: context, listIndex: index, videotitle: title);
-          },
-          icon: const Icon(Icons.playlist_add),
-          label: const Text(
-            "Add to playlist",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        ))
-      ],
-    );
-  }
-
-  void addToPlayList(
-      {required BuildContext context,
-      required listIndex,
-      required videotitle}) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-          title: const Text("Select playlist"),
-          content:
-              playlistDailog(listIndex: listIndex, videotitle: videotitle)),
-    );
-  }
-
-  Widget playlistDailog({required listIndex, required videotitle}) {
-    return Container(
-      height: 150.0,
-      width: 200.0,
-      color: Colors.purple,
-      child: ValueListenableBuilder(
-        valueListenable: playListNotifier,
-        builder:
-            (BuildContext context, List<PlayList> playlist, Widget? child) {
-          return ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final listdata = playlist[index];
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      addItemToPlayList(title: videotitle, context: context);
-                      snackBar(
-                          context: context,
-                          content: 'Successfully added',
-                          bgcolor: Colors.green);
-                    },
-                    title: Text(listdata.name),
-                  ),
-                );
-              },
-              itemCount: playlist.length);
+Widget popupMenu({required index, required title, required videoPath}) {
+  return PopupMenuButton(
+    itemBuilder: (context) => [
+      PopupMenuItem(
+          child: TextButton.icon(
+        onPressed: () {
+          addToFavourite(title: title, context: context, videoPath: videoPath);
         },
-      ),
-    );
-  }
+        icon: const Icon(Icons.favorite),
+        label: const Text(
+          "Like",
+          style: TextStyle(color: Colors.black, fontSize: 15.0),
+        ),
+      )),
+      PopupMenuItem(
+          child: TextButton.icon(
+        onPressed: () {
+          addToPlayList(context: context, widgetpath: videoPath);
+        },
+        icon: const Icon(Icons.playlist_add),
+        label: const Text(
+          "Add to playlist",
+          style: TextStyle(color: Colors.black, fontSize: 15.0),
+        ),
+      ))
+    ],
+  );
 }

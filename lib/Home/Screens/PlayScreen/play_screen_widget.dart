@@ -1,7 +1,10 @@
+import 'package:color_picker_field/color_picker_field.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_functions.dart';
+import 'package:zineplayer/Home/Screens/PlayScreen/video_progress_indicator.dart';
 
 Widget videoContent({required fit, required index, required controller}) =>
     SizedBox.expand(
@@ -29,7 +32,7 @@ Widget topBar(
         margin: EdgeInsets.only(top: top),
         width: double.infinity,
         height: 60,
-        color: const Color.fromARGB(113, 158, 158, 158),
+        color: const Color.fromARGB(132, 158, 158, 158),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -53,6 +56,7 @@ Widget topBar(
                 //   icon: Icon(Icons.subtitles),
                 //   color: Colors.white,
                 // ),
+
                 IconButton(
                   icon: const Icon(Icons.screen_rotation),
                   onPressed: () {
@@ -61,6 +65,13 @@ Widget topBar(
                   color: Colors.white,
                 ),
                 playSpeed(controller: controller, setState: setState),
+                // IconButton(
+                //   onPressed: () {
+                //     colorDailog(context, pickedColor, pickColor);
+                //   },
+                //   icon: const Icon(Icons.color_lens),
+                //   color: Colors.white,
+                // )
               ],
             )
           ],
@@ -175,44 +186,93 @@ Widget indicatorNduration(
           ? const EdgeInsets.only(top: 0.0)
           : const EdgeInsets.only(top: 470.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           duration(currentDuration.split('.').first,
               isShow: isShow, text: lefttext),
-          SizedBox(
-            width: orientation == Orientation.landscape ? 10.0 : 30.0,
-          ),
+          // SizedBox(
+          //   width: orientation == Orientation.landscape ? 10.0 : 30.0,
+          // ),
           Container(
               width: orientation == Orientation.landscape ? 750.0 : 200.0,
-              margin: const EdgeInsets.only(top: 330.0),
+              margin: const EdgeInsets.only(top: 350.0),
               child: indicator(controller: controller, isShow: isShow)),
-          SizedBox(
-            width: orientation == Orientation.landscape ? 10.0 : 30.0,
-          ),
+          // SizedBox(
+          //   width: orientation == Orientation.landscape ? 10.0 : 30.0,
+          // ),
           duration(controller.value.duration.toString().split('.').first,
               isShow: isShow, text: righttext)
         ],
       ),
     );
-
-Widget indicator({
-  required isShow,
-  required controller,
-}) =>
-    Visibility(
-        visible: isShow,
-        child: VideoProgressIndicator(
-          controller,
-          allowScrubbing: true,
-          colors: const VideoProgressColors(playedColor: Colors.purple),
-        ));
+Widget indicator({required isShow, required controller}) => Visibility(
+    visible: isShow,
+    child: CustomProgressIndicator(
+      controller,
+      allowScrubbing: true,
+      colors: const VideoProgressColors(
+          playedColor: Colors.blue, backgroundColor: Colors.white),
+    ));
+// child: SfSlider(
+//     inactiveColor: Colors.white,
+//     activeColor: Colors.blue,
+//     value: currentposition,
+//     stepSize: 1.0,
+//     min: 0.0,
+//     max: duration,
+//     onChanged: (value) {
+//       seekFunctionSlider(
+//           currentposition: currentposition,
+//           controller: controller,
+//           value: value,
+//           duration: duration);
+//     }));
 
 Widget duration(first, {required text, required isShow}) => Visibility(
     visible: isShow,
     child: Container(
-      margin: const EdgeInsets.only(top: 335.0),
+      margin: const EdgeInsets.only(top: 350.0),
       child: Text(
         text,
         style: const TextStyle(color: Colors.white),
       ),
     ));
+
+void colorDailog(BuildContext context, pickedColor, pickColor) {
+  showDialog(
+    context: context,
+    builder: (context) => SingleChildScrollView(
+      child: AlertDialog(
+        scrollable: true,
+        actions: [
+          const Text("Choose a color"),
+          ColorPicker(
+            currentColor: pickedColor,
+            onChange: pickColor,
+          ),
+          Text('Picked Color : $pickedColor')
+        ],
+      ),
+    ),
+  );
+}
+
+seekFunctionSlider(
+    {required currentposition,
+    required controller,
+    required value,
+    required duration}) {
+  if (duration > 3599) {
+    if (currentposition < value) {
+      controller.seekTo(Duration(seconds: currentposition + 60));
+    } else {
+      controller.seekTo(Duration(seconds: currentposition - 60));
+    }
+  } else {
+    if (currentposition < value) {
+      controller.seekTo(Duration(seconds: currentposition + 1));
+    } else {
+      controller.seekTo(Duration(seconds: currentposition - 1));
+    }
+  }
+}

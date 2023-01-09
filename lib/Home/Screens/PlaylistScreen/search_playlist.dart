@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/AccessFolders/load_all_videos.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
+import 'package:zineplayer/functions/functions.dart';
 
 class Search extends SearchDelegate {
   @override
@@ -27,23 +27,28 @@ class Search extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: allVideos,
-      builder: (BuildContext ctx, dynamic allvideos, Widget? child) {
+      valueListenable: playListNotifier,
+      builder: (BuildContext ctx, dynamic playList, Widget? child) {
         return ListView.builder(
           itemBuilder: (ctx, index) {
-            final data = allvideos[index];
+            final data = playList[index];
             if (data.name.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              PlayListItemScreen(items: data, index: index),
-                        ));
-                      },
-                      title: Text(data.name),
-                      leading: const Icon(Icons.folder)),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PlayListItemScreen(
+                            items: data, videoPath: data.name),
+                      ));
+                    },
+                    title: Text(data.name),
+                    leading: const Icon(
+                      Icons.folder,
+                      size: 50.0,
+                      color: Colors.blue,
+                    ),
+                  ),
                   const Divider()
                 ],
               );
@@ -51,7 +56,7 @@ class Search extends SearchDelegate {
               return Container();
             }
           },
-          itemCount: allvideos.length,
+          itemCount: playList.length,
         );
       },
     );
@@ -60,18 +65,23 @@ class Search extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: allVideos,
-      builder: (BuildContext ctx, dynamic studentList, Widget? child) {
+      valueListenable: playListNotifier,
+      builder: (BuildContext ctx, dynamic playList, Widget? child) {
         return ListView.builder(
           itemBuilder: (ctx, index) {
-            final data = studentList[index];
-            if (data.toLowerCase().contains(query.toLowerCase())) {
+            final data = playList[index];
+            if (data.name.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(
-                      onTap: () {},
-                      title: Text(data.toString().split("/").last),
-                      leading: const Icon(Icons.folder)),
+                    onTap: () {},
+                    title: Text(data.name),
+                    leading: const Icon(
+                      Icons.folder,
+                      size: 50.0,
+                      color: Colors.blue,
+                    ),
+                  ),
                   const Divider(),
                 ],
               );
@@ -79,7 +89,7 @@ class Search extends SearchDelegate {
               return Container();
             }
           },
-          itemCount: studentList.length,
+          itemCount: playList.length,
         );
       },
     );

@@ -26,10 +26,10 @@ class Favourite {
 @HiveType(typeId: 3)
 class PlayListItems {
   @HiveField(0)
-  int? index;
+  String videoPath;
   @HiveField(1)
-  final String title;
-  PlayListItems({required this.title});
+  String playlistFolderName;
+  PlayListItems({required this.videoPath, required this.playlistFolderName});
 }
 
 @HiveType(typeId: 4)
@@ -43,5 +43,13 @@ class RecentList {
   @HiveField(2)
   final String duration;
 
-  RecentList({this.index, required this.videoPath, required this.duration});
+  @HiveField(3)
+  final int durationinSec;
+
+  RecentList({
+    this.index,
+    required this.videoPath,
+    required this.duration,
+    required this.durationinSec,
+  });
 }

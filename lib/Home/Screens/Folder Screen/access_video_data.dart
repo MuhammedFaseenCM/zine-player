@@ -13,10 +13,8 @@ class VideoList extends StatefulWidget {
 }
 
 class _VideoListState extends State<VideoList> {
-
   @override
   void initState() {
-
     super.initState();
     loadVideos(widget.folderPath);
   }
@@ -44,9 +42,9 @@ class _VideoListState extends State<VideoList> {
               String videotitle = videos[index].toString().split("/").last;
               //  video = File(videos[index].toString());
               String splittedvideotitle = videotitle;
-              if (splittedvideotitle.length > 25) {
+              if (splittedvideotitle.length > 20) {
                 splittedvideotitle =
-                    "${splittedvideotitle.substring(0, 25)}...";
+                    "${splittedvideotitle.substring(0, 20)}...";
               }
               return FolderVideoContainer(
                   index: index,

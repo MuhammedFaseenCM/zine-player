@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/Home/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class PlayListItemScreen extends StatefulWidget {
   final PlayList items;
-  final int? index;
+  final String videoPath;
+  // final int? index;
   const PlayListItemScreen(
-      {super.key, required this.items, required this.index});
+      {super.key, required this.items, required this.videoPath});
 
   @override
   State<PlayListItemScreen> createState() => _PlayListItemScreenState();
@@ -28,28 +28,47 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
         body: ValueListenableBuilder(
           builder: (BuildContext ctx, List<PlayListItems> playListitem,
               Widget? child) {
-            return ListView.separated(
-                itemBuilder: (context, index) {
-                  final listdata = playListitem[index];
-                  // if (widget.index == listdata.index) {
-                  return Card(
-                    child: ListTile(
-                      onTap: () {
-                        // addToRecentList(
-                        //     title: listdata.title, context: context, videoPath: null);
-                      },
-                      leading: thumbnail(),
-                      title: Text(listdata.title),
-                      trailing: popupMenu(index: index),
-                    ),
-                  );
-                },
-                //     return SizedBox();
-                // },
-                separatorBuilder: (context, index) {
-                  return const Divider();
-                },
-                itemCount: playListitem.length);
+            if (playListitem == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (playListitem.isEmpty) {
+              return const Center(
+                child: Text("No videos available"),
+              );
+            } else {
+              return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final listdata = playListitem[index];
+
+                    String title =
+                        listdata.videoPath.toString().split("/").last;
+                    String shorttitle = title;
+                    if (title.length > 20) {
+                      shorttitle = "${shorttitle.substring(0, 20)}...";
+                    }
+                    if (widget.items.name == listdata.playlistFolderName) {
+                      return Card(
+                        child: ListTile(
+                          onTap: () {
+                            playVideo(
+                                videotitle: title,
+                                context: context,
+                                videoPath: listdata.videoPath,
+                                splittedvideotitle: shorttitle);
+                          },
+                          leading: thumbnail(),
+                          title: Text(shorttitle),
+                          trailing: popupMenu(index: index),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                  itemCount: playListitem.length);
+            }
           },
           valueListenable: playlistitemsNotifier,
         ),

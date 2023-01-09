@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -63,8 +66,8 @@ Future<void> deleteFav(int index) async {
 
 playlistitemDB(PlayListItems value) async {
   final listitemshive = await Hive.openBox<PlayListItems>('listitemsBox');
-  final id = await listitemshive.add(value);
-  value.index = id;
+  await listitemshive.add(value);
+  // value.index = id;
   playlistitemsNotifier.value.add(value);
   playlistitemsNotifier.notifyListeners();
 }
@@ -98,12 +101,6 @@ recentListDB(RecentList value) async {
   recentListNotifier.notifyListeners();
 }
 
-updaterecentDB(RecentList value, int index) async {
-  final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
-  await recentlisthive.putAt(index, value);
-  await getRecentList();
-}
-
 Future<void> getRecentList() async {
   final recentlisthive = await Hive.openBox<RecentList>('recentlistBox');
   recentListNotifier.value.clear();
@@ -135,12 +132,13 @@ playVideo(
     required context,
     required videoPath,
     required splittedvideotitle,
-    required recentduration}) {
+    durationinSec}) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) {
       return PlayScreen(
         videoFile: videoPath,
         videotitle: splittedvideotitle,
+        duration: durationinSec ?? 0,
       );
     },
   ));
@@ -154,11 +152,67 @@ splittedvideofunction(splittedvideotitle) {
 }
 
 Future<void> snackBar(
-    {required BuildContext context, required content, required bgcolor}) async {
+    {required BuildContext context,
+    required content,
+    required bgcolor,
+    function}) async {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(content),
     backgroundColor: bgcolor,
     behavior: SnackBarBehavior.floating,
     margin: const EdgeInsets.all(10),
+    action: SnackBarAction(
+      label: 'ok',
+      onPressed: () {
+        function;
+      },
+      textColor: Colors.white,
+    ),
   ));
+}
+
+Route createRoute(page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+Widget thumbnail({duration}) {
+  return Stack(
+    children: [
+      Container(
+        height: 50.0,
+        width: 70.0,
+        color: Colors.grey,
+        child: const Icon(
+          Icons.movie_filter_outlined,
+          color: Colors.white,
+        ),
+      ),
+      Positioned(
+          right: 0.0,
+          bottom: 0.0,
+          child: Container(
+            color: Colors.black,
+            child: duration != null
+                ? Text(
+                    duration.toString().split("0:0").last,
+                    style: const TextStyle(color: Colors.white, fontSize: 11.0),
+                  )
+                : null,
+          ))
+    ],
+  );
 }

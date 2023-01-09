@@ -94,8 +94,9 @@ class PlayListItemsAdapter extends TypeAdapter<PlayListItems> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PlayListItems(
-      title: fields[1] as String,
-    )..index = fields[0] as int?;
+      videoPath: fields[0] as String,
+      playlistFolderName: fields[1] as String,
+    );
   }
 
   @override
@@ -103,9 +104,9 @@ class PlayListItemsAdapter extends TypeAdapter<PlayListItems> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.index)
+      ..write(obj.videoPath)
       ..writeByte(1)
-      ..write(obj.title);
+      ..write(obj.playlistFolderName);
   }
 
   @override
@@ -133,19 +134,22 @@ class RecentListAdapter extends TypeAdapter<RecentList> {
       index: fields[0] as int?,
       videoPath: fields[1] as String,
       duration: fields[2] as String,
+      durationinSec: fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecentList obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.index)
       ..writeByte(1)
       ..write(obj.videoPath)
       ..writeByte(2)
-      ..write(obj.duration);
+      ..write(obj.duration)
+      ..writeByte(3)
+      ..write(obj.durationinSec);
   }
 
   @override

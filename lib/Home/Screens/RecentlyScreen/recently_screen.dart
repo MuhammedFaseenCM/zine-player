@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/video_folder.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -29,7 +28,7 @@ class RecentScreen extends StatelessWidget {
                           context: context,
                           videoPath: listdata.videoPath,
                           splittedvideotitle: splittitle,
-                          recentduration: null);
+                          durationinSec: listdata.durationinSec);
                     },
                     leading: thumbnail(),
                     title: Text(splittitle),

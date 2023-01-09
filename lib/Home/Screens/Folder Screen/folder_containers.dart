@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_folders.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/access_video_data.dart';
+import 'package:zineplayer/functions/functions.dart';
 
 class FolderContainer extends StatelessWidget {
   final int index;
@@ -17,10 +18,8 @@ class FolderContainer extends StatelessWidget {
       child: Card(
         child: ListTile(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  VideoList(folderPath: loadFolders.value[index]),
-            ));
+            Navigator.of(context).push(
+                createRoute(VideoList(folderPath: loadFolders.value[index])));
           },
           title: Text(loadFolders.value[index].split("/").last),
           leading: const Icon(

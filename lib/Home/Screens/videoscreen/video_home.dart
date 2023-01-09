@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_all_videos.dart';
-import 'package:zineplayer/Home/Screens/VideoScreen/Video_Container.dart';
+import 'package:zineplayer/Home/Screens/videoscreen/video_container.dart';
 
 class VideoHome extends StatefulWidget {
   const VideoHome({super.key});
@@ -35,14 +35,14 @@ class _VideoHomeState extends State<VideoHome> {
                     allVideos.value[index].toString().split("/").last;
                 path = allVideos.value[index];
                 String splittitle = title;
-                if (title.length > 25) {
-                  splittitle = "${title.substring(0, 25)}...";
+                if (title.length > 20) {
+                  splittitle = "${title.substring(0, 20)}...";
                 }
                 return VideoContainer(
-                    index: index,
+                    title: title,
                     path: path,
                     splittitle: splittitle,
-                    title: title);
+                    index: index);
               });
         },
       ),
