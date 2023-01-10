@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -10,6 +9,39 @@ void addToPlayList({required context, required widgetpath}) {
     builder: (context) => AlertDialog(
         title: const Text("Select playlist"),
         content: playlistDailog(context: context, widgetpath: widgetpath)),
+  );
+}
+
+void showDetails(
+    {required context,
+    required title,
+    required path,
+    required duration,
+    required size}) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(title),
+        content: detailsDailog(path: path, duration: duration, size: size),
+      );
+    },
+  );
+}
+
+Widget detailsDailog({required path, required duration, required size}) {
+  return Container(
+    height: 180.0,
+    width: 200.0,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("path : $path"),
+        Text("Duration : $duration"),
+        Text("Size : $size")
+      ],
+    ),
   );
 }
 

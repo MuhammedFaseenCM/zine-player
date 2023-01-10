@@ -1,8 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlist_widget.dart';
+import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class FolderVideoContainer extends StatefulWidget {
@@ -24,6 +27,7 @@ class FolderVideoContainer extends StatefulWidget {
 class _FolderVideoContainerState extends State<FolderVideoContainer> {
   late VideoPlayerController _controller;
   Duration _duration = const Duration();
+  int? durationinSecs = 0;
 
   @override
   void initState() {
@@ -35,6 +39,22 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
         _duration = _controller.value.duration;
       });
     });
+    recentdbdata();
+  }
+
+  recentdbdata() async {
+    final box = await Hive.openBox<RecentList>('recentlistBox');
+    List<RecentList> data = box.values.toList();
+    List<RecentList> result = data
+        .where((contains) => contains.videoPath == widget.videoPath)
+        .toList();
+    if (result.isNotEmpty) {
+      durationinSecs = result
+          .where((element) => element.videoPath == widget.videoPath)
+          .first
+          ?.durationinSec;
+    }
+    box.close();
   }
 
   @override
@@ -54,71 +74,120 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
               context: context,
               videoPath: widget.videoPath,
               splittedvideotitle: widget.splittitle,
-              durationinSec: 0);
-          //  print("videos[index] : " + videos[index]);
+              durationinSec: durationinSecs);
         },
         //  isThreeLine: true,
         leading: thumbnail(duration: _duration.toString().split(".").first),
         title: Text(widget.splittitle),
-        // subtitle: Text("${_duration.toString().split(".").first}\n$fileSize"),
         trailing: popupMenu(
             index: widget.index,
             title: widget.videotitle,
-            videoPath: widget.videoPath),
+            videoPath: widget.videoPath,
+            fileSize: fileSize,
+            duration: _duration.toString().split(".").first),
       ),
     );
   }
 
-  String get videoDuration {
-    if (_controller.value.isInitialized) {
-      final duration = _controller.value.duration;
-      final minutes = duration.inMinutes.toString().padLeft(2, '0');
-      final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
-      return '$minutes:$seconds';
-    }
-    return '00:00';
-  }
-
   String get fileSize {
     final fileSizeInBytes = File(widget.videoPath).lengthSync();
-    if (fileSizeInBytes < 1024) {
-      return '$fileSizeInBytes bytes';
-    }
-    if (fileSizeInBytes < 1048576) {
-      return '${(fileSizeInBytes / 1024).toStringAsFixed(1)} KB';
-    }
-    if (fileSizeInBytes < 1073741824) {
-      return '${(fileSizeInBytes / 1048576).toStringAsFixed(1)} MB';
-    }
-    return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
+    return filesizing(fileSizeInBytes);
   }
 }
 
-Widget popupMenu({required index, required title, required videoPath}) {
+String filesizing(fileSizeInBytes) {
+  if (fileSizeInBytes < 1024) {
+    return '$fileSizeInBytes bytes';
+  }
+  if (fileSizeInBytes < 1048576) {
+    return '${(fileSizeInBytes / 1024).toStringAsFixed(1)} KB';
+  }
+  if (fileSizeInBytes < 1073741824) {
+    return '${(fileSizeInBytes / 1048576).toStringAsFixed(1)} MB';
+  }
+  return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
+}
+
+Widget popupMenu(
+    {required index,
+    required title,
+    required videoPath,
+    required fileSize,
+    required duration}) {
   return PopupMenuButton(
     itemBuilder: (context) => [
       PopupMenuItem(
-          child: TextButton.icon(
-        onPressed: () {
-          addToFavourite(title: title, context: context, videoPath: videoPath);
-        },
-        icon: const Icon(Icons.favorite),
-        label: const Text(
-          "Like",
-          style: TextStyle(color: Colors.black, fontSize: 15.0),
-        ),
-      )),
+          onTap: () => showDetails(
+              context: context,
+              title: title,
+              path: videoPath,
+              duration: duration,
+              size: fileSize),
+          child: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.info_outline, color: Colors.purple),
+                onPressed: () {
+                  showDetails(
+                      context: context,
+                      title: title,
+                      path: videoPath.toString().split(title).first,
+                      duration: duration,
+                      size: fileSize);
+                },
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Text("Details",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold))
+            ],
+          )),
       PopupMenuItem(
-          child: TextButton.icon(
-        onPressed: () {
-          addToPlayList(context: context, widgetpath: videoPath);
-        },
-        icon: const Icon(Icons.playlist_add),
-        label: const Text(
-          "Add to playlist",
-          style: TextStyle(color: Colors.black, fontSize: 15.0),
-        ),
-      ))
+          onTap: () {
+            addToFavourite(
+                title: title, context: context, videoPath: videoPath);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.favorite,
+                color: Colors.purple,
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
+              Text("Like",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold))
+            ],
+          )),
+      PopupMenuItem(
+          onTap: () {
+            // addToPlayList(context: context, widgetpath: videoPath);
+          },
+          child: SizedBox(
+            width: 101.0,
+            child: TextButton.icon(
+              icon: const Icon(
+                Icons.playlist_add,
+                color: Colors.purple,
+              ),
+              label: const Text("Add to playlist",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold)),
+              onPressed: () =>
+                  addToPlayList(context: context, widgetpath: videoPath),
+            ),
+          ))
     ],
   );
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
@@ -25,23 +26,39 @@ class VideoContainer extends StatefulWidget {
 }
 
 class _VideoContainerState extends State<VideoContainer> {
-  late VideoPlayerController _controller;
+  // late VideoPlayerController _controller;
   Duration _duration = const Duration();
+  int? durationinSecs = 0;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(File(widget.path));
-    _controller.initialize().then((_) {
-      setState(() {
-        _duration = _controller.value.duration;
-      });
-    });
+    //  _controller = VideoPlayerController.file(File(widget.path));
+    // _controller.initialize().then((_) {
+    //   setState(() {
+    //    _duration = _controller.value.duration;
+    //  });
+    //  });
+    recentdbdata();
+  }
+
+  recentdbdata() async {
+    final box = await Hive.openBox<RecentList>('recentlistBox');
+    List<RecentList> data = box.values.toList();
+    List<RecentList> result =
+        data.where((contains) => contains.videoPath == widget.path).toList();
+
+    if (result.isNotEmpty) {
+      durationinSecs = result
+          .where((element) => element.videoPath == widget.path)
+          .first
+          ?.durationinSec;
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    //  _controller.dispose();
     super.dispose();
   }
 
@@ -51,19 +68,20 @@ class _VideoContainerState extends State<VideoContainer> {
       child: ListTile(
           onTap: () {
             playVideo(
-              videotitle: widget.title,
-              context: context,
-              videoPath: widget.path,
-              splittedvideotitle: widget.splittitle,
-              //  durationinSec: widget.durationinSec
-            );
+                videotitle: widget.title,
+                context: context,
+                videoPath: widget.path,
+                splittedvideotitle: widget.splittitle,
+                durationinSec: durationinSecs);
           },
           leading: thumbnail(duration: _duration.toString().split(".").first),
           title: Text(widget.splittitle),
           trailing: popupMenu(
               index: widget.index,
               title: widget.title,
-              videoPath: widget.path)),
+              videoPath: widget.path,
+              fileSize: fileSize,
+              duration: durationinSecs)),
     );
   }
 

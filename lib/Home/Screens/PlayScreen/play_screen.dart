@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,8 +41,6 @@ class PlayScreenState extends State<PlayScreen> {
     });
     _controller.setLooping(true);
     _controller.initialize().then((_) => setState(() {}));
-
-    log("${widget.duration}");
     _controller.play();
     setLandscape(context, widget, _controller, widget.videoFile);
     screenVisibility();
@@ -57,7 +54,6 @@ class PlayScreenState extends State<PlayScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     DeviceOrientation.landscapeLeft;
     currentDuration = _controller.value.position.toString();
-    resumeDuration = _controller.value.position;
     widget.duration = _controller.value.position.inSeconds;
     addToRecentList(
         title: widget.videotitle,
@@ -76,7 +72,7 @@ class PlayScreenState extends State<PlayScreen> {
   String textDur = '';
   String leftText = '';
   String rightText = '';
-  String playPauseText = '';
+  bool playPauseBool = false;
   List<BoxFit> fit = [
     BoxFit.cover,
     BoxFit.fitWidth,
@@ -94,9 +90,7 @@ class PlayScreenState extends State<PlayScreen> {
           return GestureDetector(
             onTap: () => screenVisibility(),
             onDoubleTap: () {
-              isLocked == false
-                  ? playFunction(controller: _controller, setState: setState)
-                  : null;
+              isLocked ? null : playFunction();
             },
             onPanUpdate: (details) {
               swipeFunction(details);
@@ -104,6 +98,7 @@ class PlayScreenState extends State<PlayScreen> {
             child: Stack(children: <Widget>[
               videoContent(fit: fit, controller: _controller, index: _index),
               durationSwipe(),
+              Center(child: playPauseBool ? playpause() : null),
               topBar(isPortrait: isPortrait),
               bottomBar(orientation),
               indicatorNduration(orientation: orientation),
@@ -129,13 +124,10 @@ class PlayScreenState extends State<PlayScreen> {
           child: InkWell(
             onTap: () => screenVisibility(),
             onDoubleTap: () {
-              isLocked == false
-                  ? _controller.seekTo(
-                      _controller.value.position + const Duration(seconds: 10))
-                  : null;
+              isLocked ? null : forwardSec(10);
               setState(() {
-                isLocked == false ? leftText = "+10s" : null;
-                isLocked == false ? isrRightIconVisible = true : null;
+                isLocked ? null : leftText = "+10s";
+                isLocked ? null : isrRightIconVisible = true;
               });
               Future.delayed(
                 const Duration(milliseconds: 500),
@@ -147,7 +139,6 @@ class PlayScreenState extends State<PlayScreen> {
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -193,13 +184,10 @@ class PlayScreenState extends State<PlayScreen> {
           child: InkWell(
             onTap: () => screenVisibility(),
             onDoubleTap: () {
-              isLocked == false
-                  ? _controller.seekTo(
-                      _controller.value.position - const Duration(seconds: 10))
-                  : null;
+              isLocked ? null : rewindSec(10);
               setState(() {
-                isLocked == false ? rightText = "-10s" : null;
-                isLocked == false ? isLeftIconVisible = true : null;
+                isLocked ? null : rightText = "-10s";
+                isLocked ? null : isLeftIconVisible = true;
               });
 
               Future.delayed(
@@ -240,6 +228,21 @@ class PlayScreenState extends State<PlayScreen> {
           ),
         ),
       );
+  playFunction() {
+    _controller.value.isPlaying
+        ? setState(() {
+            _controller.pause();
+            playPauseBool = true;
+            Future.delayed(
+                const Duration(milliseconds: 500), () => playPauseBool = false);
+          })
+        : setState(() {
+            _controller.play();
+            playPauseBool = true;
+            Future.delayed(
+                const Duration(milliseconds: 500), () => playPauseBool = false);
+          });
+  }
 
   Widget bottomBar(orientation) => Visibility(
         visible: isShow,
@@ -259,8 +262,7 @@ class PlayScreenState extends State<PlayScreen> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        _controller.seekTo(_controller.value.position -
-                            const Duration(seconds: 10));
+                        rewindSec(10);
                       },
                       icon: const Icon(
                         Icons.fast_rewind,
@@ -269,24 +271,16 @@ class PlayScreenState extends State<PlayScreen> {
                       )),
                   IconButton(
                       onPressed: () {
-                        playFunction(
-                            controller: _controller, setState: setState);
+                        playFunction();
                       },
-                      icon: Icon(
-                        _controller.value.isPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                        color: Colors.white,
-                        size: 40.0,
-                      )),
+                      icon: playpause()),
                   IconButton(
                     icon: const Icon(
                       Icons.fast_forward,
                       size: 40.0,
                     ),
                     onPressed: () {
-                      _controller.seekTo(_controller.value.position +
-                          const Duration(seconds: 10));
+                      forwardSec(10);
                     },
                     color: Colors.white,
                   )
@@ -307,16 +301,9 @@ class PlayScreenState extends State<PlayScreen> {
 
   screenVisibility() async {
     setState(() {
-      if (isLocked == true) {
-        isShow = false;
-      } else {
-        isShow = !isShow;
-      }
-      if (isShow == true) {
-        isLockButton = true;
-      } else {
-        isLockButton = !isLockButton;
-      }
+      isLocked ? isShow = false : isShow = !isShow;
+
+      isShow ? isLockButton = true : isLockButton = !isLockButton;
     });
     if (isShow == true) {
       await Future.delayed(const Duration(seconds: 5));
@@ -324,6 +311,12 @@ class PlayScreenState extends State<PlayScreen> {
       isLockButton = false;
     }
   }
+
+  Widget playpause() => Icon(
+        _controller.value.isPlaying ? Icons.play_arrow : Icons.pause,
+        color: Colors.white,
+        size: 40.0,
+      );
 
   Widget lockButton(
     Orientation orientation,
@@ -341,11 +334,7 @@ class PlayScreenState extends State<PlayScreen> {
             onPressed: () {
               setState(() {
                 isLocked = !isLocked;
-                if (isLocked == false) {
-                  isShow = true;
-                } else {
-                  isShow = false;
-                }
+                isLocked ? isShow = false : isShow = true;
               });
             },
             icon:
@@ -401,7 +390,6 @@ class PlayScreenState extends State<PlayScreen> {
             ),
             child: Column(
               children: [
-                //const Icon(Icons.volume_up, color: Colors.white),
                 Row(
                   children: [
                     SizedBox(
@@ -437,14 +425,9 @@ class PlayScreenState extends State<PlayScreen> {
     } else if (details.delta.dy > 0) {
       return;
     } else if (details.delta.dx > 0) {
-      isLocked == false
-          ? _controller
-              .seekTo(_controller.value.position + const Duration(seconds: 5))
-          : null;
+      isLocked ? null : forwardSec(5);
       setState(() {
-        isLocked == false
-            ? textDur = "[${currentDuration.split(".").first}]"
-            : null;
+        isLocked ? null : textDur = "[${currentDuration.split(".").first}]";
         Future.delayed(
           const Duration(milliseconds: 500),
           () => setState(() {
@@ -453,14 +436,9 @@ class PlayScreenState extends State<PlayScreen> {
         );
       });
     } else if (details.delta.dx < 0) {
-      isLocked == false
-          ? _controller
-              .seekTo(_controller.value.position - const Duration(seconds: 5))
-          : null;
+      isLocked ? null : rewindSec(5);
       setState(() {
-        isLocked == false
-            ? textDur = "[${currentDuration.split(".").first}]"
-            : null;
+        isLocked ? null : textDur = "[${currentDuration.split(".").first}]";
         Future.delayed(
           const Duration(milliseconds: 500),
           () => setState(() {
@@ -533,4 +511,11 @@ class PlayScreenState extends State<PlayScreen> {
           ],
         ),
       );
+  forwardSec(sec) {
+    _controller.seekTo(_controller.value.position + Duration(seconds: sec));
+  }
+
+  rewindSec(sec) {
+    _controller.seekTo(_controller.value.position - Duration(seconds: sec));
+  }
 }

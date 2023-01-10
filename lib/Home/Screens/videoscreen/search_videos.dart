@@ -40,6 +40,7 @@ class VideoSearch extends SearchDelegate {
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
+
               return Column(
                 children: [
                   ListTile(
@@ -53,7 +54,11 @@ class VideoSearch extends SearchDelegate {
                     title: Text(trimmedTitle),
                     leading: thumbnail(),
                     trailing: popupMenu(
-                        index: index, title: trimmedTitle, videoPath: data),
+                        index: index,
+                        title: trimmedTitle,
+                        videoPath: data,
+                        fileSize: "",
+                        duration: ""),
                   ),
                   const Divider(),
                 ],
@@ -79,6 +84,7 @@ class VideoSearch extends SearchDelegate {
             if (data.toLowerCase().contains(query.toLowerCase())) {
               String splittedTitle = data.toString().split("/").last;
               String trimmedTitle = splittedTitle;
+
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
@@ -95,7 +101,11 @@ class VideoSearch extends SearchDelegate {
                     title: Text(trimmedTitle),
                     leading: thumbnail(),
                     trailing: popupMenu(
-                        index: index, title: trimmedTitle, videoPath: data),
+                        index: index,
+                        title: trimmedTitle,
+                        videoPath: data,
+                        fileSize: "",
+                        duration: ""),
                   ),
                   const Divider(),
                 ],

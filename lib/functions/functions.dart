@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -48,7 +45,6 @@ favouriteDB(Favourite value, context) async {
   favouriteNotifier.notifyListeners();
   snackBar(
       context: context, content: "Successfully added", bgcolor: Colors.green);
-  Navigator.of(context).pop();
 }
 
 Future<void> getFavList() async {
@@ -67,7 +63,6 @@ Future<void> deleteFav(int index) async {
 playlistitemDB(PlayListItems value) async {
   final listitemshive = await Hive.openBox<PlayListItems>('listitemsBox');
   await listitemshive.add(value);
-  // value.index = id;
   playlistitemsNotifier.value.add(value);
   playlistitemsNotifier.notifyListeners();
 }

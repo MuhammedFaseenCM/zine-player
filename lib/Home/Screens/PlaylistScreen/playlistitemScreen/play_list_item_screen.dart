@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/playlistvideo.dart';
 import 'package:zineplayer/Home/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
@@ -20,7 +21,7 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.items.name),
+          title: Text(widget.videoPath),
           centerTitle: true,
           flexibleSpace: appbarcontainer(),
           backgroundColor: Colors.transparent,
@@ -49,19 +50,11 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
                       shorttitle = "${shorttitle.substring(0, 20)}...";
                     }
                     if (widget.items.name == listdata.playlistFolderName) {
-                      return Card(
-                        child: ListTile(
-                          onTap: () {
-                            playVideo(
-                                videotitle: title,
-                                context: context,
-                                videoPath: listdata.videoPath,
-                                splittedvideotitle: shorttitle);
-                          },
-                          leading: thumbnail(),
-                          title: Text(shorttitle),
-                          trailing: popupMenu(index: index),
-                        ),
+                      return PlayListVideo(
+                        title: title,
+                        videoPath: listdata.videoPath,
+                        shorttitle: shorttitle,
+                        index: index,
                       );
                     } else {
                       return const SizedBox();
@@ -73,31 +66,6 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
           valueListenable: playlistitemsNotifier,
         ),
       ),
-    );
-  }
-
-  Widget popupMenu({required index}) {
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            deleteListItem(index: index, context: context);
-            snackBar(
-                context: context,
-                content: "Successfully deleted",
-                bgcolor: Colors.green);
-          },
-          icon: const Icon(
-            Icons.delete,
-            color: Colors.red,
-          ),
-          label: const Text(
-            "Delete from playlist",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        ))
-      ],
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -8,11 +7,8 @@ addToFavourite(
     {required title, required context, index, required videoPath}) async {
   final favouritehive = await Hive.openBox<Favourite>('favouriteBox');
   List<Favourite> favListing = favouritehive.values.toList();
-  log(favListing.toString());
   List<Favourite> result =
       favListing.where((contains) => contains.videoPath == videoPath).toList();
-  log(result.toString());
-
   if (result.isEmpty) {
     final name = title;
     final favList = Favourite(title: name, videoPath: videoPath);
@@ -22,10 +18,7 @@ addToFavourite(
     favouriteDB(favList, context);
   } else {
     snackBar(
-        context: context,
-        content: "Already added to favourite list",
-        bgcolor: Colors.grey[800]);
-    Navigator.of(context).pop();
+        context: context, content: "Already added", bgcolor: Colors.grey[800]);
     return;
   }
 }

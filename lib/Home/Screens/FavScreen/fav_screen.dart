@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/FavScreen/fav_video.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -16,22 +17,11 @@ class FavouriteScreen extends StatelessWidget {
               if (splittedtitle.length > 20) {
                 splittedtitle = "${splittedtitle.substring(0, 20)}...";
               }
-              return Card(
-                child: ListTile(
-                  onTap: () {
-                    playVideo(
-                      videotitle: listdata.title,
-                      context: context,
-                      videoPath: listdata.videoPath,
-                      splittedvideotitle: splittedtitle,
-                    );
-                  },
-                  // leading: thumbnail(listdata),
-                  title: Text(splittedtitle),
-                  trailing: popupMenu(index),
-                  leading: thumbnail(),
-                ),
-              );
+              return FavouriteVideo(
+                  title: listdata.title,
+                  path: listdata.videoPath,
+                  trimtitle: splittedtitle,
+                  index: index);
             },
             separatorBuilder: (context, index) {
               return const Divider();
@@ -39,27 +29,6 @@ class FavouriteScreen extends StatelessWidget {
             itemCount: favList.length);
       },
       valueListenable: favouriteNotifier,
-    );
-  }
-
-  Widget popupMenu(index) {
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            deleteFav(index);
-            snackBar(
-                context: context, content: "Unliked", bgcolor: Colors.green);
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.remove, color: Colors.red),
-          label: const Text(
-            "Unlike",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        ))
-      ],
     );
   }
 }

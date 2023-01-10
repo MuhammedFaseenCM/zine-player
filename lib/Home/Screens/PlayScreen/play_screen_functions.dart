@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:wakelock/wakelock.dart';
-
 
 rotate(isportrait) async {
   if (isportrait) {
@@ -16,25 +18,13 @@ void setLandscape(context, widget, controller, videoPath) async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   await Wakelock.enable();
+
   widget.duration != 0 ? newPlayListDialog(context, controller, widget) : null;
 }
 
 void setAllOrientations() async {
   await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-
   // await Wakelock.disable();
-}
-
-playFunction({required controller, required setState}) {
-  if (controller.value.isPlaying) {
-    setState(() {
-      controller.pause();
-    });
-  } else {
-    setState(() {
-      controller.play();
-    });
-  }
 }
 
 void newPlayListDialog(BuildContext context, controller, widget) {
@@ -58,4 +48,3 @@ void newPlayListDialog(BuildContext context, controller, widget) {
     ),
   );
 }
-
