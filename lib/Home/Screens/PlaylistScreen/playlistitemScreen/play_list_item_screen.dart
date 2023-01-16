@@ -19,6 +19,7 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false ,
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.videoPath),
@@ -51,11 +52,11 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
                     }
                     if (widget.items.name == listdata.playlistFolderName) {
                       return PlayListVideo(
-                        title: title,
-                        videoPath: listdata.videoPath,
-                        shorttitle: shorttitle,
-                        index: index,
-                      );
+                          title: title,
+                          videoPath: listdata.videoPath,
+                          shorttitle: shorttitle,
+                          index: index,
+                          duration: listdata.duration);
                     } else {
                       return const SizedBox();
                     }

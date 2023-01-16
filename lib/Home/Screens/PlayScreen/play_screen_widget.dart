@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_functions.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/video_progress_indicator.dart';
 
@@ -153,7 +154,11 @@ popupMenuItem({required setState, required controller, required value}) =>
         title: Text('$value x'),
       ),
     );
-
+Widget playpause(controller) => Icon(
+        controller.value.isPlaying ? Icons.play_arrow : Icons.pause,
+        color: white,
+        size: 40.0,
+      );
 Widget indicator({required isShow, required controller}) => Visibility(
     visible: isShow,
     child: CustomProgressIndicator(

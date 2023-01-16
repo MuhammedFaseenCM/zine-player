@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class FavSearch extends SearchDelegate {
@@ -50,7 +49,7 @@ class FavSearch extends SearchDelegate {
                         );
                       },
                       title: Text(trimmedTitle),
-                      leading: thumbnail()),
+                      leading: thumbnail(duration: data.duration)),
                   const Divider(),
                 ],
               );
@@ -90,7 +89,7 @@ class FavSearch extends SearchDelegate {
                         );
                       },
                       title: Text(trimmedTitle),
-                      leading: thumbnail()),
+                      leading: thumbnail(duration: data.duration)),
                   const Divider(),
                 ],
               );

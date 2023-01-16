@@ -18,10 +18,12 @@ class FavouriteScreen extends StatelessWidget {
                 splittedtitle = "${splittedtitle.substring(0, 20)}...";
               }
               return FavouriteVideo(
-                  title: listdata.title,
-                  path: listdata.videoPath,
-                  trimtitle: splittedtitle,
-                  index: index);
+                title: listdata.title,
+                path: listdata.videoPath,
+                trimtitle: splittedtitle,
+                index: index,
+                duration: listdata.duration,
+              );
             },
             separatorBuilder: (context, index) {
               return const Divider();

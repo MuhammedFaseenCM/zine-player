@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_all_videos.dart';
 import 'package:zineplayer/Home/Screens/videoscreen/video_container.dart';
+import 'package:zineplayer/functions/functions.dart';
 
 class VideoHome extends StatefulWidget {
   const VideoHome({super.key});
@@ -38,6 +39,7 @@ class _VideoHomeState extends State<VideoHome> {
                 if (title.length > 20) {
                   splittitle = "${title.substring(0, 20)}...";
                 }
+
                 return VideoContainer(
                     title: title,
                     path: path,

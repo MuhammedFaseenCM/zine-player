@@ -1,12 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:video_player/video_player.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlist_widget.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
-import 'package:zineplayer/functions/datamodels.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/popup_widget.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class VideoContainer extends StatefulWidget {
@@ -26,63 +21,39 @@ class VideoContainer extends StatefulWidget {
 }
 
 class _VideoContainerState extends State<VideoContainer> {
-  // late VideoPlayerController _controller;
+  late VideoPlayerController _controller;
   Duration _duration = const Duration();
   int? durationinSecs = 0;
 
   @override
   void initState() {
     super.initState();
-    //  _controller = VideoPlayerController.file(File(widget.path));
-    // _controller.initialize().then((_) {
-    //   setState(() {
-    //    _duration = _controller.value.duration;
-    //  });
-    //  });
-    recentdbdata();
-  }
-
-  recentdbdata() async {
-    final box = await Hive.openBox<RecentList>('recentlistBox');
-    List<RecentList> data = box.values.toList();
-    List<RecentList> result =
-        data.where((contains) => contains.videoPath == widget.path).toList();
-
-    if (result.isNotEmpty) {
-      durationinSecs = result
-          .where((element) => element.videoPath == widget.path)
-          .first
-          ?.durationinSec;
-    }
+    _controller = VideoPlayerController.file(File(widget.path));
+    _controller.initialize().then((_) {
+      setState(() {
+        _duration = _controller.value.duration;
+      });
+    });
+    getthumbnail(widget.path, setState);
   }
 
   @override
   void dispose() {
-    //  _controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-          onTap: () {
-            playVideo(
-                videotitle: widget.title,
-                context: context,
-                videoPath: widget.path,
-                splittedvideotitle: widget.splittitle,
-                durationinSec: durationinSecs);
-          },
-          leading: thumbnail(duration: _duration.toString().split(".").first),
-          title: Text(widget.splittitle),
-          trailing: popupMenu(
-              index: widget.index,
-              title: widget.title,
-              videoPath: widget.path,
-              fileSize: fileSize,
-              duration: durationinSecs)),
-    );
+    return listTileVideo(
+        index: widget.index,
+        fileSize: fileSize,
+        context: context,
+        title: widget.title,
+        splittitle: widget.splittitle,
+        path: widget.path,
+        duration: _duration,
+        durinsec: durationinSecs);
   }
 
   String get fileSize {
@@ -98,4 +69,36 @@ class _VideoContainerState extends State<VideoContainer> {
     }
     return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
   }
+}
+
+Widget listTileVideo(
+    {required index,
+    required fileSize,
+    required context,
+    required title,
+    required splittitle,
+    required path,
+    required duration,
+    required durinsec}) {
+  return Card(
+    child: ListTile(
+      onTap: () {
+        playVideo(
+            videotitle: title,
+            context: context,
+            videoPath: path,
+            splittedvideotitle: splittitle,
+            durationinSec: durinsec);
+      },
+      leading: thumbnail(duration: duration.toString().split(".").first),
+      title: Text(splittitle),
+      trailing: popupMenu(
+          index: index,
+          title: title,
+          videoPath: path,
+          fileSize: fileSize,
+          duration: duration.toString().split(".").first,
+          context: context),
+    ),
+  );
 }

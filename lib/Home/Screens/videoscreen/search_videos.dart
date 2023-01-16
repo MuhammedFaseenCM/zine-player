@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_all_videos.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/popup_widget.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class VideoSearch extends SearchDelegate {
@@ -52,13 +52,13 @@ class VideoSearch extends SearchDelegate {
                           splittedvideotitle: trimmedTitle);
                     },
                     title: Text(trimmedTitle),
-                    leading: thumbnail(),
                     trailing: popupMenu(
                         index: index,
                         title: trimmedTitle,
                         videoPath: data,
                         fileSize: "",
-                        duration: ""),
+                        duration: "",
+                        context: context),
                   ),
                   const Divider(),
                 ],
@@ -99,13 +99,13 @@ class VideoSearch extends SearchDelegate {
                           splittedvideotitle: trimmedTitle);
                     },
                     title: Text(trimmedTitle),
-                    leading: thumbnail(),
                     trailing: popupMenu(
                         index: index,
                         title: trimmedTitle,
                         videoPath: data,
                         fileSize: "",
-                        duration: ""),
+                        duration: "",
+                        context: context),
                   ),
                   const Divider(),
                 ],

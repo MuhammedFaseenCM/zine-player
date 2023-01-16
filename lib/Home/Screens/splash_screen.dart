@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:zineplayer/AccessFolders/access_videos.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,45 +16,33 @@ class SplashscreenState extends State<SplashScreen> {
   @override
   void initState() {
     splashFetch();
-
     indicator();
     gotoMainScreen();
     super.initState();
-  }
-
-  Future<void> indicator() async {
-    for (int i = 1; i < 8; i++) {
-      await Future.delayed(const Duration(seconds: 1));
-      setState(() {
-        percent = percent;
-      });
-      percent = percent + 0.12;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [Colors.blue, Colors.purple])),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [bluecolor, purplecolor])),
       child: Column(
         children: [
           Expanded(
-            flex: 2,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
+                children: [
                   Icon(
                     Icons.play_circle,
                     size: 80.0,
-                    color: Colors.white,
+                    color: white,
                   ),
                   Text(
-                    'Zine player',
+                    zineplayer,
                     style: TextStyle(
-                        color: Colors.white,
+                        color: white,
                         fontSize: 30.0,
                         fontWeight: FontWeight.bold),
                   )
@@ -71,13 +60,10 @@ class SplashscreenState extends State<SplashScreen> {
                 ),
                 child: LinearPercentIndicator(
                   width: 200.0,
-                  backgroundColor: Colors.blue,
-                  // linearGradientBackgroundColor: const LinearGradient(
-                  //   colors: [Colors.blue, Colors.purple],
-                  // ),
+                  backgroundColor: bluecolor,
                   lineHeight: 10.0,
                   percent: percent,
-                  progressColor: Colors.white,
+                  progressColor: white,
                   barRadius: const Radius.circular(16),
                 ),
               )
@@ -93,5 +79,15 @@ class SplashscreenState extends State<SplashScreen> {
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx) => const MainScreen()));
+  }
+
+  Future<void> indicator() async {
+    for (int i = 1; i < 18; i++) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      setState(() {
+        percent = percent;
+      });
+      percent = percent + 0.05;
+    }
   }
 }

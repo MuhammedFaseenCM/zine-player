@@ -19,7 +19,7 @@ void setLandscape(context, widget, controller, videoPath) async {
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   await Wakelock.enable();
 
-  widget.duration != 0 ? newPlayListDialog(context, controller, widget) : null;
+  widget.duration != 0 ? resumeStartDailog(context, controller, widget) : null;
 }
 
 void setAllOrientations() async {
@@ -27,7 +27,7 @@ void setAllOrientations() async {
   // await Wakelock.disable();
 }
 
-void newPlayListDialog(BuildContext context, controller, widget) {
+void resumeStartDailog(BuildContext context, controller, widget) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(

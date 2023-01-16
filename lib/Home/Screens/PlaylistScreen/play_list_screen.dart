@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/play_list_functions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -14,101 +15,80 @@ class PlayScreen extends StatefulWidget {
 }
 
 class _PlayScreenState extends State<PlayScreen> {
-  final _newPlayListController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          newPlayListDialog(context);
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: ValueListenableBuilder(
-        builder: (BuildContext ctx, List<PlayList> playList, Widget? child) {
-          return ListView.builder(
-              itemBuilder: (context, index) {
-                final listdata = playList[index];
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(createRoute(PlayListItemScreen(
-                          items: listdata, videoPath: listdata.name)));
-                    },
-                    leading: const Icon(
-                      Icons.folder,
-                      size: 50.0,
-                      color: Colors.blue,
-                    ),
-                    title: Text(listdata.name),
-                    trailing: popupMenu(index),
-                  ),
-                );
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 200.0),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                newPlayListDialog(context, formKey, newPlayListController);
               },
-              itemCount: playList.length);
-        },
-        valueListenable: playListNotifier,
-      ),
-    );
-  }
-
-  void newPlayListDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Create playlist"),
-        content: Form(
-            key: _formKey,
-            child: Padding(
-              padding: (const EdgeInsets.only(top: 0, bottom: 4)),
-              child: TextFormField(
-                controller: _newPlayListController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Playlist",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Empty not allowed";
-                  } else {
-                    return null;
-                  }
-                },
+              icon: Icon(
+                Icons.add,
+                color: purplecolor,
               ),
-            )),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+              label: Text(
+                createPlaylist,
+                style: TextStyle(color: purplecolor),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(white)),
+            ),
+          ),
+          Expanded(
+            child: ValueListenableBuilder(
+              builder:
+                  (BuildContext ctx, List<PlayList> playList, Widget? child) {
+                return ListView.separated(
+                    itemBuilder: (context, index) {
+                      final listdata = playList[index];
+                      return Card(
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(createRoute(
+                                PlayListItemScreen(
+                                    items: listdata,
+                                    videoPath: listdata.name)));
+                          },
+                          leading: const Icon(
+                            Icons.folder,
+                            size: 60.0,
+                            color: Colors.blue,
+                          ),
+                          title: Text(listdata.name),
+                          trailing: popupMenu(index, listdata.name),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider();
+                    },
+                    itemCount: playList.length);
               },
-              child: const Text("Cancel")),
-          TextButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  createplaylistfn(context, _newPlayListController);
-                }
-              },
-              child: const Text("Ok"))
+              valueListenable: playListNotifier,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget popupMenu(index) {
+  Widget popupMenu(index, name) {
+    TextTheme textTheme = Theme.of(context).textTheme;
     return PopupMenuButton(
       itemBuilder: (context) => [
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            updatePlayListDialog(index);
+            updatePlayListDialog(index, name);
           },
           icon: const Icon(Icons.edit),
-          label: const Text(
+          label: Text(
             "Edit playlist",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
+            style: textTheme.subtitle1,
           ),
         )),
         PopupMenuItem(
@@ -117,26 +97,27 @@ class _PlayScreenState extends State<PlayScreen> {
             deleteFunction(index, context);
           },
           icon: const Icon(Icons.delete, color: Colors.red),
-          label: const Text(
+          label: Text(
             "Delete playlist",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
+            style: textTheme.subtitle1,
           ),
         ))
       ],
     );
   }
 
-  void updatePlayListDialog(index) {
+  void updatePlayListDialog(index, name) {
+    newPlayListController.text = name.toString();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Update playlist"),
         content: Form(
-            key: _formKey,
+            key: formKey,
             child: Padding(
               padding: (const EdgeInsets.only(top: 0, bottom: 4)),
               child: TextFormField(
-                controller: _newPlayListController,
+                controller: newPlayListController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Playlist",
@@ -158,8 +139,8 @@ class _PlayScreenState extends State<PlayScreen> {
               child: const Text("Cancel")),
           TextButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  updatePlaylist(index, context, _newPlayListController);
+                if (formKey.currentState!.validate()) {
+                  updatePlaylist(index, context, newPlayListController);
                 }
               },
               child: const Text("Ok"))
@@ -167,4 +148,46 @@ class _PlayScreenState extends State<PlayScreen> {
       ),
     );
   }
+}
+
+void newPlayListDialog(BuildContext context, formKey, newPlayListController) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text("Create playlist"),
+      content: Form(
+          key: formKey,
+          child: Padding(
+            padding: (const EdgeInsets.only(top: 0, bottom: 4)),
+            child: TextFormField(
+              controller: newPlayListController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Playlist",
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Empty not allowed";
+                } else {
+                  return null;
+                }
+              },
+            ),
+          )),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cancel")),
+        TextButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                createplaylistfn(context, newPlayListController);
+              }
+            },
+            child: const Text("Ok"))
+      ],
+    ),
+  );
 }

@@ -1,6 +1,12 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
@@ -122,6 +128,18 @@ Future<void> deleteRecentList(context) async {
   getRecentList();
 }
 
+Future<void> pickColor(value) async {
+  final colorhive = await Hive.openBox<FrameColor>('colorBox');
+  if (colorhive.isEmpty) {
+    await colorhive.add(value);
+    log("add");
+  } else {
+    log("put");
+    await colorhive.putAt(0, value);
+  }
+  log("picked color: ${value.toString()}");
+}
+
 playVideo(
     {required videotitle,
     required context,
@@ -184,23 +202,32 @@ Route createRoute(page) {
   );
 }
 
+checkthumbnail() async {
+  if (0 == 0) {
+  } else {}
+}
+
+getthumbnail(path, setState) async {
+  thumbnailFile = (await VideoThumbnail.thumbnailFile(
+      video: path,
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      imageFormat: ImageFormat.PNG))!;
+  setState(() {});
+}
+
 Widget thumbnail({duration}) {
   return Stack(
     children: [
       Container(
-        height: 50.0,
-        width: 70.0,
-        color: Colors.grey,
-        child: const Icon(
-          Icons.movie_filter_outlined,
-          color: Colors.white,
-        ),
-      ),
+          height: 50.0,
+          width: 90.0,
+          color: black,
+          child: Image.file(File(thumbnailFile))),
       Positioned(
           right: 0.0,
           bottom: 0.0,
           child: Container(
-            color: Colors.black,
+            color: black,
             child: duration != null
                 ? Text(
                     duration.toString().split("0:0").last,

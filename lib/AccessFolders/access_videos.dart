@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:zineplayer/AccessFolders/method_channel_fn.dart';
 import 'package:zineplayer/AccessFolders/load_all_videos.dart';
@@ -26,7 +25,7 @@ Future<bool> _requestPermission(Permission permission) async {
 }
 
 Future splashFetch() async {
-  log("object");
+  
   if (await _requestPermission(Permission.storage)) {
     AccessFilesFromStorage.accessFromStorage([
       '.mkv',

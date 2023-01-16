@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/drawer/settings.dart';
 import 'package:zineplayer/Home/Screens/splash_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
@@ -9,14 +10,41 @@ void main() async {
   runApp(const Zineplayer());
 }
 
-class Zineplayer extends StatelessWidget {
+ThemeManager themeManager = ThemeManager();
+
+class Zineplayer extends StatefulWidget {
   const Zineplayer({super.key});
+
+  @override
+  State<Zineplayer> createState() => _ZineplayerState();
+}
+
+class _ZineplayerState extends State<Zineplayer> {
+  @override
+  void initState() {
+    themeManager.addListener(themeListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    themeManager.removeListener(themeListener);
+    super.dispose();
+  }
+
+  themeListener() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.purple),
+      darkTheme: darkTheme,
+      theme: lightTheme,
+      themeMode: themeManager.themeMode,
       home: const SplashScreen(),
     );
   }
@@ -35,5 +63,7 @@ adapterRegisterFunction() async {
   if (!Hive.isAdapterRegistered(RecentListAdapter().typeId)) {
     Hive.registerAdapter(RecentListAdapter());
   }
-  await Hive.openBox('resumeBox');
+  if (!Hive.isAdapterRegistered(FrameColorAdapter().typeId)) {
+    Hive.registerAdapter(FrameColorAdapter());
+  }
 }

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,9 +6,14 @@ import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_functions.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_widget.dart';
+import 'package:zineplayer/Home/pip_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zineplayer/Home/main_screen.dart';
+import 'package:zineplayer/functions/datamodels.dart';
 
 class PlayScreen extends StatefulWidget {
   final String videoFile;
@@ -26,11 +32,13 @@ class PlayScreen extends StatefulWidget {
 class PlayScreenState extends State<PlayScreen> {
   late VideoPlayerController _controller;
   String currentDuration = '0';
-
   Duration resumeDuration = const Duration();
-
+  int _index = 0;
+  Color color = Color.fromARGB(255, 158, 155, 155);
+  late String barColor;
   @override
   void initState() {
+    barcolorFunction();
     super.initState();
     _controller = VideoPlayerController.file(File(widget.videoFile));
 
@@ -45,40 +53,6 @@ class PlayScreenState extends State<PlayScreen> {
     setLandscape(context, widget, _controller, widget.videoFile);
     screenVisibility();
   }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    setAllOrientations();
-    super.dispose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    DeviceOrientation.landscapeLeft;
-    currentDuration = _controller.value.position.toString();
-    widget.duration = _controller.value.position.inSeconds;
-    addToRecentList(
-        title: widget.videotitle,
-        context: context,
-        videoPath: widget.videoFile,
-        recentduration: currentDuration,
-        durationinSec: widget.duration);
-    Wakelock.disable();
-  }
-
-  bool isShow = true;
-  bool isLocked = false;
-  bool isLockButton = true;
-  bool isLeftIconVisible = false;
-  bool isrRightIconVisible = false;
-  String textDur = '';
-  String leftText = '';
-  String rightText = '';
-  bool playPauseBool = false;
-  List<BoxFit> fit = [
-    BoxFit.cover,
-    BoxFit.fitWidth,
-    BoxFit.fitHeight,
-  ];
-  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -99,17 +73,35 @@ class PlayScreenState extends State<PlayScreen> {
               videoContent(fit: fit, controller: _controller, index: _index),
               durationSwipe(),
               Center(child: playPauseBool ? playpause() : null),
+              leftseekContainer(orientation: orientation),
+              rightseekContainer(orientation: orientation),
               topBar(isPortrait: isPortrait),
               bottomBar(orientation),
               indicatorNduration(orientation: orientation),
               lockButton(orientation),
-              leftseekContainer(orientation: orientation),
-              rightseekContainer(orientation: orientation),
             ]),
           );
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    setAllOrientations();
+    super.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    DeviceOrientation.landscapeLeft;
+    int totalduration = _controller.value.duration.inSeconds;
+    widget.duration = _controller.value.position.inSeconds;
+    addToRecentList(
+        title: widget.videotitle,
+        context: context,
+        videoPath: widget.videoFile,
+        totalduration: totalduration,
+        durationinSec: widget.duration);
+    Wakelock.disable();
   }
 
   Widget rightseekContainer({required orientation}) => GestureDetector(
@@ -120,13 +112,13 @@ class PlayScreenState extends State<PlayScreen> {
               : const EdgeInsets.only(top: 100.0, left: 260.0),
           width: orientation == Orientation.landscape ? 320.0 : 150.0,
           height: orientation == Orientation.landscape ? 270.0 : 650.0,
-          color: Colors.transparent,
+          color: transparent,
           child: InkWell(
             onTap: () => screenVisibility(),
             onDoubleTap: () {
               isLocked ? null : forwardSec(10);
               setState(() {
-                isLocked ? null : leftText = "+10s";
+                isLocked ? null : leftText = plusten;
                 isLocked ? null : isrRightIconVisible = true;
               });
               Future.delayed(
@@ -145,19 +137,9 @@ class PlayScreenState extends State<PlayScreen> {
                   children: [
                     Center(
                         child: isrRightIconVisible
-                            ? const Icon(
-                                Icons.fast_forward,
-                                size: 30.0,
-                                color: Colors.white,
-                              )
+                            ? screenIcon(Icons.fast_forward)
                             : null),
-                    Text(
-                      leftText,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0),
-                    ),
+                    seekText(leftText)
                   ],
                 ),
                 brightnessSlider(),
@@ -166,10 +148,15 @@ class PlayScreenState extends State<PlayScreen> {
           ),
         ),
       );
+  Widget screenIcon(icon) => Icon(
+        icon,
+        size: 30.0,
+        color: white,
+      );
   Widget durationSwipe() => Center(
           child: Text(
         textDur,
-        style: const TextStyle(fontSize: 30.0, color: Colors.white),
+        style: TextStyle(fontSize: 30.0, color: white),
       ));
   Widget leftseekContainer({required orientation}) => GestureDetector(
         child: Container(
@@ -180,13 +167,13 @@ class PlayScreenState extends State<PlayScreen> {
               : const EdgeInsets.only(top: 100.0),
           width: orientation == Orientation.landscape ? 320.0 : 150.0,
           height: orientation == Orientation.landscape ? 270.0 : 650.0,
-          color: Colors.transparent,
+          color: transparent,
           child: InkWell(
             onTap: () => screenVisibility(),
             onDoubleTap: () {
               isLocked ? null : rewindSec(10);
               setState(() {
-                isLocked ? null : rightText = "-10s";
+                isLocked ? null : rightText = minusten;
                 isLocked ? null : isLeftIconVisible = true;
               });
 
@@ -208,25 +195,20 @@ class PlayScreenState extends State<PlayScreen> {
                   children: [
                     Center(
                         child: isLeftIconVisible
-                            ? const Icon(
-                                Icons.fast_rewind,
-                                size: 30.0,
-                                color: Colors.white,
-                              )
+                            ? screenIcon(Icons.fast_rewind)
                             : null),
-                    Text(
-                      rightText,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0),
-                    ),
+                    seekText(rightText)
                   ],
                 ),
               ],
             ),
           ),
         ),
+      );
+  Widget seekText(text) => Text(
+        text,
+        style: TextStyle(
+            color: white, fontWeight: FontWeight.bold, fontSize: 20.0),
       );
   playFunction() {
     _controller.value.isPlaying
@@ -252,11 +234,13 @@ class PlayScreenState extends State<PlayScreen> {
               : const EdgeInsets.only(top: 800.0, bottom: 0.0),
           width: double.infinity,
           height: 100,
-          color: const Color.fromARGB(132, 158, 158, 158),
+          color: color,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(),
+              const SizedBox(
+                width: 110.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -264,9 +248,9 @@ class PlayScreenState extends State<PlayScreen> {
                       onPressed: () {
                         rewindSec(10);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.fast_rewind,
-                        color: Colors.white,
+                        color: white,
                         size: 40.0,
                       )),
                   IconButton(
@@ -282,18 +266,30 @@ class PlayScreenState extends State<PlayScreen> {
                     onPressed: () {
                       forwardSec(10);
                     },
-                    color: Colors.white,
+                    color: white,
                   )
                 ],
               ),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _index = (_index + 1) % fit.length;
-                    });
-                  },
-                  color: Colors.white,
-                  icon: const Icon(Icons.tv))
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _index = (_index + 1) % fit.length;
+                        });
+                      },
+                      color: white,
+                      icon: const Icon(Icons.fit_screen)),
+                  IconButton(
+                      onPressed: () {
+                        // Navigator.of(context).push(
+                        //       PipScreen(videoPath: widget.videoFile),
+                        // ));
+                      },
+                      color: white,
+                      icon: const Icon(Icons.picture_in_picture_alt)),
+                ],
+              )
             ],
           ),
         ),
@@ -314,7 +310,7 @@ class PlayScreenState extends State<PlayScreen> {
 
   Widget playpause() => Icon(
         _controller.value.isPlaying ? Icons.play_arrow : Icons.pause,
-        color: Colors.white,
+        color: white,
         size: 40.0,
       );
 
@@ -322,9 +318,7 @@ class PlayScreenState extends State<PlayScreen> {
     Orientation orientation,
   ) =>
       Container(
-        color: isLocked
-            ? const Color.fromARGB(113, 158, 158, 158)
-            : Colors.transparent,
+        color: isLocked ? color : transparent,
         margin: orientation == Orientation.landscape
             ? const EdgeInsets.only(top: 370.0, left: 3.0)
             : const EdgeInsets.only(top: 820.0),
@@ -339,7 +333,7 @@ class PlayScreenState extends State<PlayScreen> {
             },
             icon:
                 isLocked ? const Icon(Icons.lock) : const Icon(Icons.lock_open),
-            color: Colors.white,
+            color: white,
           ),
         ),
       );
@@ -347,8 +341,8 @@ class PlayScreenState extends State<PlayScreen> {
   Widget brightnessSlider() => Visibility(
         visible: isShow,
         child: SliderTheme(
-            data: const SliderThemeData(
-              thumbColor: Colors.white,
+            data: SliderThemeData(
+              thumbColor: white,
               trackHeight: 1.0,
             ),
             child: Column(
@@ -358,8 +352,8 @@ class PlayScreenState extends State<PlayScreen> {
                     SizedBox(
                       width: 100.0,
                       child: SfSlider.vertical(
-                        inactiveColor: Colors.white,
-                        activeColor: Colors.blue,
+                        inactiveColor: white,
+                        activeColor: bluecolor,
                         min: 0.0,
                         max: 1.0,
                         value: val,
@@ -374,19 +368,20 @@ class PlayScreenState extends State<PlayScreen> {
                   ],
                 ),
                 val == 0.0
-                    ? const Icon(Icons.brightness_low, color: Colors.white)
-                    : const Icon(Icons.brightness_high, color: Colors.white),
+                    ? Icon(Icons.brightness_low, color: white)
+                    : Icon(Icons.brightness_high, color: white),
               ],
             )),
       );
+
   double vol = 0.5;
   Widget volumeSlider() => Visibility(
         visible: isShow,
         child: SliderTheme(
-            data: const SliderThemeData(
-              thumbColor: Colors.white,
+            data: SliderThemeData(
+              thumbColor: white,
               trackHeight: 1.0,
-              overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
+              overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
             ),
             child: Column(
               children: [
@@ -395,8 +390,8 @@ class PlayScreenState extends State<PlayScreen> {
                     SizedBox(
                       width: 150.0,
                       child: SfSlider.vertical(
-                        inactiveColor: Colors.white,
-                        activeColor: Colors.blue,
+                        inactiveColor: white,
+                        activeColor: bluecolor,
                         min: 0.0,
                         max: 1.0,
                         value: vol,
@@ -411,18 +406,14 @@ class PlayScreenState extends State<PlayScreen> {
                   ],
                 ),
                 vol != 0.0
-                    ? const Icon(Icons.volume_up, color: Colors.white)
-                    : const Icon(Icons.volume_off, color: Colors.white)
+                    ? Icon(Icons.volume_up, color: white)
+                    : Icon(Icons.volume_off, color: white)
               ],
             )),
       );
 
   swipeFunction(details) {
-    if (details.delta.dy < 0) {
-      setState(() {
-        _controller.setVolume(vol);
-      });
-    } else if (details.delta.dy > 0) {
+    if (details.delta.dy > 0 || details.delta.dy < 0) {
       return;
     } else if (details.delta.dx > 0) {
       isLocked ? null : forwardSec(5);
@@ -458,7 +449,7 @@ class PlayScreenState extends State<PlayScreen> {
           margin: const EdgeInsets.only(top: 0.0),
           width: double.infinity,
           height: 60,
-          color: const Color.fromARGB(132, 158, 158, 158),
+          color: color,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -467,13 +458,13 @@ class PlayScreenState extends State<PlayScreen> {
                     Navigator.of(context).pop();
                     Wakelock.disable();
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back,
-                    color: Colors.white,
+                    color: white,
                   )),
               Text(
                 widget.videotitle,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: white),
               ),
               Row(
                 children: [
@@ -482,7 +473,7 @@ class PlayScreenState extends State<PlayScreen> {
                     onPressed: () {
                       rotate(isPortrait);
                     },
-                    color: Colors.white,
+                    color: white,
                   ),
                   playSpeed(controller: _controller, setState: setState),
                 ],
@@ -517,5 +508,18 @@ class PlayScreenState extends State<PlayScreen> {
 
   rewindSec(sec) {
     _controller.seekTo(_controller.value.position - Duration(seconds: sec));
+  }
+
+  barcolorFunction() async {
+    final colorhive = await Hive.openBox<FrameColor>('colorBox');
+    FrameColor? bar = colorhive.getAt(0);
+
+    barColor = bar!.color.toString();
+    log("$barColor");
+    int colorInt = int.parse(
+        barColor.substring(barColor.indexOf("(") + 1, barColor.indexOf(")")));
+    setState(() {
+      color = Color(colorInt);
+    });
   }
 }

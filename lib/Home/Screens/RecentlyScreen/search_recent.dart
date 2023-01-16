@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
+import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class RecentSearch extends SearchDelegate {
@@ -50,7 +50,8 @@ class RecentSearch extends SearchDelegate {
                             durationinSec: data.durationinSec);
                       },
                       title: Text(trimmedTitle),
-                      leading: thumbnail()),
+                      leading:
+                          thumbnail(duration: convertSecond(data.duration))),
                   const Divider(),
                 ],
               );
@@ -90,7 +91,8 @@ class RecentSearch extends SearchDelegate {
                             durationinSec: data.durationinSec);
                       },
                       title: Text(trimmedTitle),
-                      leading: thumbnail()),
+                      leading:
+                          thumbnail(duration: convertSecond(data.duration))),
                   const Divider(),
                 ],
               );

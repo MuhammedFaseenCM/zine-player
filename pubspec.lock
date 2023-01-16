@@ -134,13 +134,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
-  color_picker_field:
-    dependency: "direct main"
-    description:
-      name: color_picker_field
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.2"
   convert:
     dependency: transitive
     description:
@@ -162,13 +155,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.2"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   curved_navigation_bar:
     dependency: "direct main"
     description:
@@ -211,6 +197,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  flex_color_picker:
+    dependency: "direct main"
+    description:
+      name: flex_color_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
+  flex_seed_scheme:
+    dependency: transitive
+    description:
+      name: flex_seed_scheme
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -520,13 +520,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  screen:
-    dependency: "direct main"
-    description:
-      name: screen
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.5"
   screen_brightness:
     dependency: "direct main"
     description:
@@ -562,6 +555,41 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
+  screen_brightness_util:
+    dependency: "direct main"
+    description:
+      name: screen_brightness_util
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
+  screen_brightness_util_android:
+    dependency: transitive
+    description:
+      name: screen_brightness_util_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+  screen_brightness_util_ios:
+    dependency: transitive
+    description:
+      name: screen_brightness_util_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+  screen_brightness_util_platform_interface:
+    dependency: transitive
+    description:
+      name: screen_brightness_util_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+  screen_brightness_util_windows:
+    dependency: transitive
+    description:
+      name: screen_brightness_util_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   screen_brightness_windows:
     dependency: transitive
     description:
@@ -721,6 +749,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.13"
+  video_thumbnail:
+    dependency: "direct main"
+    description:
+      name: video_thumbnail
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3"
   wakelock:
     dependency: "direct main"
     description:
@@ -793,4 +828,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.18.5 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.3.0"

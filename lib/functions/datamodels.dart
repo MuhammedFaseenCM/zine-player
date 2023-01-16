@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'datamodels.g.dart';
 
@@ -19,8 +20,13 @@ class Favourite {
 
   @HiveField(2)
   final String videoPath;
-
-  Favourite({required this.title, this.index, required this.videoPath});
+  @HiveField(3)
+  final String duration;
+  Favourite(
+      {required this.title,
+      this.index,
+      required this.videoPath,
+      required this.duration});
 }
 
 @HiveType(typeId: 3)
@@ -29,7 +35,12 @@ class PlayListItems {
   String videoPath;
   @HiveField(1)
   String playlistFolderName;
-  PlayListItems({required this.videoPath, required this.playlistFolderName});
+  @HiveField(2)
+  String duration;
+  PlayListItems(
+      {required this.videoPath,
+      required this.playlistFolderName,
+      required this.duration});
 }
 
 @HiveType(typeId: 4)
@@ -41,7 +52,7 @@ class RecentList {
   final String videoPath;
 
   @HiveField(2)
-  final String duration;
+  final int duration;
 
   @HiveField(3)
   final int durationinSec;
@@ -52,4 +63,13 @@ class RecentList {
     required this.duration,
     required this.durationinSec,
   });
+}
+
+@HiveType(typeId: 5)
+class FrameColor {
+  @HiveField(0)
+  int? index;
+  @HiveField(1)
+  String color;
+  FrameColor({required this.color});
 }

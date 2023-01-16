@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/popup_widget.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -8,12 +9,14 @@ class PlayListVideo extends StatefulWidget {
   final String videoPath;
   final String shorttitle;
   final int index;
+  final String duration;
   const PlayListVideo(
       {super.key,
       required this.title,
       required this.videoPath,
       required this.shorttitle,
-      required this.index});
+      required this.index,
+      required this.duration});
 
   @override
   State<PlayListVideo> createState() => _PlayListVideoState();
@@ -38,9 +41,9 @@ class _PlayListVideoState extends State<PlayListVideo> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     recentdbdata();
+    getthumbnail(widget.videoPath, setState);
   }
 
   @override
@@ -55,35 +58,17 @@ class _PlayListVideoState extends State<PlayListVideo> {
               splittedvideotitle: widget.shorttitle,
               durationinSec: durationinSecs);
         },
-        leading: thumbnail(),
+        leading: thumbnail(duration: widget.duration),
         title: Text(widget.shorttitle),
-        trailing: popupMenu(index: widget.index),
+        trailing: popupMenu(
+            index: widget.index,
+            title: widget.title,
+            fileSize: "",
+            videoPath: widget.videoPath,
+            duration: widget.duration,
+            isPlaylist: false,context: context),
       ),
     );
   }
 
-  Widget popupMenu({required index}) {
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            deleteListItem(index: index, context: context);
-            snackBar(
-                context: context,
-                content: "Successfully deleted",
-                bgcolor: Colors.green);
-          },
-          icon: const Icon(
-            Icons.delete,
-            color: Colors.red,
-          ),
-          label: const Text(
-            "Delete from playlist",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        ))
-      ],
-    );
-  }
 }

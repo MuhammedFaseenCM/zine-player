@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/popup_widget.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -8,12 +9,14 @@ class FavouriteVideo extends StatefulWidget {
   final String path;
   final String trimtitle;
   final int index;
+  final String duration;
   const FavouriteVideo(
       {super.key,
       required this.title,
       required this.path,
       required this.trimtitle,
-      required this.index});
+      required this.index,
+      required this.duration});
 
   @override
   State<FavouriteVideo> createState() => _FavouriteVideoState();
@@ -39,6 +42,7 @@ class _FavouriteVideoState extends State<FavouriteVideo> {
   void initState() {
     super.initState();
     recentdbdata();
+    getthumbnail(widget.path, setState);
   }
 
   @override
@@ -53,31 +57,17 @@ class _FavouriteVideoState extends State<FavouriteVideo> {
               splittedvideotitle: widget.trimtitle,
               durationinSec: durationinSecs);
         },
-        leading: thumbnail(),
+        leading: thumbnail(duration: widget.duration),
         title: Text(widget.trimtitle),
-        trailing: popupMenu(widget.index),
+        trailing: popupMenu(
+            index: widget.index,
+            title: widget.title,
+            videoPath: widget.path,
+            fileSize: "",
+            duration: widget.duration,
+            isFav: false,
+            context: context),
       ),
-    );
-  }
-
-  Widget popupMenu(index) {
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            child: TextButton.icon(
-          onPressed: () {
-            deleteFav(index);
-            snackBar(
-                context: context, content: "Unliked", bgcolor: Colors.green);
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.remove, color: Colors.red),
-          label: const Text(
-            "Unlike",
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
-          ),
-        ))
-      ],
     );
   }
 }
