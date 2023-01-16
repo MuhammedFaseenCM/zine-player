@@ -9,7 +9,7 @@ void main() async {
   adapterRegisterFunction();
   runApp(const Zineplayer());
 }
-
+const SAVE_KEY_NAME = 'UserLoggedIn';
 ThemeManager themeManager = ThemeManager();
 
 class Zineplayer extends StatefulWidget {

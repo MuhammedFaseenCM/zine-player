@@ -114,10 +114,7 @@ Future<void> deleteRecentList(context) async {
   if (recentlisthive.isNotEmpty) {
     await recentlisthive.deleteAll(recentlisthive.keys);
 
-    snackBar(
-        context: context,
-        content: "Successfully cleared",
-        bgcolor: Colors.green);
+    snackBar(context: context, content: "Successfully cleared", bgcolor: green);
   } else {
     snackBar(
         context: context,
@@ -128,9 +125,10 @@ Future<void> deleteRecentList(context) async {
   getRecentList();
 }
 
-Future<void> pickColor(value) async {
+Future<void> pickColor({value}) async {
   final colorhive = await Hive.openBox<FrameColor>('colorBox');
   if (colorhive.isEmpty) {
+    value = FrameColor(color: "Color(0x968383)");
     await colorhive.add(value);
     log("add");
   } else {

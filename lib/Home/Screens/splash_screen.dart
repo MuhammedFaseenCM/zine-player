@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zineplayer/AccessFolders/access_videos.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/main_screen.dart';
+import 'package:zineplayer/Home/welcome.dart';
+import 'package:zineplayer/main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,9 +18,9 @@ class SplashscreenState extends State<SplashScreen> {
   double percent = 0.1;
   @override
   void initState() {
-    splashFetch();
+     splashFetch();
     indicator();
-    gotoMainScreen();
+    checklogin();
     super.initState();
   }
 
@@ -34,10 +37,9 @@ class SplashscreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(
-                    Icons.play_circle,
-                    size: 80.0,
-                    color: white,
+                  Image.asset(
+                    'assets/image/play_icon_3.png',
+                    width: 150,
                   ),
                   Text(
                     zineplayer,
@@ -61,7 +63,7 @@ class SplashscreenState extends State<SplashScreen> {
                 child: LinearPercentIndicator(
                   width: 200.0,
                   backgroundColor: bluecolor,
-                  lineHeight: 10.0,
+                  lineHeight: 5.0,
                   percent: percent,
                   progressColor: white,
                   barRadius: const Radius.circular(16),
@@ -88,6 +90,18 @@ class SplashscreenState extends State<SplashScreen> {
         percent = percent;
       });
       percent = percent + 0.05;
+    }
+  }
+
+  Future<void> checklogin() async {
+    final sharedprefs = await SharedPreferences.getInstance();
+    final userLoggedIn = sharedprefs.getBool(SAVE_KEY_NAME);
+    if (userLoggedIn == null || userLoggedIn == false) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (ctx1) => const Welcome()));
+    } else {
+        gotoMainScreen();
+      
     }
   }
 }

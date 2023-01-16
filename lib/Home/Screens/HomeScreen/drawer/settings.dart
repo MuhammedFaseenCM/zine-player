@@ -21,7 +21,9 @@ class _SettingsState extends State<Settings> {
   bool loading = true;
   @override
   void initState() {
+    pickColor();
     barcolorFunction();
+
     super.initState();
   }
 
@@ -83,7 +85,7 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  static const Color guidePrimary = Color(0xFF6200EE);
+  static const Color guidePrimary = Color.fromARGB(150, 131, 131, 131);
   static const Color guidePrimaryVariant = Color(0xFF3700B3);
   static const Color guideSecondary = Color(0xFF03DAC6);
   static const Color guideSecondaryVariant = Color(0xFF018786);
@@ -109,7 +111,7 @@ class _SettingsState extends State<Settings> {
           log("$color");
         });
         dynamic pickedcolor = FrameColor(color: color.toString());
-        pickColor(pickedcolor);
+        pickColor(value: pickedcolor);
       },
       width: 40,
       height: 40,

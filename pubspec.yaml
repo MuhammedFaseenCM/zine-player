@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^10.2.0
   screen_brightness: ^0.2.2
   screen_brightness_util: ^0.0.3
+  shared_preferences: ^2.0.16
   syncfusion_flutter_sliders: ^20.4.42
   video_player: ^2.4.10
   video_thumbnail: ^0.5.3
@@ -65,10 +66,9 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/videos/kakkakuyil.mp4
-    - assets/messi video.mp4
-    - assets/videos/mohanlal lucifer.mp4
-    - assets/videos/singam.mp4
+    - assets/image/play_icon.png
+    - assets/image/play_icon_2.png
+    - assets/image/play_icon_3.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

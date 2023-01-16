@@ -16,7 +16,6 @@ import 'package:zineplayer/Home/Screens/videoscreen/video_home.dart';
 import 'package:zineplayer/Home/pip_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
-import 'package:zineplayer/main.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -96,7 +95,6 @@ class _MainScreenState extends State<MainScreen> {
           flexibleSpace: appbarcontainer(),
           centerTitle: true,
           actions: [
-            
             // IconButton(
             //     onPressed: () => splashFetch(),
             //     icon: const Icon(Icons.rotate_left)),
@@ -113,7 +111,7 @@ class _MainScreenState extends State<MainScreen> {
               valueListenable: MainScreen.selectedNotifier,
               builder: (BuildContext ctx, int updatedIndex, _) =>
                   _pages[updatedIndex]),
-          pipScreen()
+          //   pipScreen()
         ]),
       ),
     );
@@ -152,5 +150,3 @@ Widget appbarcontainer() {
               topRight: Radius.circular(20.0)),
           gradient: LinearGradient(colors: [bluecolor, purplecolor])));
 }
-
-

@@ -21,7 +21,6 @@ class FolderContainer extends StatefulWidget {
 class _FolderContainerState extends State<FolderContainer> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -35,7 +34,10 @@ class _FolderContainerState extends State<FolderContainer> {
             Navigator.of(context).push(createRoute(
                 VideoList(folderPath: loadFolders.value[widget.index])));
           },
-          title: Text(loadFolders.value[widget.index].split("/").last),
+          title: Text(
+            loadFolders.value[widget.index].split("/").last,
+            style: const TextStyle(fontWeight: FontWeight.normal),
+          ),
           leading: const Icon(
             Icons.folder,
             size: 60.0,
