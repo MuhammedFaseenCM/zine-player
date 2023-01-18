@@ -7,11 +7,13 @@ import 'package:zineplayer/functions/datamodels.dart';
 void main() async {
   await Hive.initFlutter();
   adapterRegisterFunction();
+  
+  
   runApp(const Zineplayer());
 }
-const SAVE_KEY_NAME = 'UserLoggedIn';
+const saveKey = 'UserLoggedIn';
 ThemeManager themeManager = ThemeManager();
-
+late Box<AllVideos> videoDB;
 class Zineplayer extends StatefulWidget {
   const Zineplayer({super.key});
 
@@ -66,4 +68,8 @@ adapterRegisterFunction() async {
   if (!Hive.isAdapterRegistered(FrameColorAdapter().typeId)) {
     Hive.registerAdapter(FrameColorAdapter());
   }
+  if (!Hive.isAdapterRegistered(AllVideosAdapter().typeId)) {
+    Hive.registerAdapter(AllVideosAdapter());
+  }
+  videoDB = await Hive.openBox<AllVideos>('videoplayer');
 }

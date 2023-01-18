@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/play_list_screen.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/list_item_functions.dart';
+import 'package:zineplayer/Home/Screen%20functions/list_item_functions.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -40,13 +40,18 @@ Widget detailsDailog({required path, required duration, required size}) {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Location : $path"),
-        Text("Duration : $duration"),
-        Text("Size : $size")
+        text("Location : $path"),
+        text("Duration : $duration"),
+        text("Size : $size")
       ],
     ),
   );
 }
+
+Widget text(text) => Text(
+      text,
+      style: const TextStyle(fontWeight: FontWeight.normal),
+    );
 
 Widget playlistDailog(
     {required widgetpath, required context, required duration}) {

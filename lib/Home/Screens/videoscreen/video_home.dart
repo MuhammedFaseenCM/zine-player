@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_all_videos.dart';
 import 'package:zineplayer/Home/Screens/videoscreen/video_container.dart';
-import 'package:zineplayer/functions/functions.dart';
+import 'package:zineplayer/functions/datamodels.dart';
+import 'package:zineplayer/main.dart';
 
 class VideoHome extends StatefulWidget {
   const VideoHome({super.key});
@@ -12,6 +13,7 @@ class VideoHome extends StatefulWidget {
 
 class _VideoHomeState extends State<VideoHome> {
   late String path;
+  int currentpage = 1;
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _VideoHomeState extends State<VideoHome> {
           return ListView.builder(
               itemCount: videolist.length,
               itemBuilder: (context, index) {
+                AllVideos? videoinfo = videoDB.getAt(index);
                 String title =
                     allVideos.value[index].toString().split("/").last;
                 path = allVideos.value[index];
@@ -41,10 +44,14 @@ class _VideoHomeState extends State<VideoHome> {
                 }
 
                 return VideoContainer(
-                    title: title,
-                    path: path,
-                    splittitle: splittitle,
-                    index: index);
+                  title: title,
+                  path: path,
+                  splittitle: splittitle,
+                  index: index,
+                  duration: videoinfo!.duration,
+                  
+                  
+                );
               });
         },
       ),

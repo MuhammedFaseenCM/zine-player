@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_widget.dart';
+import 'package:zineplayer/Home/Screen%20widgets/play_screen_widget.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class PipScreen extends StatefulWidget {

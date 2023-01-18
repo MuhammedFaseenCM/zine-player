@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlist_widget.dart';
+import 'package:zineplayer/Home/Screen%20functions/list_functions.dart';
+import 'package:zineplayer/Home/Screen%20widgets/playlist_widget.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 Widget popupMenu(

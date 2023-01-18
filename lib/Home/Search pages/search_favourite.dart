@@ -1,7 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
+import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class FavSearch extends SearchDelegate {
+  late String file;
+
+  String get fileSize {
+    final fileSizeInBytes = File(file).lengthSync();
+    return filesizing(fileSizeInBytes);
+  }
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return <Widget>[
@@ -37,6 +48,7 @@ class FavSearch extends SearchDelegate {
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
+              file = data.videoPath;
               return Column(
                 children: [
                   ListTile(
@@ -48,8 +60,16 @@ class FavSearch extends SearchDelegate {
                           splittedvideotitle: trimmedTitle,
                         );
                       },
+                      trailing: popupMenu(
+                          index: index,
+                          title: data.title,
+                          videoPath: data.videoPath,
+                          fileSize: fileSize,
+                          duration: data.duration,
+                          context: context),
                       title: Text(trimmedTitle),
-                      leading: thumbnail(duration: data.duration)),
+                      leading: thumbnail(
+                          duration: data.duration, path: data.videoPath)),
                   const Divider(),
                 ],
               );
@@ -77,6 +97,7 @@ class FavSearch extends SearchDelegate {
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
+              file = data.videoPath;
               return Column(
                 children: [
                   ListTile(
@@ -89,7 +110,15 @@ class FavSearch extends SearchDelegate {
                         );
                       },
                       title: Text(trimmedTitle),
-                      leading: thumbnail(duration: data.duration)),
+                      trailing: popupMenu(
+                          index: index,
+                          title: data.title,
+                          videoPath: data.videoPath,
+                          fileSize: fileSize,
+                          duration: data.duration,
+                          context: context),
+                      leading: thumbnail(
+                          duration: data.duration, path: data.videoPath)),
                   const Divider(),
                 ],
               );

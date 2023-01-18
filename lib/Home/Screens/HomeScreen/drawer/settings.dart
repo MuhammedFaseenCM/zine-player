@@ -4,6 +4,7 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
+import 'package:zineplayer/Home/Screens/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 import 'package:zineplayer/main.dart';
@@ -35,6 +36,8 @@ class _SettingsState extends State<Settings> {
             appBar: AppBar(
               title: const Text("Settings"),
               centerTitle: true,
+              backgroundColor: transparent,
+              flexibleSpace: appbarcontainer(),
             ),
             body: Column(
               children: [
@@ -44,7 +47,7 @@ class _SettingsState extends State<Settings> {
                     value: themeManager.themeMode == ThemeMode.dark,
                     onChanged: (newvalue) {
                       themeManager.toggleTheme(newvalue);
-                      log("$newvalue");
+                      setState(() {});
                     },
                   ),
                 ),
@@ -54,6 +57,8 @@ class _SettingsState extends State<Settings> {
                     width: 44,
                     height: 44,
                     borderRadius: 4,
+                    borderColor: blueBlues,
+                    hasBorder: true,
                     color: dialogPickerColor,
                     onSelectFocus: false,
                     onSelect: () async {

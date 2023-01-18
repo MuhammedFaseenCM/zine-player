@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zineplayer/Home/Screens/FavScreen/fav_screen.dart';
-import 'package:zineplayer/Home/Screens/FavScreen/search_favourite.dart';
+import 'package:zineplayer/Home/Search%20pages/search_favourite.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/folder_home.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/search_folder.dart';
+import 'package:zineplayer/Home/Search%20pages/search_folder.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/bottom_nav.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/drawer/side_bar.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/play_list_screen.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/search_playlist.dart';
+import 'package:zineplayer/Home/Search%20pages/search_playlist.dart';
 import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
-import 'package:zineplayer/Home/Screens/RecentlyScreen/search_recent.dart';
-import 'package:zineplayer/Home/Screens/videoscreen/search_videos.dart';
+import 'package:zineplayer/Home/Search%20pages/search_recent.dart';
+import 'package:zineplayer/Home/Search%20pages/search_videos.dart';
 import 'package:zineplayer/Home/Screens/videoscreen/video_home.dart';
-import 'package:zineplayer/Home/pip_screen.dart';
+import 'package:zineplayer/Home/Screens/pip_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -80,6 +80,7 @@ class _MainScreenState extends State<MainScreen> {
               return;
             }
           },
+          backgroundColor: purplecolor,
           child: const Icon(Icons.play_arrow),
         ),
         drawer: const NavDrawer(),

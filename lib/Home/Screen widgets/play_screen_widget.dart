@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_functions.dart';
-import 'package:zineplayer/Home/Screens/PlayScreen/video_progress_indicator.dart';
+import 'package:zineplayer/Home/Screen%20functions/play_screen_functions.dart';
+import 'package:zineplayer/Home/Screen%20widgets/video_progress_indicator.dart';
 
 Widget videoContent({required fit, required index, required controller}) =>
     SizedBox.expand(

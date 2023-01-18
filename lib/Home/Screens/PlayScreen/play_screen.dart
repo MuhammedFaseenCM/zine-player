@@ -7,12 +7,10 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
-import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_functions.dart';
-import 'package:zineplayer/Home/Screens/PlayScreen/play_screen_widget.dart';
-import 'package:zineplayer/Home/pip_screen.dart';
+import 'package:zineplayer/Home/Screen%20functions/list_functions.dart';
+import 'package:zineplayer/Home/Screen%20functions/play_screen_functions.dart';
+import 'package:zineplayer/Home/Screen%20widgets/play_screen_widget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:zineplayer/Home/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
 class PlayScreen extends StatefulWidget {
@@ -34,14 +32,13 @@ class PlayScreenState extends State<PlayScreen> {
   String currentDuration = '0';
   Duration resumeDuration = const Duration();
   int _index = 0;
-  Color color = Color.fromARGB(255, 158, 155, 155);
+  Color color = const Color.fromARGB(255, 158, 155, 155);
   late String barColor;
   @override
   void initState() {
     barcolorFunction();
     super.initState();
     _controller = VideoPlayerController.file(File(widget.videoFile));
-
     _controller.addListener(() {
       setState(() {
         currentDuration = _controller.value.position.toString();

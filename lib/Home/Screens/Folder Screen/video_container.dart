@@ -1,13 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:video_player/video_player.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/list_functions.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/playlist_widget.dart';
 import 'package:zineplayer/Home/Screens/videoscreen/video_container.dart';
 import 'package:zineplayer/functions/datamodels.dart';
-import 'package:zineplayer/functions/functions.dart';
+import 'package:zineplayer/main.dart';
 
 class FolderVideoContainer extends StatefulWidget {
   final String videoPath;
@@ -26,20 +23,27 @@ class FolderVideoContainer extends StatefulWidget {
 }
 
 class _FolderVideoContainerState extends State<FolderVideoContainer> {
-  late VideoPlayerController _controller;
-  Duration _duration = const Duration();
+  String _duration = '00:00';
   int? durationinSecs = 0;
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(File(widget.videoPath));
-    _controller.initialize().then((_) {
-      setState(() {
-        _duration = _controller.value.duration;
-      });
-    });
     recentdbdata();
-    getthumbnail(widget.videoPath, setState);
+    getduration();
+  }
+
+  getduration() async {
+    videoDB = await Hive.openBox<AllVideos>('videoplayer');
+    List<AllVideos> data = videoDB.values.toList();
+    List<AllVideos> result =
+        data.where((element) => element.path == widget.videoPath).toList();
+    if (result.isNotEmpty) {
+      _duration = result
+          .where((element) => element.path == widget.videoPath)
+          .first
+          .duration;
+      setState(() {});
+    }
   }
 
   recentdbdata() async {
@@ -58,7 +62,6 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -78,31 +81,5 @@ class _FolderVideoContainerState extends State<FolderVideoContainer> {
   String get fileSize {
     final fileSizeInBytes = File(widget.videoPath).lengthSync();
     return filesizing(fileSizeInBytes);
-  }
-}
-
-String filesizing(fileSizeInBytes) {
-  if (fileSizeInBytes < 1024) {
-    return '$fileSizeInBytes bytes';
-  }
-  if (fileSizeInBytes < 1048576) {
-    return '${(fileSizeInBytes / 1024).toStringAsFixed(1)} KB';
-  }
-  if (fileSizeInBytes < 1073741824) {
-    return '${(fileSizeInBytes / 1048576).toStringAsFixed(1)} MB';
-  }
-  return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
-}
-
-bool isFav = false;
-isFavCheck(videoPath) async {
-  final favouritehive = await Hive.openBox<Favourite>('favouriteBox');
-  List<Favourite> favListing = favouritehive.values.toList();
-  List<Favourite> result =
-      favListing.where((contains) => contains.videoPath == videoPath).toList();
-  if (result.isEmpty) {
-    isFav = false;
-  } else {
-    isFav = true;
   }
 }

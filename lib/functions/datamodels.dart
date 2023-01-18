@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'datamodels.g.dart';
 
@@ -72,4 +71,13 @@ class FrameColor {
   @HiveField(1)
   String color;
   FrameColor({required this.color});
+}
+
+@HiveType(typeId: 6)
+class AllVideos {
+  @HiveField(0)
+  final String duration;
+  @HiveField(1)
+  final String path;
+  AllVideos({required this.duration, required this.path});
 }

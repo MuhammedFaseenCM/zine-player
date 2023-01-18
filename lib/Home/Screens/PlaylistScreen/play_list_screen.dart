@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/PlaylistScreen/play_list_functions.dart';
+import 'package:zineplayer/Home/Screen%20functions/play_list_functions.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/play_list_item_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
@@ -58,7 +58,9 @@ class _PlayScreenState extends State<PlayScreen> {
                             size: 60.0,
                             color: Colors.blue,
                           ),
-                          title: Text(listdata.name),
+                          title: Text(listdata.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal)),
                           trailing: popupMenu(index, listdata.name),
                         ),
                       );

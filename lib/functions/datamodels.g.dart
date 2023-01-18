@@ -204,3 +204,40 @@ class FrameColorAdapter extends TypeAdapter<FrameColor> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class AllVideosAdapter extends TypeAdapter<AllVideos> {
+  @override
+  final int typeId = 6;
+
+  @override
+  AllVideos read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AllVideos(
+      duration: fields[0] as String,
+      path: fields[1] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, AllVideos obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.duration)
+      ..writeByte(1)
+      ..write(obj.path);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AllVideosAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

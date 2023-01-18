@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_videos.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
-import 'package:zineplayer/Home/main_screen.dart';
+import 'package:zineplayer/Home/Screens/main_screen.dart';
 
 class VideoList extends StatefulWidget {
   final String folderPath;
@@ -46,6 +46,7 @@ class _VideoListState extends State<VideoList> {
                 splittedvideotitle =
                     "${splittedvideotitle.substring(0, 20)}...";
               }
+              
               return FolderVideoContainer(
                   index: index,
                   videoPath: videos[index],

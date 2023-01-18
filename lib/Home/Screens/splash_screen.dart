@@ -3,8 +3,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zineplayer/AccessFolders/access_videos.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/main_screen.dart';
-import 'package:zineplayer/Home/welcome.dart';
+import 'package:zineplayer/Home/Screens/main_screen.dart';
+import 'package:zineplayer/Home/Screens/welcome.dart';
 import 'package:zineplayer/main.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class SplashscreenState extends State<SplashScreen> {
   double percent = 0.1;
   @override
   void initState() {
-     splashFetch();
+    splashFetch();
     indicator();
     checklogin();
     super.initState();
@@ -44,7 +44,7 @@ class SplashscreenState extends State<SplashScreen> {
                   Text(
                     zineplayer,
                     style: TextStyle(
-                        color: white,
+                        foreground: Paint()..shader = linearGradient,
                         fontSize: 30.0,
                         fontWeight: FontWeight.bold),
                   )
@@ -95,13 +95,13 @@ class SplashscreenState extends State<SplashScreen> {
 
   Future<void> checklogin() async {
     final sharedprefs = await SharedPreferences.getInstance();
-    final userLoggedIn = sharedprefs.getBool(SAVE_KEY_NAME);
+    final userLoggedIn = sharedprefs.getBool(saveKey);
     if (userLoggedIn == null || userLoggedIn == false) {
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (ctx1) => const Welcome()));
     } else {
-        gotoMainScreen();
-      
+      gotoMainScreen();
     }
   }
 }

@@ -1,9 +1,8 @@
-import 'dart:developer';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/popup_widget.dart';
+import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -33,7 +32,7 @@ class _RecentVideoState extends State<RecentVideo> {
   @override
   void initState() {
     super.initState();
-    getthumbnail(widget.path, setState);
+    // getthumbnail(widget.path, setState);
   }
 
   @override
@@ -53,7 +52,8 @@ class _RecentVideoState extends State<RecentVideo> {
           leading: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              thumbnail(duration: convertSecond(widget.duration)),
+              thumbnail(
+                  duration: convertSecond(widget.duration), path: widget.path),
               SizedBox(
                   width: 110.0,
                   child: LinearPercentIndicator(
@@ -62,16 +62,22 @@ class _RecentVideoState extends State<RecentVideo> {
                   ))
             ],
           ),
-          title: Text(widget.splittitle),
+          title: Text(widget.splittitle,
+              style: const TextStyle(fontWeight: FontWeight.normal)),
           trailing: popupMenu(
               index: widget.index,
               title: widget.title,
               videoPath: widget.path,
-              fileSize: "",
-              duration: convertSecond(widget.duration)
-              ,context: context),
+              fileSize: fileSize,
+              duration: convertSecond(widget.duration),
+              context: context),
         ),
       ),
     );
+  }
+
+  String get fileSize {
+    final fileSizeInBytes = File(widget.path).lengthSync();
+    return filesizing(fileSizeInBytes);
   }
 }

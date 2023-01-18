@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_folders.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/folder_containers.dart';
@@ -12,6 +10,36 @@ class FolderHome extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: loadFolders,
         builder: (BuildContext context, dynamic folderlist, _) {
+          return ListView.builder(
+              itemBuilder: (context, index) {
+                return FolderContainer(
+                  index: index,
+                );
+              },
+              itemCount: folderlist.length);
+        });
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           // dynamic folderList = folderlist.toList();
           // folderList.sort();
           // List<String> folderTitle = [];
@@ -38,15 +66,8 @@ class FolderHome extends StatelessWidget {
           //   }
           // }
           // log(folderlist[1]);
-          return ListView.builder(
-              itemBuilder: (context, index) {
-                return FolderContainer(
-                  index: index,
-                  // folderlist: folderTitle,
+
+
+
+                            // folderlist: folderTitle,
                   // fullPath: fullPath,
-                );
-              },
-              itemCount: folderlist.length);
-        });
-  }
-}

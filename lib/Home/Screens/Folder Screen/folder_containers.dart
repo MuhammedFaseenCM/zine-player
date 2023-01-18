@@ -5,13 +5,9 @@ import 'package:zineplayer/functions/functions.dart';
 
 class FolderContainer extends StatefulWidget {
   final int index;
-  // final dynamic folderlist;
-  // final dynamic fullPath;
   const FolderContainer({
     super.key,
     required this.index,
-    //required this.folderlist,
-    //required this.fullPath
   });
 
   @override

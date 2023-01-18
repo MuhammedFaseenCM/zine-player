@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:wakelock/wakelock.dart';
 
 rotate(isportrait) async {

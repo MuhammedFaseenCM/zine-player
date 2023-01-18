@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:zineplayer/Home/Screens/HomeScreen/folderList/popup_widget.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
+import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -42,7 +44,6 @@ class _FavouriteVideoState extends State<FavouriteVideo> {
   void initState() {
     super.initState();
     recentdbdata();
-    getthumbnail(widget.path, setState);
   }
 
   @override
@@ -57,17 +58,23 @@ class _FavouriteVideoState extends State<FavouriteVideo> {
               splittedvideotitle: widget.trimtitle,
               durationinSec: durationinSecs);
         },
-        leading: thumbnail(duration: widget.duration),
-        title: Text(widget.trimtitle),
+        leading: thumbnail(duration: widget.duration, path: widget.path),
+        title: Text(widget.trimtitle,
+            style: const TextStyle(fontWeight: FontWeight.normal)),
         trailing: popupMenu(
             index: widget.index,
             title: widget.title,
             videoPath: widget.path,
-            fileSize: "",
+            fileSize: fileSize,
             duration: widget.duration,
             isFav: false,
             context: context),
       ),
     );
+  }
+
+  String get fileSize {
+    final fileSizeInBytes = File(widget.path).lengthSync();
+    return filesizing(fileSizeInBytes);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/playlistvideo.dart';
-import 'package:zineplayer/Home/main_screen.dart';
+import 'package:zineplayer/Home/Screens/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -30,11 +30,6 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
         body: ValueListenableBuilder(
           builder: (BuildContext ctx, List<PlayListItems> playListitem,
               Widget? child) {
-            if (playListitem == null) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
             if (playListitem.isEmpty) {
               return const Center(
                 child: Text("No videos available"),

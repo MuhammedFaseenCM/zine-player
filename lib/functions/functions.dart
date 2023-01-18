@@ -49,8 +49,7 @@ favouriteDB(Favourite value, context) async {
   value.index = id;
   favouriteNotifier.value.add(value);
   favouriteNotifier.notifyListeners();
-  snackBar(
-      context: context, content: "Successfully added", bgcolor: Colors.green);
+  snackBar(context: context, content: "Liked", bgcolor: Colors.green);
 }
 
 Future<void> getFavList() async {
@@ -200,27 +199,42 @@ Route createRoute(page) {
   );
 }
 
-checkthumbnail() async {
-  if (0 == 0) {
-  } else {}
-}
-
-getthumbnail(path, setState) async {
-  thumbnailFile = (await VideoThumbnail.thumbnailFile(
+Future<String> getthumbnail(path) async {
+  return thumbnailFile = (await VideoThumbnail.thumbnailFile(
       video: path,
       thumbnailPath: (await getTemporaryDirectory()).path,
       imageFormat: ImageFormat.PNG))!;
-  setState(() {});
 }
 
-Widget thumbnail({duration}) {
+Widget thumbnail({duration, required path}) {
   return Stack(
     children: [
       Container(
           height: 50.0,
           width: 90.0,
-          color: black,
-          child: Image.file(File(thumbnailFile))),
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: black,
+            borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(5.0),
+                bottomRight: Radius.circular(5.0),
+                topLeft: Radius.circular(5.0),
+                topRight: Radius.circular(5.0)),
+          ),
+          child: FutureBuilder(
+            future: getthumbnail(path),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                String data = snapshot.data!;
+                return Image.file(File(data));
+              } else {
+                return Image.asset(
+                  'assets/image/play_icon_3.png',
+                  width: 50,
+                );
+              }
+            },
+          )),
       Positioned(
           right: 0.0,
           bottom: 0.0,

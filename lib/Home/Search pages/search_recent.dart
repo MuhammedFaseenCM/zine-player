@@ -1,8 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
+import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class RecentSearch extends SearchDelegate {
+  late String file;
+
+  String get fileSize {
+    final fileSizeInBytes = File(file).lengthSync();
+    return filesizing(fileSizeInBytes);
+  }
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return <Widget>[
@@ -38,6 +49,8 @@ class RecentSearch extends SearchDelegate {
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
+              String duration = convertSecond(data.duration);
+              file = data.videoPath;
               return Column(
                 children: [
                   ListTile(
@@ -50,8 +63,15 @@ class RecentSearch extends SearchDelegate {
                             durationinSec: data.durationinSec);
                       },
                       title: Text(trimmedTitle),
+                      trailing: popupMenu(
+                          index: index,
+                          title: splittedTitle,
+                          videoPath: data.videoPath,
+                          fileSize: fileSize,
+                          duration: duration,
+                          context: context),
                       leading:
-                          thumbnail(duration: convertSecond(data.duration))),
+                          thumbnail(duration: duration, path: data.videoPath)),
                   const Divider(),
                 ],
               );
@@ -79,6 +99,8 @@ class RecentSearch extends SearchDelegate {
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
+              String duration = convertSecond(data.duration);
+              file = data.videoPath;
               return Column(
                 children: [
                   ListTile(
@@ -91,8 +113,15 @@ class RecentSearch extends SearchDelegate {
                             durationinSec: data.durationinSec);
                       },
                       title: Text(trimmedTitle),
+                      trailing: popupMenu(
+                          index: index,
+                          title: splittedTitle,
+                          videoPath: data.videoPath,
+                          fileSize: fileSize,
+                          duration: duration,
+                          context: context),
                       leading:
-                          thumbnail(duration: convertSecond(data.duration))),
+                          thumbnail(duration: duration, path: data.videoPath)),
                   const Divider(),
                 ],
               );
