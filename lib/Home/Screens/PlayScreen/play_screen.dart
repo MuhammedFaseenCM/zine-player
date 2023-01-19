@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -512,7 +511,6 @@ class PlayScreenState extends State<PlayScreen> {
     FrameColor? bar = colorhive.getAt(0);
 
     barColor = bar!.color.toString();
-    log("$barColor");
     int colorInt = int.parse(
         barColor.substring(barColor.indexOf("(") + 1, barColor.indexOf(")")));
     setState(() {

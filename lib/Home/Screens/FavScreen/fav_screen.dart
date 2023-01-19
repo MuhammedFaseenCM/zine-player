@@ -13,6 +13,7 @@ class FavouriteScreen extends StatelessWidget {
         return ListView.separated(
             itemBuilder: (context, index) {
               final listdata = favList[index];
+              
               String splittedtitle = listdata.title;
               if (splittedtitle.length > 20) {
                 splittedtitle = "${splittedtitle.substring(0, 20)}...";

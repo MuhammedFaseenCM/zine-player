@@ -98,7 +98,7 @@ class PlayListItemsAdapter extends TypeAdapter<PlayListItems> {
     };
     return PlayListItems(
       videoPath: fields[0] as String,
-      playlistFolderName: fields[1] as String,
+      playlistFolderindex: fields[1] as int,
       duration: fields[2] as String,
     );
   }
@@ -110,7 +110,7 @@ class PlayListItemsAdapter extends TypeAdapter<PlayListItems> {
       ..writeByte(0)
       ..write(obj.videoPath)
       ..writeByte(1)
-      ..write(obj.playlistFolderName)
+      ..write(obj.playlistFolderindex)
       ..writeByte(2)
       ..write(obj.duration);
   }

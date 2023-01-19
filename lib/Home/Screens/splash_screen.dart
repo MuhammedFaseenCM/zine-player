@@ -5,7 +5,6 @@ import 'package:zineplayer/AccessFolders/access_videos.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/main_screen.dart';
 import 'package:zineplayer/Home/Screens/welcome.dart';
-import 'package:zineplayer/main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,7 +37,7 @@ class SplashscreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Image.asset(
-                    'assets/image/play_icon_3.png',
+                    launcherIcon,
                     width: 150,
                   ),
                   Text(
@@ -95,7 +94,7 @@ class SplashscreenState extends State<SplashScreen> {
 
   Future<void> checklogin() async {
     final sharedprefs = await SharedPreferences.getInstance();
-    final userLoggedIn = sharedprefs.getBool(saveKey);
+    final userLoggedIn = sharedprefs.getBool(keyValue);
     if (userLoggedIn == null || userLoggedIn == false) {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(

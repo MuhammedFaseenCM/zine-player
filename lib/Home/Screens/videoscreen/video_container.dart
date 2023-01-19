@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
+import 'package:zineplayer/Home/Screen%20widgets/thumbnail_widget.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -32,7 +33,6 @@ class _VideoContainerState extends State<VideoContainer> {
   @override
   void initState() {
     super.initState();
-    //getthumbnail(widget.path, setState);
     recentdbdata();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zineplayer/Home/Screen%20widgets/thumbnail_widget.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -45,7 +46,6 @@ class _PlayListVideoState extends State<PlayListVideo> {
   void initState() {
     super.initState();
     recentdbdata();
-    //  getthumbnail(widget.videoPath, setState);
   }
 
   @override
@@ -64,13 +64,14 @@ class _PlayListVideoState extends State<PlayListVideo> {
         title: Text(widget.shorttitle,
             style: const TextStyle(fontWeight: FontWeight.normal)),
         trailing: popupMenu(
-            index: widget.index,
-            title: widget.title,
-            fileSize: fileSize,
-            videoPath: widget.videoPath,
-            duration: widget.duration,
-            isPlaylist: false,
-            context: context),
+          index: widget.index,
+          title: widget.title,
+          fileSize: fileSize,
+          videoPath: widget.videoPath,
+          duration: widget.duration,
+          isPlaylist: false,
+          context: context,
+        ),
       ),
     );
   }

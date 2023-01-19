@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_folders.dart';
 import 'package:zineplayer/Home/Screens/Folder%20Screen/access_video_data.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class FolderContainer extends StatefulWidget {
@@ -34,10 +35,10 @@ class _FolderContainerState extends State<FolderContainer> {
             loadFolders.value[widget.index].split("/").last,
             style: const TextStyle(fontWeight: FontWeight.normal),
           ),
-          leading: const Icon(
+          leading:  Icon(
             Icons.folder,
             size: 60.0,
-            color: Colors.blue,
+            color: bluecolor,
           ),
         ),
       ),

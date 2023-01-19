@@ -40,7 +40,6 @@ class _VideoListState extends State<VideoList> {
             itemCount: videos.length,
             itemBuilder: (context, index) {
               String videotitle = videos[index].toString().split("/").last;
-              //  video = File(videos[index].toString());
               String splittedvideotitle = videotitle;
               if (splittedvideotitle.length > 20) {
                 splittedvideotitle =

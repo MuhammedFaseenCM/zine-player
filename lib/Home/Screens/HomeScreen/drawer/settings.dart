@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -34,7 +33,7 @@ class _SettingsState extends State<Settings> {
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: AppBar(
-              title: const Text("Settings"),
+              title:  Text(settingsText),
               centerTitle: true,
               backgroundColor: transparent,
               flexibleSpace: appbarcontainer(),
@@ -42,7 +41,7 @@ class _SettingsState extends State<Settings> {
             body: Column(
               children: [
                 ListTile(
-                  title: const Text("Dark mode"),
+                  title:  Text(darkmdeText),
                   trailing: Switch(
                     value: themeManager.themeMode == ThemeMode.dark,
                     onChanged: (newvalue) {
@@ -52,7 +51,7 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
                 ListTile(
-                  title: const Text("Frame color"),
+                  title:  Text(framecolorText),
                   trailing: ColorIndicator(
                     width: 44,
                     height: 44,
@@ -63,7 +62,7 @@ class _SettingsState extends State<Settings> {
                     onSelectFocus: false,
                     onSelect: () async {
                       final Color colorBeforeDialog = dialogPickerColor;
-                      log("$dialogPickerColor");
+                      
                       if (!(await colorPickerDialog())) {
                         setState(() {
                           dialogPickerColor = colorBeforeDialog;
@@ -113,7 +112,6 @@ class _SettingsState extends State<Settings> {
       onColorChanged: (Color color) {
         setState(() {
           dialogPickerColor = color;
-          log("$color");
         });
         dynamic pickedcolor = FrameColor(color: color.toString());
         pickColor(value: pickedcolor);

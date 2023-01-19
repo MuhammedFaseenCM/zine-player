@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:zineplayer/AccessFolders/access_videos.dart';
-import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/main.dart';
 

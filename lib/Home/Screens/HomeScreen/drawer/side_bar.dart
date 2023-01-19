@@ -20,7 +20,7 @@ class NavDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/image/play_icon_3.png',
+                    launcherIcon,
                     width: 50,
                   ),
                   Text(
@@ -40,7 +40,7 @@ class NavDrawer extends StatelessWidget {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.settings),
-                    title: const Text('Settings'),
+                    title:  Text(settingsText),
                     onTap: () => {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const Settings(),
@@ -49,26 +49,26 @@ class NavDrawer extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.file_open),
-                    title: const Text("T & C"),
+                    title:  Text(tnC),
                     onTap: () => termsAndConditions(
-                        context, "Terms and conditions", termsandconditions),
+                        context, tnC, termsandconditions),
                   ),
                   ListTile(
                     leading: const Icon(Icons.key),
-                    title: const Text("Privacy policy"),
+                    title:  Text(pnC),
                     onTap: () => termsAndConditions(
-                        context, "Privacy policy", privacypolicy),
+                        context, pnC, privacypolicy),
                   ),
                   ListTile(
                     leading: const Icon(Icons.star),
-                    title: const Text('Rate us'),
+                    title:  Text(rateUS),
                     onTap: () => {
                     
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.person),
-                    title: const Text('about us'),
+                    title:  Text(about),
                     onTap: () => {aboutUS(context)},
                   ),
                 ],
@@ -80,7 +80,7 @@ class NavDrawer extends StatelessWidget {
                       Icons.android,
                       color: green,
                     ),
-                    title: const Text("Version 1.0.0"),
+                    title:  Text(version),
                   )
                 ],
               ),
@@ -114,10 +114,10 @@ Widget detailsDailog(text, context) {
             style: DefaultTextStyle.of(context).style,
             children: <TextSpan>[
               TextSpan(text: text),
-              const TextSpan(
-                text: 'faseencm0@gmail.com',
+               TextSpan(
+                text: mailID,
                 style: TextStyle(
-                    color: Colors.blue, decoration: TextDecoration.underline),
+                    color: bluecolor, decoration: TextDecoration.underline),
               )
             ]),
       )));
@@ -131,16 +131,16 @@ void aboutUS(context) {
         title: Row(
           children: [
             Image.asset(
-              'assets/image/play_icon_3.png',
+              launcherIcon,
               width: 50,
             ),
             Column(
               children: [
                 Text(zineplayer),
-                const Text(
-                  "1.0.0",
+                 Text(
+                  version,
                   style:
-                      TextStyle(fontWeight: FontWeight.normal, fontSize: 15.0),
+                   const   TextStyle(fontWeight: FontWeight.normal, fontSize: 15.0),
                 )
               ],
             ),
@@ -152,7 +152,7 @@ void aboutUS(context) {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Close"))
+              child:  Text(closeText))
         ],
       );
     },
@@ -160,14 +160,14 @@ void aboutUS(context) {
 }
 
 Widget aboutUSDailog() {
-  return const SizedBox(
+  return  SizedBox(
     height: 50.0,
     width: 300.0,
     child: SingleChildScrollView(
         child: Center(
       child: Text(
-        "Zine player is a video player\ncreated by Muhammed Faseen C M",
-        style: TextStyle(fontWeight: FontWeight.normal),
+        aboutUSDetails,
+        style:const TextStyle(fontWeight: FontWeight.normal),
       ),
     )),
   );

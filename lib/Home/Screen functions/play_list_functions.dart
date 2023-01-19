@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
@@ -13,9 +14,9 @@ createplaylistfn(context, newPlayListController) {
   Navigator.of(context).pop();
 }
 
-updatePlaylist(index, context, newPlayListController) async {
+updatePlaylist(index, context, newPlayListController, listIndex) async {
   final name = newPlayListController.text.trim();
-  final updatedlist = PlayList(name: name);
+  final updatedlist = PlayList(name: name, index: listIndex);
   if (name.isEmpty) {
     return;
   }
@@ -29,7 +30,7 @@ Future<void> deleteFunction(int index, context) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Are you sure want to delete ?'),
+          title:  Text(sure),
           actions: [
             TextButton(
                 onPressed: () {
@@ -37,17 +38,17 @@ Future<void> deleteFunction(int index, context) async {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   snackBar(
-                      content: "Successfully deleted",
+                      content: deleted,
                       context: context,
-                      bgcolor: Colors.green);
+                      bgcolor: green);
                 },
-                child: const Text('Yes')),
+                child:  Text(yes)),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
-                child: const Text('No'))
+                child:  Text(no))
           ],
         );
       });

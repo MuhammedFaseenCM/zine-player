@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/PlaylistScreen/playlistitemScreen/playlistvideo.dart';
 import 'package:zineplayer/Home/Screens/main_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -7,7 +8,6 @@ import 'package:zineplayer/functions/functions.dart';
 class PlayListItemScreen extends StatefulWidget {
   final PlayList items;
   final String videoPath;
-  // final int? index;
   const PlayListItemScreen(
       {super.key, required this.items, required this.videoPath});
 
@@ -25,14 +25,14 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
           title: Text(widget.videoPath),
           centerTitle: true,
           flexibleSpace: appbarcontainer(),
-          backgroundColor: Colors.transparent,
+          backgroundColor: transparent,
         ),
         body: ValueListenableBuilder(
           builder: (BuildContext ctx, List<PlayListItems> playListitem,
               Widget? child) {
             if (playListitem.isEmpty) {
-              return const Center(
-                child: Text("No videos available"),
+              return  Center(
+                child: Text(noVideo),
               );
             } else {
               return ListView.builder(
@@ -45,7 +45,7 @@ class _PlayListItemScreenState extends State<PlayListItemScreen> {
                     if (title.length > 20) {
                       shorttitle = "${shorttitle.substring(0, 20)}...";
                     }
-                    if (widget.items.name == listdata.playlistFolderName) {
+                    if (widget.items.index == listdata.playlistFolderindex) {
                       return PlayListVideo(
                           title: title,
                           videoPath: listdata.videoPath,

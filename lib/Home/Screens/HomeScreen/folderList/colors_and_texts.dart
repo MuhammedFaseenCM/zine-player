@@ -21,21 +21,57 @@ final formKey = GlobalKey<FormState>();
 String clear = "Clear";
 String added = 'Successfully added';
 String deleted = "Successfully deleted";
+String clearText = "Successfully cleared";
+String playListText = "Playlist";
+String createPlaylistText = "Create playlist";
 String addtoplaylist = "Add to playlist";
+String editPlaylist = "Edit playlist";
+String updatePlaylistText = "Update playlist";
+String deletePlaylist = "Delete playlist";
 String deletefromplaylist = "Delete from playlist";
 String videoExists = "This video already exists in this playlist";
+String noEmpty = "Empty not allowed";
+String recentEmptytEXT = "Recent list is empty";
 String textDur = '';
 String leftText = '';
 String rightText = '';
 String plusten = "+10s";
 String minusten = "-10s";
 String like = "Like";
+String liked = "Liked";
 String unLike = "Unlike";
 String unLiked = "Unliked";
 String details = "Details";
 String createPlaylist = "Create a playlist";
+String selectPlaylistText = "Select playlist";
 String zineplayer = 'Zine player';
 String thumbnailFile = '';
+String noVideo = "No videos available";
+String sure = 'Are you sure want to delete ?';
+String playbackSpeedText = 'Playback speed';
+String continueText = "Continue from where you stopped ?";
+String startoverText = "Start over";
+String resumeText = "Resume";
+String yes = 'Yes';
+String no = 'No';
+String cancel = "Cancel";
+String ok = "Ok";
+String closeText = "Close";
+String launcherIcon = 'assets/image/play_icon_3.png';
+String keyValue = "UserLaunched";
+String go = "Let's go!";
+String enjoy = "Enjoy the powerful video player with advanced features";
+String settingsText = 'Settings';
+String darkmdeText = "Dark mode";
+String framecolorText = "Frame color";
+String tnC = "Terms and conditions";
+String pnC = "Privacy policy";
+String about = 'About us';
+String aboutUSDetails =
+    "Zine player is a video player\ncreated by Muhammed Faseen C M";
+String rateUS = 'Rate us';
+String version = "Version 1.0.0";
+String mailID = "faseencm0@gmail.com";
 //Boolean types
 
 bool isShow = true;
@@ -81,3 +117,25 @@ String filesizing(fileSizeInBytes) {
   return '${(fileSizeInBytes / 1073741824).toStringAsFixed(1)} GB';
 }
 
+String convertSecond(durinsec) {
+  double hours = durinsec / 3600;
+  String minute = hours.toString().split(".").last;
+  String hh = hours.toString().split(".").first;
+  String mmmm = "0.$minute";
+  double num = double.parse(mmmm);
+  double mmm = (num) * 60;
+  String mm = mmm.toString().split(".").first;
+  mm.length == 1 ? mm = "0$mm" : mm = mm;
+  hh.length == 1 ? hh = "0$hh" : hh = hh;
+  String ssss = mmm.toString().split(".").last;
+  String sss = "0.$ssss";
+  double number = double.parse(sss);
+  double ss = number * 60;
+  int sec = ss.round();
+  String second = sec.toString();
+  second.length == 1 ? second = "0$second" : second = second;
+  String hhmmss;
+
+  hhmmss = "$hh:$mm:$second";
+  return hhmmss;
+}

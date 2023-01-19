@@ -1,11 +1,6 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/PlayScreen/play_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
@@ -49,7 +44,7 @@ favouriteDB(Favourite value, context) async {
   value.index = id;
   favouriteNotifier.value.add(value);
   favouriteNotifier.notifyListeners();
-  snackBar(context: context, content: "Liked", bgcolor: Colors.green);
+  snackBar(context: context, content:liked , bgcolor: green);
 }
 
 Future<void> getFavList() async {
@@ -113,11 +108,11 @@ Future<void> deleteRecentList(context) async {
   if (recentlisthive.isNotEmpty) {
     await recentlisthive.deleteAll(recentlisthive.keys);
 
-    snackBar(context: context, content: "Successfully cleared", bgcolor: green);
+    snackBar(context: context, content:clearText , bgcolor: green);
   } else {
     snackBar(
         context: context,
-        content: "Recent list is empty",
+        content: recentEmptytEXT,
         bgcolor: Colors.grey[800]);
   }
 
@@ -129,12 +124,9 @@ Future<void> pickColor({value}) async {
   if (colorhive.isEmpty) {
     value = FrameColor(color: "Color(0x968383)");
     await colorhive.add(value);
-    log("add");
   } else {
-    log("put");
     await colorhive.putAt(0, value);
   }
-  log("picked color: ${value.toString()}");
 }
 
 playVideo(
@@ -172,7 +164,7 @@ Future<void> snackBar(
     behavior: SnackBarBehavior.floating,
     margin: const EdgeInsets.all(10),
     action: SnackBarAction(
-      label: 'ok',
+      label: ok,
       onPressed: () {
         function;
       },
@@ -196,57 +188,5 @@ Route createRoute(page) {
         child: child,
       );
     },
-  );
-}
-
-Future<String> getthumbnail(path) async {
-  return thumbnailFile = (await VideoThumbnail.thumbnailFile(
-      video: path,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.PNG))!;
-}
-
-Widget thumbnail({duration, required path}) {
-  return Stack(
-    children: [
-      Container(
-          height: 50.0,
-          width: 90.0,
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            color: black,
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(5.0),
-                bottomRight: Radius.circular(5.0),
-                topLeft: Radius.circular(5.0),
-                topRight: Radius.circular(5.0)),
-          ),
-          child: FutureBuilder(
-            future: getthumbnail(path),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                String data = snapshot.data!;
-                return Image.file(File(data));
-              } else {
-                return Image.asset(
-                  'assets/image/play_icon_3.png',
-                  width: 50,
-                );
-              }
-            },
-          )),
-      Positioned(
-          right: 0.0,
-          bottom: 0.0,
-          child: Container(
-            color: black,
-            child: duration != null
-                ? Text(
-                    duration.toString().split("0:0").last,
-                    style: const TextStyle(color: Colors.white, fontSize: 11.0),
-                  )
-                : null,
-          ))
-    ],
   );
 }

@@ -16,7 +16,14 @@ class PlayScreen extends StatefulWidget {
 
 class _PlayScreenState extends State<PlayScreen> {
   @override
+  void initState() {
+    getPlayList();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getPlayList();
     return Scaffold(
       body: Column(
         children: [
@@ -53,15 +60,16 @@ class _PlayScreenState extends State<PlayScreen> {
                                     items: listdata,
                                     videoPath: listdata.name)));
                           },
-                          leading: const Icon(
+                          leading: Icon(
                             Icons.folder,
                             size: 60.0,
-                            color: Colors.blue,
+                            color: bluecolor,
                           ),
                           title: Text(listdata.name,
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal)),
-                          trailing: popupMenu(index, listdata.name),
+                          trailing:
+                              popupMenu(index, listdata.name, listdata.index),
                         ),
                       );
                     },
@@ -78,18 +86,18 @@ class _PlayScreenState extends State<PlayScreen> {
     );
   }
 
-  Widget popupMenu(index, name) {
+  Widget popupMenu(index, name, listIndex) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return PopupMenuButton(
       itemBuilder: (context) => [
         PopupMenuItem(
             child: TextButton.icon(
           onPressed: () {
-            updatePlayListDialog(index, name);
+            updatePlayListDialog(index, name, listIndex);
           },
           icon: const Icon(Icons.edit),
           label: Text(
-            "Edit playlist",
+            editPlaylist,
             style: textTheme.subtitle1,
           ),
         )),
@@ -98,9 +106,9 @@ class _PlayScreenState extends State<PlayScreen> {
           onPressed: () {
             deleteFunction(index, context);
           },
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: Icon(Icons.delete, color: red),
           label: Text(
-            "Delete playlist",
+            deletePlaylist,
             style: textTheme.subtitle1,
           ),
         ))
@@ -108,25 +116,25 @@ class _PlayScreenState extends State<PlayScreen> {
     );
   }
 
-  void updatePlayListDialog(index, name) {
+  void updatePlayListDialog(index, name, listIndex) {
     newPlayListController.text = name.toString();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Update playlist"),
+        title: Text(updatePlaylistText),
         content: Form(
             key: formKey,
             child: Padding(
               padding: (const EdgeInsets.only(top: 0, bottom: 4)),
               child: TextFormField(
                 controller: newPlayListController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Playlist",
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: playListText,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Empty not allowed";
+                    return noEmpty;
                   } else {
                     return null;
                   }
@@ -138,14 +146,15 @@ class _PlayScreenState extends State<PlayScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Cancel")),
+              child: Text(cancel)),
           TextButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  updatePlaylist(index, context, newPlayListController);
+                  updatePlaylist(
+                      index, context, newPlayListController, listIndex);
                 }
               },
-              child: const Text("Ok"))
+              child: Text(ok))
         ],
       ),
     );
@@ -156,20 +165,20 @@ void newPlayListDialog(BuildContext context, formKey, newPlayListController) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text("Create playlist"),
+      title: Text(createPlaylistText),
       content: Form(
           key: formKey,
           child: Padding(
             padding: (const EdgeInsets.only(top: 0, bottom: 4)),
             child: TextFormField(
               controller: newPlayListController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Playlist",
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: playListText,
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Empty not allowed";
+                  return noEmpty;
                 } else {
                   return null;
                 }
@@ -181,14 +190,14 @@ void newPlayListDialog(BuildContext context, formKey, newPlayListController) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text("Cancel")),
+            child: Text(cancel)),
         TextButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 createplaylistfn(context, newPlayListController);
               }
             },
-            child: const Text("Ok"))
+            child: Text(ok))
       ],
     ),
   );

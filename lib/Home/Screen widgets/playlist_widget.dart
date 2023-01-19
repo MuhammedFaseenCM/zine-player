@@ -9,7 +9,7 @@ void addToPlayList({required context, required widgetpath, required duration}) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-        title: const Text("Select playlist"),
+        title:  Text(selectPlaylistText),
         content: playlistDailog(
             context: context, widgetpath: widgetpath, duration: duration)),
   );
@@ -83,12 +83,12 @@ Widget playlistDailog(
               return ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final listdata = playlist[index];
+                    final listdata = playlist[index];              
                     return Card(
                       child: ListTile(
                         onTap: () {
                           addItemToPlayList(
-                              playlistFolderName: listdata.name,
+                              playlistFolderIndex: listdata.index,
                               context: context,
                               videoPath: widgetpath,
                               duration: duration);
@@ -106,13 +106,13 @@ Widget playlistDailog(
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
-            icon: const Icon(
+            icon:  Icon(
               Icons.cancel,
-              color: Colors.white,
+              color: white,
             ),
-            label: const Text(
-              "cancel",
-              style: TextStyle(color: Colors.white),
+            label:  Text(
+              cancel,
+              style: TextStyle(color: white),
             ))
       ],
     ),

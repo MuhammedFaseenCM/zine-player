@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:zineplayer/AccessFolders/load_all_videos.dart';
-import 'package:zineplayer/Home/Screens/Folder%20Screen/video_container.dart';
+import 'package:zineplayer/Home/Screen%20widgets/thumbnail_widget.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/functions/datamodels.dart';

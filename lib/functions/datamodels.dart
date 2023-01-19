@@ -33,12 +33,12 @@ class PlayListItems {
   @HiveField(0)
   String videoPath;
   @HiveField(1)
-  String playlistFolderName;
+  int playlistFolderindex;
   @HiveField(2)
   String duration;
   PlayListItems(
       {required this.videoPath,
-      required this.playlistFolderName,
+      required this.playlistFolderindex,
       required this.duration});
 }
 

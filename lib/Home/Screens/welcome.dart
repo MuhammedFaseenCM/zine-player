@@ -5,7 +5,6 @@ import 'package:zineplayer/AccessFolders/access_videos.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/main_screen.dart';
 import 'package:zineplayer/functions/functions.dart';
-import 'package:zineplayer/main.dart';
 
 bool isloading = false;
 
@@ -28,12 +27,11 @@ class _WelcomeState extends State<Welcome> {
         child: SizedBox(
           width: 100,
           height: 100,
-          //    margin: const EdgeInsets.only(top: 200),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/image/play_icon_3.png',
+                launcherIcon,
                 width: 150,
               ),
               Text(
@@ -57,8 +55,8 @@ class _WelcomeState extends State<Welcome> {
                 color: white,
               ),
               AnimatedTextKit(animatedTexts: [
-                TyperAnimatedText(
-                  "Enjoy the powerful video player with advanced features",
+                TyperAnimatedText(enjoy
+                  ,
                   speed: const Duration(milliseconds: 100),
                   textAlign: TextAlign.center,
                   textStyle: TextStyle(
@@ -83,7 +81,7 @@ class _WelcomeState extends State<Welcome> {
                     onPressed: () {
                       checkSplashFetch(context);
                     },
-                    child: const Text("Let's go!")),
+                    child:  Text(go)),
               ),
               isloading ? const CircularProgressIndicator() : const SizedBox()
             ],
@@ -105,7 +103,7 @@ class _WelcomeState extends State<Welcome> {
     ));
 
     final sharefPrefs = await SharedPreferences.getInstance();
-    await sharefPrefs.setBool(saveKey, true);
+    await sharefPrefs.setBool(keyValue, true);
   }
 }
 

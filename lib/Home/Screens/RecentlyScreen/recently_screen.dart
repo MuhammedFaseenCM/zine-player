@@ -74,25 +74,3 @@ class RecentScreen extends StatelessWidget {
   }
 }
 
-String convertSecond(durinsec) {
-  double hours = durinsec / 3600;
-  String minute = hours.toString().split(".").last;
-  String hh = hours.toString().split(".").first;
-  String mmmm = "0.$minute";
-  double num = double.parse(mmmm);
-  double mmm = (num) * 60;
-  String mm = mmm.toString().split(".").first;
-  mm.length == 1 ? mm = "0$mm" : mm = mm;
-  hh.length == 1 ? hh = "0$hh" : hh = hh;
-  String ssss = mmm.toString().split(".").last;
-  String sss = "0.$ssss";
-  double number = double.parse(sss);
-  double ss = number * 60;
-  int sec = ss.round();
-  String second = sec.toString();
-  second.length == 1 ? second = "0$second" : second = second;
-  String hhmmss;
-
-  hhmmss = "$hh:$mm:$second";
-  return hhmmss;
-}

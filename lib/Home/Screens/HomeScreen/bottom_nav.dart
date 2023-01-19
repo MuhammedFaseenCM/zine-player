@@ -12,7 +12,7 @@ class BottomNavBar extends StatelessWidget {
       valueListenable: MainScreen.selectedNotifier,
       builder: (BuildContext context, int updatedIndex, _) {
         return CurvedNavigationBar(
-            backgroundColor: Colors.white,
+            backgroundColor: white,
             color:bluecolor,
             onTap: (newIndex) {
               MainScreen.selectedNotifier.value = newIndex;
@@ -31,7 +31,7 @@ class BottomNavBar extends StatelessWidget {
   Widget bottomNavIcon(icon) {
     return Icon(
       icon,
-      color: Colors.white,
+      color: white,
     );
   }
 }

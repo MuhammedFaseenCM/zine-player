@@ -40,13 +40,13 @@ Widget topBar(
                   Navigator.of(context).pop();
                   Wakelock.disable();
                 },
-                icon: const Icon(
+                icon:  Icon(
                   Icons.arrow_back,
-                  color: Colors.white,
+                  color: white,
                 )),
             Text(
               widget.videotitle,
-              style: const TextStyle(color: Colors.white),
+              style:  TextStyle(color: white),
             ),
             Row(
               children: [
@@ -55,7 +55,7 @@ Widget topBar(
                   onPressed: () {
                     rotate(isPortrait);
                   },
-                  color: Colors.white,
+                  color: white,
                 ),
                 playSpeed(controller: controller, setState: setState),
               ],
@@ -67,13 +67,13 @@ Widget topBar(
 double _playbackSpeed = 1.0;
 Widget playSpeed({required controller, required setState}) =>
     PopupMenuButton<double>(
-        icon: const Icon(
+        icon:  Icon(
           Icons.speed,
-          color: Colors.white,
+          color: white,
         ),
-        color: Colors.white,
+        color: white,
         initialValue: controller.value.playbackSpeed,
-        tooltip: 'Playback speed',
+        tooltip: playbackSpeedText,
         onSelected: (value) {
           _playbackSpeed = value;
           controller.setPlaybackSpeed(value);
@@ -164,8 +164,8 @@ Widget indicator({required isShow, required controller}) => Visibility(
     child: CustomProgressIndicator(
       controller,
       allowScrubbing: true,
-      colors: const VideoProgressColors(
-          playedColor: Colors.blue, backgroundColor: Colors.white),
+      colors:  VideoProgressColors(
+          playedColor: bluecolor, backgroundColor: white),
     ));
 
 Widget duration(first, {required text, required isShow}) => Visibility(
@@ -174,6 +174,6 @@ Widget duration(first, {required text, required isShow}) => Visibility(
       margin: const EdgeInsets.only(top: 350.0),
       child: Text(
         text,
-        style: const TextStyle(color: Colors.white),
+        style:  TextStyle(color: white),
       ),
     ));

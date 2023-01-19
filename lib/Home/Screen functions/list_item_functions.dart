@@ -5,15 +5,15 @@ import 'package:zineplayer/functions/datamodels.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 addItemToPlayList(
-    {required playlistFolderName, required videoPath, required context,required duration}) async {
+    {required playlistFolderIndex, required videoPath, required context,required duration}) async {
   final list = PlayListItems(
-      playlistFolderName: playlistFolderName, videoPath: videoPath, duration: duration);
+      playlistFolderindex: playlistFolderIndex, videoPath: videoPath, duration: duration);
   final listitemshive = await Hive.openBox<PlayListItems>('listitemsBox');
   List<PlayListItems> playlist = listitemshive.values.toList();
   List<PlayListItems> result = playlist
       .where((element) =>
           element.videoPath == videoPath &&
-          element.playlistFolderName == playlistFolderName)
+          element.playlistFolderindex == playlistFolderIndex)
       .toList();
   if (videoPath.isEmpty) {
     return;

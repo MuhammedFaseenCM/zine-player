@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:zineplayer/Home/Screen%20widgets/thumbnail_widget.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
 import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
@@ -43,7 +44,7 @@ class RecentSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = recentList[index];
-            if (data.videoPath.toLowerCase().contains(query.toLowerCase())) {
+            if (data.videoPath.contains(query)) {
               String splittedTitle = data.videoPath.toString().split("/").last;
               String trimmedTitle = splittedTitle;
               if (trimmedTitle.length > 20) {
@@ -93,7 +94,7 @@ class RecentSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = recentList[index];
-            if (data.videoPath.toLowerCase().contains(query.toLowerCase())) {
+            if (data.videoPath.contains(query)) {
               String splittedTitle = data.videoPath.toString().split("/").last;
               String trimmedTitle = splittedTitle;
               if (trimmedTitle.length > 20) {

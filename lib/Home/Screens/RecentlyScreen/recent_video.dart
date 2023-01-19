@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:zineplayer/Home/Screen%20widgets/thumbnail_widget.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screen%20widgets/popup_widget.dart';
-import 'package:zineplayer/Home/Screens/RecentlyScreen/recently_screen.dart';
 import 'package:zineplayer/functions/functions.dart';
 
 class RecentVideo extends StatefulWidget {
@@ -32,7 +32,6 @@ class _RecentVideoState extends State<RecentVideo> {
   @override
   void initState() {
     super.initState();
-    // getthumbnail(widget.path, setState);
   }
 
   @override

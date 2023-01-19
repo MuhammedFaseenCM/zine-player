@@ -7,11 +7,8 @@ import 'package:zineplayer/functions/datamodels.dart';
 void main() async {
   await Hive.initFlutter();
   adapterRegisterFunction();
-  
-  
   runApp(const Zineplayer());
 }
-const saveKey = 'UserLoggedIn';
 ThemeManager themeManager = ThemeManager();
 late Box<AllVideos> videoDB;
 class Zineplayer extends StatefulWidget {
