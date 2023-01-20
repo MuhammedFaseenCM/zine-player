@@ -141,12 +141,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-Widget appbarcontainer() {
+Widget appbarcontainer({radius}) {
   return Container(
       decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-             ),
+          borderRadius: BorderRadius.only(
+              bottomLeft: const Radius.circular(20.0),
+              bottomRight: const Radius.circular(20.0),
+              topLeft: Radius.circular(radius ?? 0.0),
+              topRight: Radius.circular(radius ?? 0.0)),
           gradient: LinearGradient(colors: [bluecolor, purplecolor])));
 }

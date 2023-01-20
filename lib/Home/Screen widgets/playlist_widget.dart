@@ -9,7 +9,7 @@ void addToPlayList({required context, required widgetpath, required duration}) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-        title:  Text(selectPlaylistText),
+        title: Text(selectPlaylistText),
         content: playlistDailog(
             context: context, widgetpath: widgetpath, duration: duration)),
   );
@@ -52,11 +52,11 @@ Widget text(text) => Text(
       text,
       style: const TextStyle(fontWeight: FontWeight.normal),
     );
-
+double sizeHeight = 1.5;
 Widget playlistDailog(
     {required widgetpath, required context, required duration}) {
   return Container(
-    height: 300.0,
+    height: sizeHeight * 96.0,
     width: 200.0,
     color: bluecolor,
     child: Column(
@@ -83,7 +83,9 @@ Widget playlistDailog(
               return ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final listdata = playlist[index];              
+                    final listdata = playlist[index];
+                    sizeHeight = 1;
+                    sizeHeight = sizeHeight + playlist.length;
                     return Card(
                       child: ListTile(
                         onTap: () {
@@ -106,11 +108,11 @@ Widget playlistDailog(
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
-            icon:  Icon(
+            icon: Icon(
               Icons.cancel,
               color: white,
             ),
-            label:  Text(
+            label: Text(
               cancel,
               style: TextStyle(color: white),
             ))

@@ -9,6 +9,7 @@ Color bluecolor = Colors.blue;
 Color grey = const Color.fromARGB(255, 100, 98, 98);
 Color green = Colors.green;
 Color yellow = Colors.yellow;
+Color defaultColor =const Color.fromARGB(98, 158, 155, 155);
 
 Color black = Colors.black;
 Color red = Colors.red;
@@ -57,9 +58,10 @@ String no = 'No';
 String cancel = "Cancel";
 String ok = "Ok";
 String closeText = "Close";
-String launcherIcon = 'assets/image/play_icon_3.png';
 String keyValue = "UserLaunched";
 String go = "Let's go!";
+String nextText = "Next";
+String backText = "Back";
 String enjoy = "Enjoy the powerful video player with advanced features";
 String settingsText = 'Settings';
 String darkmdeText = "Dark mode";
@@ -81,6 +83,15 @@ bool isLeftIconVisible = false;
 bool isrRightIconVisible = false;
 bool playPauseBool = false;
 bool isPIPVisible = true;
+
+//[Pictures]//
+String launcherIcon = 'assets/image/play_icon_3.png';
+String forwardpic = 'assets/image/forward+30.jpg';
+String frameColor = 'assets/image/frameColor.jpg';
+String frameColor2 = 'assets/image/framecolor2.jpg';
+String recentPic = 'assets/image/recentlist.jpg';
+String resumePic = 'assets/image/resume.jpg';
+String rewindPic = 'assets/image/rewind-30.jpg';
 
 //Lists
 

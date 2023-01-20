@@ -40,7 +40,7 @@ class NavDrawer extends StatelessWidget {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.settings),
-                    title:  Text(settingsText),
+                    title: Text(settingsText),
                     onTap: () => {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const Settings(),
@@ -49,41 +49,45 @@ class NavDrawer extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.file_open),
-                    title:  Text(tnC),
-                    onTap: () => termsAndConditions(
-                        context, tnC, termsandconditions),
+                    title: Text(tnC),
+                    onTap: () =>
+                        termsAndConditions(context, tnC, termsandconditions),
                   ),
                   ListTile(
                     leading: const Icon(Icons.key),
-                    title:  Text(pnC),
-                    onTap: () => termsAndConditions(
-                        context, pnC, privacypolicy),
+                    title: Text(pnC),
+                    onTap: () =>
+                        termsAndConditions(context, pnC, privacypolicy),
                   ),
                   ListTile(
                     leading: const Icon(Icons.star),
-                    title:  Text(rateUS),
-                    onTap: () => {
-                    
-                    },
+                    title: Text(rateUS),
+                    onTap: () => {},
                   ),
                   ListTile(
                     leading: const Icon(Icons.person),
-                    title:  Text(about),
+                    title: Text(about),
                     onTap: () => {aboutUS(context)},
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  ListTile(
-                    leading: Icon(
-                      Icons.android,
-                      color: green,
-                    ),
-                    title:  Text(version),
-                  )
-                ],
-              ),
+              Container(
+                  margin: const EdgeInsets.only(bottom: 0, left: 40),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Row(
+                          children: [
+                            Icon(
+                              Icons.android,
+                              color: green,
+                            ),
+                            Text(version),
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
             ],
           )
         ],
@@ -114,7 +118,7 @@ Widget detailsDailog(text, context) {
             style: DefaultTextStyle.of(context).style,
             children: <TextSpan>[
               TextSpan(text: text),
-               TextSpan(
+              TextSpan(
                 text: mailID,
                 style: TextStyle(
                     color: bluecolor, decoration: TextDecoration.underline),
@@ -137,10 +141,10 @@ void aboutUS(context) {
             Column(
               children: [
                 Text(zineplayer),
-                 Text(
+                Text(
                   version,
-                  style:
-                   const   TextStyle(fontWeight: FontWeight.normal, fontSize: 15.0),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.normal, fontSize: 15.0),
                 )
               ],
             ),
@@ -152,7 +156,7 @@ void aboutUS(context) {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child:  Text(closeText))
+              child: Text(closeText))
         ],
       );
     },
@@ -160,14 +164,14 @@ void aboutUS(context) {
 }
 
 Widget aboutUSDailog() {
-  return  SizedBox(
+  return SizedBox(
     height: 50.0,
     width: 300.0,
     child: SingleChildScrollView(
         child: Center(
       child: Text(
         aboutUSDetails,
-        style:const TextStyle(fontWeight: FontWeight.normal),
+        style: const TextStyle(fontWeight: FontWeight.normal),
       ),
     )),
   );

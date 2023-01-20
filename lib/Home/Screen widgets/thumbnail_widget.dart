@@ -23,7 +23,8 @@ Widget thumbnail({duration, required path}) {
             borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(5.0),
                 bottomRight: Radius.circular(5.0),
-               ),
+                topLeft: Radius.circular(5.0),
+                topRight: Radius.circular(5.0)),
           ),
           child: FutureBuilder(
             future: getthumbnail(path),
@@ -48,7 +49,7 @@ Widget thumbnail({duration, required path}) {
             child: duration != null
                 ? Text(
                     duration.toString().split("0:0").last,
-                    style:  TextStyle(color:white, fontSize: 11.0),
+                    style: TextStyle(color: white, fontSize: 11.0),
                   )
                 : null,
           ))

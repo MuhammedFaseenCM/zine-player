@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zineplayer/AccessFolders/access_videos.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/folderList/colors_and_texts.dart';
 import 'package:zineplayer/Home/Screens/main_screen.dart';
-import 'package:zineplayer/Home/Screens/welcome.dart';
+import 'package:zineplayer/Home/Screens/Starting%20Screens/welcome.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

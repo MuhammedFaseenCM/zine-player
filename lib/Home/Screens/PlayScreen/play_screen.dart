@@ -31,7 +31,7 @@ class PlayScreenState extends State<PlayScreen> {
   String currentDuration = '0';
   Duration resumeDuration = const Duration();
   int _index = 0;
-  Color color = const Color.fromARGB(255, 158, 155, 155);
+  Color color = defaultColor;
   late String barColor;
   @override
   void initState() {
@@ -73,7 +73,6 @@ class PlayScreenState extends State<PlayScreen> {
               rightseekContainer(orientation: orientation),
               topBar(isPortrait: isPortrait),
               bottomBar(orientation),
-              indicatorNduration(orientation: orientation),
               lockButton(orientation),
             ]),
           );
@@ -102,44 +101,41 @@ class PlayScreenState extends State<PlayScreen> {
 
   Widget rightseekContainer({required orientation}) => GestureDetector(
         onLongPressMoveUpdate: (details) {},
-        child: Container(
-          margin: orientation == Orientation.landscape
-              ? const EdgeInsets.only(top: 60.0, left: 550.0)
-              : const EdgeInsets.only(top: 100.0, left: 260.0),
-          width: orientation == Orientation.landscape ? 320.0 : 150.0,
-          height: orientation == Orientation.landscape ? 270.0 : 650.0,
-          color: transparent,
-          child: InkWell(
-            onTap: () => screenVisibility(),
-            onDoubleTap: () {
-              isLocked ? null : forwardSec(10);
-              setState(() {
-                isLocked ? null : leftText = plusten;
-                isLocked ? null : isrRightIconVisible = true;
-              });
-              Future.delayed(
-                const Duration(milliseconds: 500),
-                () => setState(() {
-                  leftText = '';
-                  isrRightIconVisible = false;
-                }),
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                        child: isrRightIconVisible
-                            ? screenIcon(Icons.fast_forward)
-                            : null),
-                    seekText(leftText)
-                  ],
-                ),
-                brightnessSlider(),
-              ],
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            width: MediaQuery.of(context).size.width / 3,
+            color: transparent,
+            child: InkWell(
+              onTap: () => screenVisibility(),
+              onDoubleTap: () {
+                isLocked ? null : forwardSec(10);
+                setState(() {
+                  isLocked ? null : leftText = plusten;
+                  isLocked ? null : isrRightIconVisible = true;
+                });
+                Future.delayed(
+                  const Duration(milliseconds: 500),
+                  () => setState(() {
+                    leftText = '';
+                    isrRightIconVisible = false;
+                  }),
+                );
+              },
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isrRightIconVisible
+                          ? screenIcon(Icons.fast_forward)
+                          : SizedBox(),
+                      Center(child: seekText(leftText)),
+                    ],
+                  ),
+                  volumeSlider(orientation),
+                ],
+              ),
             ),
           ),
         ),
@@ -156,13 +152,7 @@ class PlayScreenState extends State<PlayScreen> {
       ));
   Widget leftseekContainer({required orientation}) => GestureDetector(
         child: Container(
-          margin: orientation == Orientation.landscape
-              ? const EdgeInsets.only(
-                  top: 60.0,
-                )
-              : const EdgeInsets.only(top: 100.0),
-          width: orientation == Orientation.landscape ? 320.0 : 150.0,
-          height: orientation == Orientation.landscape ? 270.0 : 650.0,
+          width: MediaQuery.of(context).size.width / 3,
           color: transparent,
           child: InkWell(
             onTap: () => screenVisibility(),
@@ -181,21 +171,18 @@ class PlayScreenState extends State<PlayScreen> {
                 }),
               );
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+            child: Stack(
               children: [
-                Center(child: volumeSlider()),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                        child: isLeftIconVisible
-                            ? screenIcon(Icons.fast_rewind)
-                            : null),
-                    seekText(rightText)
+                    isLeftIconVisible
+                        ? screenIcon(Icons.fast_rewind)
+                        : SizedBox(),
+                    Center(child: seekText(rightText)),
                   ],
                 ),
+                brightnessSlider(orientation),
               ],
             ),
           ),
@@ -224,69 +211,79 @@ class PlayScreenState extends State<PlayScreen> {
 
   Widget bottomBar(orientation) => Visibility(
         visible: isShow,
-        child: Container(
-          margin: orientation == Orientation.landscape
-              ? const EdgeInsets.only(top: 350.0, bottom: 0.0)
-              : const EdgeInsets.only(top: 800.0, bottom: 0.0),
-          width: double.infinity,
-          height: 100,
-          color: color,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                width: 110.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        rewindSec(10);
-                      },
-                      icon: Icon(
-                        Icons.fast_rewind,
-                        color: white,
-                        size: 40.0,
-                      )),
-                  IconButton(
-                      onPressed: () {
-                        playFunction();
-                      },
-                      icon: playpause()),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.fast_forward,
-                      size: 40.0,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 70,
+            color: color,
+            child: Column(
+              children: [
+                indicatorNduration(orientation: orientation),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 110.0,
                     ),
-                    onPressed: () {
-                      forwardSec(10);
-                    },
-                    color: white,
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _index = (_index + 1) % fit.length;
-                        });
-                      },
-                      color: white,
-                      icon: const Icon(Icons.fit_screen)),
-                  IconButton(
-                      onPressed: () {
-                        // Navigator.of(context).push(
-                        //       PipScreen(videoPath: widget.videoFile),
-                        // ));
-                      },
-                      color: white,
-                      icon: const Icon(Icons.picture_in_picture_alt)),
-                ],
-              )
-            ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              rewindSec(10);
+                            },
+                            icon: Icon(
+                              Icons.fast_rewind,
+                              color: white,
+                              size: 40.0,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              playFunction();
+                            },
+                            icon: playpause()),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.fast_forward,
+                            size: 40.0,
+                          ),
+                          onPressed: () {
+                            forwardSec(10);
+                          },
+                          color: white,
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 50.0,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _index = (_index + 1) % fit.length;
+                              });
+                            },
+                            color: white,
+                            icon: const Icon(Icons.fit_screen)),
+                        const SizedBox(
+                          width: 50.0,
+                        )
+                        // IconButton(
+                        //     onPressed: () {
+                        //       // Navigator.of(context).push(
+                        //       //       PipScreen(videoPath: widget.videoFile),
+                        //       // ));
+                        //     },
+                        //     color: white,
+                        //     icon: const Icon(Icons.picture_in_picture_alt)),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -313,28 +310,29 @@ class PlayScreenState extends State<PlayScreen> {
   Widget lockButton(
     Orientation orientation,
   ) =>
-      Container(
-        color: isLocked ? color : transparent,
-        margin: orientation == Orientation.landscape
-            ? const EdgeInsets.only(top: 370.0, left: 3.0)
-            : const EdgeInsets.only(top: 820.0),
-        child: Visibility(
-          visible: isLockButton,
-          child: IconButton(
-            onPressed: () {
-              setState(() {
-                isLocked = !isLocked;
-                isLocked ? isShow = false : isShow = true;
-              });
-            },
-            icon:
-                isLocked ? const Icon(Icons.lock) : const Icon(Icons.lock_open),
-            color: white,
+      Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          color: isLocked ? color : transparent,
+          child: Visibility(
+            visible: isLockButton,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  isLocked = !isLocked;
+                  isLocked ? isShow = false : isShow = true;
+                });
+              },
+              icon: isLocked
+                  ? const Icon(Icons.lock)
+                  : const Icon(Icons.lock_open),
+              color: white,
+            ),
           ),
         ),
       );
   double val = 0.5;
-  Widget brightnessSlider() => Visibility(
+  Widget brightnessSlider(orientation) => Visibility(
         visible: isShow,
         child: SliderTheme(
             data: SliderThemeData(
@@ -343,6 +341,11 @@ class PlayScreenState extends State<PlayScreen> {
             ),
             child: Column(
               children: [
+                SizedBox(
+                  height: orientation == Orientation.portrait
+                      ? MediaQuery.of(context).size.height / 2.8
+                      : MediaQuery.of(context).size.height / 4,
+                ),
                 Column(
                   children: [
                     SizedBox(
@@ -371,7 +374,7 @@ class PlayScreenState extends State<PlayScreen> {
       );
 
   double vol = 0.5;
-  Widget volumeSlider() => Visibility(
+  Widget volumeSlider(orientation) => Visibility(
         visible: isShow,
         child: SliderTheme(
             data: SliderThemeData(
@@ -381,7 +384,15 @@ class PlayScreenState extends State<PlayScreen> {
             ),
             child: Column(
               children: [
-                Row(
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    height: orientation == Orientation.portrait
+                        ? MediaQuery.of(context).size.height / 2.8
+                        : MediaQuery.of(context).size.height / 4,
+                  ),
+                ),
+                Stack(
                   children: [
                     SizedBox(
                       width: 150.0,
@@ -442,8 +453,7 @@ class PlayScreenState extends State<PlayScreen> {
       Visibility(
         visible: isShow,
         child: Container(
-          margin: const EdgeInsets.only(top: 0.0),
-          width: double.infinity,
+          width: MediaQuery.of(context).size.width,
           height: 60,
           color: color,
           child: Row(
@@ -478,25 +488,29 @@ class PlayScreenState extends State<PlayScreen> {
           ),
         ),
       );
-  Widget indicatorNduration({required orientation}) => Container(
-        margin: orientation == Orientation.landscape
-            ? const EdgeInsets.only(top: 0.0)
-            : const EdgeInsets.only(top: 450.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            duration(currentDuration.split('.').first,
-                isShow: isShow,
-                text: currentDuration.toString().split('.').first),
-            Container(
-                width: orientation == Orientation.landscape ? 750.0 : 270.0,
-                margin: const EdgeInsets.only(top: 350.0),
-                child: indicator(controller: _controller, isShow: isShow)),
-            duration(_controller.value.duration.toString().split('.').first,
-                isShow: isShow,
-                text: _controller.value.duration.toString().split('.').first)
-          ],
-        ),
+  Widget indicatorNduration({required orientation}) => Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 5.0,
+          ),
+          duration(currentDuration.split('.').first,
+              isShow: isShow,
+              text: currentDuration.toString().split('.').first),
+          SizedBox(
+            width: 5.0,
+          ),
+          Expanded(child: indicator(controller: _controller, isShow: isShow)),
+          SizedBox(
+            width: 5.0,
+          ),
+          duration(_controller.value.duration.toString().split('.').first,
+              isShow: isShow,
+              text: _controller.value.duration.toString().split('.').first),
+          SizedBox(
+            width: 5.0,
+          ),
+        ],
       );
   forwardSec(sec) {
     _controller.seekTo(_controller.value.position + Duration(seconds: sec));

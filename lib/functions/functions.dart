@@ -44,7 +44,7 @@ favouriteDB(Favourite value, context) async {
   value.index = id;
   favouriteNotifier.value.add(value);
   favouriteNotifier.notifyListeners();
-  snackBar(context: context, content:liked , bgcolor: green);
+  snackBar(context: context, content: liked, bgcolor: green);
 }
 
 Future<void> getFavList() async {
@@ -108,12 +108,10 @@ Future<void> deleteRecentList(context) async {
   if (recentlisthive.isNotEmpty) {
     await recentlisthive.deleteAll(recentlisthive.keys);
 
-    snackBar(context: context, content:clearText , bgcolor: green);
+    snackBar(context: context, content: clearText, bgcolor: green);
   } else {
     snackBar(
-        context: context,
-        content: recentEmptytEXT,
-        bgcolor: Colors.grey[800]);
+        context: context, content: recentEmptytEXT, bgcolor: Colors.grey[800]);
   }
 
   getRecentList();
@@ -178,6 +176,24 @@ Route createRoute(page) {
     pageBuilder: (context, animation, secondaryAnimation) => page,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+Route backRoute(page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(-1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 

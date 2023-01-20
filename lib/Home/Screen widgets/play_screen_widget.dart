@@ -40,13 +40,13 @@ Widget topBar(
                   Navigator.of(context).pop();
                   Wakelock.disable();
                 },
-                icon:  Icon(
+                icon: Icon(
                   Icons.arrow_back,
                   color: white,
                 )),
             Text(
               widget.videotitle,
-              style:  TextStyle(color: white),
+              style: TextStyle(color: white),
             ),
             Row(
               children: [
@@ -67,7 +67,7 @@ Widget topBar(
 double _playbackSpeed = 1.0;
 Widget playSpeed({required controller, required setState}) =>
     PopupMenuButton<double>(
-        icon:  Icon(
+        icon: Icon(
           Icons.speed,
           color: white,
         ),
@@ -155,25 +155,22 @@ popupMenuItem({required setState, required controller, required value}) =>
       ),
     );
 Widget playpause(controller) => Icon(
-        controller.value.isPlaying ? Icons.play_arrow : Icons.pause,
-        color: white,
-        size: 40.0,
-      );
+      controller.value.isPlaying ? Icons.play_arrow : Icons.pause,
+      color: white,
+      size: 40.0,
+    );
 Widget indicator({required isShow, required controller}) => Visibility(
-    visible: isShow,
+    visible: true,
     child: CustomProgressIndicator(
       controller,
       allowScrubbing: true,
-      colors:  VideoProgressColors(
-          playedColor: bluecolor, backgroundColor: white),
+      colors:
+          VideoProgressColors(playedColor: bluecolor, backgroundColor: white),
     ));
 
 Widget duration(first, {required text, required isShow}) => Visibility(
-    visible: isShow,
-    child: Container(
-      margin: const EdgeInsets.only(top: 350.0),
-      child: Text(
-        text,
-        style:  TextStyle(color: white),
-      ),
+    visible: true,
+    child: Text(
+      text,
+      style: TextStyle(color: white),
     ));

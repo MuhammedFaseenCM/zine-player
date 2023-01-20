@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:zineplayer/Home/Screens/HomeScreen/drawer/settings.dart';
-import 'package:zineplayer/Home/Screens/splash_screen.dart';
+import 'package:zineplayer/Home/Screens/Starting%20Screens/splash_screen.dart';
 import 'package:zineplayer/functions/datamodels.dart';
 
 void main() async {
