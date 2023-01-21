@@ -42,13 +42,14 @@ class FavSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = favList[index];
-            if (data.videoPath.toLowerCase().contains(query.toLowerCase())) {
-              String splittedTitle = data.videoPath.toString().split("/").last;
-              String trimmedTitle = splittedTitle;
-              if (trimmedTitle.length > 20) {
-                trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
-              }
-              file = data.videoPath;
+
+            String splittedTitle = data.videoPath.toString().split("/").last;
+            String trimmedTitle = splittedTitle;
+            if (trimmedTitle.length > 20) {
+              trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
+            }
+            file = data.videoPath;
+            if (splittedTitle.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(
@@ -91,13 +92,14 @@ class FavSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = favList[index];
-            if (data.videoPath.toLowerCase().contains(query.toLowerCase())) {
+          
               String splittedTitle = data.videoPath.toString().split("/").last;
               String trimmedTitle = splittedTitle;
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
               file = data.videoPath;
+                if (splittedTitle.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(

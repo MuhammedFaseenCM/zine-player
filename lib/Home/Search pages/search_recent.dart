@@ -43,14 +43,15 @@ class RecentSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = recentList[index];
-            if (data.videoPath.contains(query)) {
-              String splittedTitle = data.videoPath.toString().split("/").last;
-              String trimmedTitle = splittedTitle;
-              if (trimmedTitle.length > 20) {
-                trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
-              }
-              String duration = convertSecond(data.duration);
-              file = data.videoPath;
+
+            String splittedTitle = data.videoPath.toString().split("/").last;
+            String trimmedTitle = splittedTitle;
+            if (trimmedTitle.length > 20) {
+              trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
+            }
+            String duration = convertSecond(data.duration);
+            file = data.videoPath;
+            if (splittedTitle.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(
@@ -101,9 +102,9 @@ class RecentSearch extends SearchDelegate {
             }
             String duration = convertSecond(data.duration);
             file = data.videoPath;
-          
+
             query.replaceAll(" ", "");
-            if (splittedTitle.contains(query)) {
+            if (splittedTitle.toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(

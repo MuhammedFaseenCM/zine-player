@@ -46,13 +46,14 @@ class VideoSearch extends SearchDelegate {
           itemBuilder: (ctx, index) {
             final data = videosList[index];
             AllVideos? videoinfo = videoDB.getAt(index);
-            if (data.toLowerCase().contains(query.toLowerCase())) {
+           
               String splittedTitle = data.toString().split("/").last;
               String trimmedTitle = splittedTitle;
               if (trimmedTitle.length > 20) {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
               file = data;
+              if (splittedTitle.contains(query)) {
               return Column(
                 children: [
                   ListTile(
@@ -96,7 +97,7 @@ class VideoSearch extends SearchDelegate {
           itemBuilder: (ctx, index) {
             final data = videosList[index];
             AllVideos? videoinfo = videoDB.getAt(index);
-            if (data.toLowerCase().contains(query.toLowerCase())) {
+           
               String splittedTitle = data.toString().split("/").last;
               String trimmedTitle = splittedTitle;
 
@@ -104,6 +105,7 @@ class VideoSearch extends SearchDelegate {
                 trimmedTitle = "${trimmedTitle.substring(0, 20)}...";
               }
               file = data;
+              if (splittedTitle.contains(query)) {
               return Column(
                 children: [
                   ListTile(

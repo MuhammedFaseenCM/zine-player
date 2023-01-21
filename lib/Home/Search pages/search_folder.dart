@@ -34,7 +34,7 @@ class FolderSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = folderList[index];
-            if (data.toLowerCase().contains(query.toLowerCase())) {
+             if ((data.toString().split("/").last).toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(
@@ -69,7 +69,7 @@ class FolderSearch extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (ctx, index) {
             final data = folderList[index];
-            if (data.toLowerCase().contains(query.toLowerCase())) {
+           if ((data.toString().split("/").last).toLowerCase().contains(query.toLowerCase())) {
               return Column(
                 children: [
                   ListTile(

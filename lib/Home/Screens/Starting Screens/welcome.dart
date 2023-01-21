@@ -94,7 +94,7 @@ class _WelcomeState extends State<Welcome> {
   }
 
   checkSplashFetch(BuildContext context) async {
-    // await splashFetch();
+     await splashFetch();
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(createRoute(
       const WelcomeTwo(),
