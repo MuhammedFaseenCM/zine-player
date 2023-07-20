@@ -1,6 +1,10 @@
 # zineplayer
 
-A new Flutter project. This application can play our local storage videos. There are several features available like start and resume, add to favourites,playlist, play and pause on double tap. move to forward and rewind on doube tap. seeking features ,lock button,volume controlling, brightness controlling and etc. The app uses the following packages : 
+A new Flutter project. This application can play our local storage videos. There are several features available like start and resume, add to favourites,playlist, play and pause on double tap. move to forward and rewind on doube tap. seeking features ,lock button,volume controlling, brightness controlling and etc. 
+
+Google Play Store link :  [Zine player](https://play.google.com/store/apps/details?id=in.brototype.zineplayer) 
+
+The app uses the following packages :
 
 - Get: ^4.6.5
 - firebase_core: ^2.7.0
